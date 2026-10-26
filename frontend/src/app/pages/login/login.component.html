@@ -1,0 +1,53 @@
+<section class="auth-layout" aria-labelledby="page-title">
+  <div class="auth-story">
+    <p class="eyebrow">LA RED DE LAS MASCOTAS</p>
+    <h1 id="page-title">Su mundo.<br />Tu <em>lugar.</em></h1>
+    <p class="intro">Fotos, travesuras y nuevas amistades.</p>
+    <img class="pet-art" src="pets-doodle.svg" alt="" width="360" height="180" aria-hidden="true" />
+  </div>
+  <div class="auth-card-wrap">
+    <div class="auth-card">
+      <h2>Hola de nuevo.</h2>
+      <form (submit)="onSubmit($event)">
+        <label for="login-email">Tu email</label
+        ><input
+          id="login-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          placeholder="vos@ejemplo.com"
+          required
+        />
+        <label for="login-password">Tu contraseña</label>
+        <div class="password-field">
+          <input
+            id="login-password"
+            name="password"
+            [type]="showPassword ? 'text' : 'password'"
+            autocomplete="current-password"
+            placeholder="La de siempre"
+            required
+          /><button
+            type="button"
+            class="password-toggle"
+            (click)="showPassword = !showPassword"
+            [attr.aria-pressed]="showPassword"
+            aria-controls="login-password"
+          >
+            {{ showPassword ? 'Ocultar' : 'Ver' }}
+          </button>
+        </div>
+        <button class="button button-primary" type="submit">
+          Entrar <span aria-hidden="true">↗</span>
+        </button>
+        @if (submitted) {
+          <p class="form-notice" role="status">
+            El acceso todavía no está disponible. Podés
+            <a routerLink="/publicaciones">recorrer la comunidad</a>.
+          </p>
+        }
+      </form>
+      <div class="card-bottom"><span>¿Sin cuenta?</span><a routerLink="/registro">Sumate ↗</a></div>
+    </div>
+  </div>
+</section>

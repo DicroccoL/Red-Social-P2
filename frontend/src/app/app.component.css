@@ -1,0 +1,138 @@
+.site-header {
+  max-width: 1440px;
+  margin: auto;
+  min-height: 112px;
+  padding: 24px 5%;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  border-bottom: 1px solid var(--line);
+}
+.brand,
+.footer-brand {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: bold;
+  letter-spacing: -3px;
+  text-decoration: none;
+  line-height: 1;
+}
+.brand {
+  font-size: 56px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+nav a {
+  position: relative;
+  text-decoration: none;
+  padding: 12px 17px;
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+nav a span {
+  margin-left: 14px;
+}
+nav a:hover {
+  background: var(--soft);
+}
+nav .nav-login {
+  border: 1px solid var(--line);
+  margin-left: 20px;
+}
+nav .nav-register {
+  background: var(--pink);
+  color: var(--wine);
+  border: 1px solid var(--pink);
+}
+nav .nav-register:hover {
+  background: var(--paper);
+}
+main {
+  max-width: 1440px;
+  margin: auto;
+  min-height: calc(100svh - 202px);
+  padding: 60px 5% 48px;
+}
+.site-footer {
+  max-width: 1440px;
+  margin: auto;
+  padding: 26px 5%;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+}
+.footer-brand {
+  font-size: 25px;
+  color: var(--pink);
+  letter-spacing: -1px;
+}
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 12px;
+  padding: 12px;
+  background: var(--pink);
+  color: var(--wine);
+  z-index: 10;
+}
+.skip-link:focus {
+  top: 12px;
+}
+@media (max-width: 850px) {
+  .site-header {
+    gap: 15px;
+  }
+  nav .nav-login {
+    margin-left: 0;
+  }
+  nav a {
+    padding: 11px 12px;
+  }
+  main {
+    padding-top: 40px;
+  }
+}
+@media (max-width: 560px) {
+  .site-header {
+    padding: 20px 6% 16px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .brand {
+    font-size: 48px;
+  }
+  nav {
+    margin: 0;
+    justify-content: space-between;
+    width: 100%;
+    gap: 4px;
+  }
+  nav a {
+    font-size: 11px;
+    padding: 10px 8px;
+  }
+  nav a span {
+    margin-left: 5px;
+  }
+  main {
+    padding: 32px 6%;
+  }
+  .site-footer {
+    padding: 22px 6%;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+}

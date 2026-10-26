@@ -1,0 +1,24 @@
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<header class="site-header">
+  <a class="brand" routerLink="/login" aria-label="floppy, inicio">floppy</a>
+  <nav aria-label="Navegación principal">
+    <a routerLink="/publicaciones" routerLinkActive="active" ariaCurrentWhenActive="page"
+      >La manada <span aria-hidden="true">↗</span></a
+    >
+    <a routerLink="/mi-perfil" routerLinkActive="active" ariaCurrentWhenActive="page">Mi perfil</a>
+    <a class="nav-login" routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page"
+      >Entrar <span aria-hidden="true">↗</span></a
+    >
+    <a
+      class="nav-register"
+      routerLink="/registro"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      >Sumate <span aria-hidden="true">+</span></a
+    >
+  </nav>
+</header>
+<main id="contenido" tabindex="-1"><router-outlet /></main>
+<footer class="site-footer">
+  <a routerLink="/login" class="footer-brand">floppy</a><span>La vida, con mascotas.</span>
+</footer>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 180" fill="none" stroke="#ffaaaa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<!-- Two companions, drawn with the same quiet line. -->
+<g transform="rotate(-7 100 90)"><path d="M42 105 45 33 80 56 Q103 47 127 58 L157 34 161 111 C159 148 128 159 101 157 68 156 43 139 42 105Z"/><path d="m53 60 1-13 15 17m67 0 13-15 1 17M67 98q8-10 16 0m34 0q8-10 16 0"/><path d="m94 114 8 5 8-5Z" fill="#ffaaaa"/><path d="M102 119v8m0 0q-10 7-16-1m16 1q10 7 16-1M56 113l-24-4m25 13-25 5m117-14 24-4m-25 13 25 5"/></g>
+<g transform="rotate(8 250 95)"><path d="M208 69C216 49 268 46 285 69L293 109C296 140 276 158 249 158S202 143 204 115Z"/><path d="M211 65C198 54 186 65 183 82L178 111C177 124 187 130 195 118L212 83m70-18c14-11 26 0 29 17l5 29c1 13-9 19-17 7l-17-35"/><path d="M225 101q6-8 12 0m25 0q6-8 12 0m-30 14q6-4 13 0l-6 7Z"/><path d="m244 115 6 7 7-7Z" fill="#ffaaaa"/><path d="M250 123v9m-12-2q12 13 25 0M215 151q35 17 69-3"/></g>
+<path d="m177 24 5-9 5 9m-5-9v20" stroke-width="1.6"/>
+</svg>
