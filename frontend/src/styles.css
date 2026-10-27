@@ -88,6 +88,14 @@ h2 {
   max-width: 370px;
   color: var(--muted);
 }
+.lema-inicio {
+  font-family: 'Segoe Print', 'Bradley Hand', cursive;
+  font-size: clamp(18px, 2vw, 23px);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+  color: var(--pink);
+}
 .auth-layout {
   display: grid;
   grid-template-columns: 1.15fr 1fr;
