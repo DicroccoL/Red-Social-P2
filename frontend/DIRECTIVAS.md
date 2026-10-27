@@ -26,3 +26,15 @@ Los enlaces del logo apuntan a Publicaciones cuando hay un usuario, y a Login cu
 Esto controla la presentación del menú. La sesión continúa en memoria y se pierde al recargar; JWT y los permisos del backend corresponden a la etapa posterior del proyecto.
 
 Referencia: https://angular.dev/guide/directives/structural-directives
+
+## Solo usuarios
+
+`SoloUsuariosDirective`, en `src/app/directivas/solo-usuarios.directive.ts`, muestra contenido solo cuando recibe un usuario distinto de `null`. Se aplica al enlace Mi perfil del menú:
+
+```html
+<a *appSoloUsuarios="autenticacion.usuarioActual" routerLink="/mi-perfil">
+  Mi perfil
+</a>
+```
+
+Al iniciar sesión aparece el enlace; al cerrar sesión se elimina de la vista. Utiliza `@Input`, `TemplateRef` y `ViewContainerRef`, igual que SoloInvitadosDirective, pero comprueba la condición contraria. Esto controla la visibilidad del enlace, sin cambiar las rutas.
