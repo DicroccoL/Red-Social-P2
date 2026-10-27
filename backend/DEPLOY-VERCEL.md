@@ -5,7 +5,10 @@ El proyecto de Vercel debe usar `backend` como Root Directory y el framework Nes
 En Settings → Environment Variables configurar para Production y Preview:
 
 - `MONGODB_URI`: la cadena de conexión completa de Atlas, con la contraseña real. No subirla al repositorio.
-- `NODE_OPTIONS`: `--experimental-require-module`. NestJS 12 usa paquetes ESM y nuestro proyecto compila a CommonJS. Esta opción permite que Node los cargue en Vercel. Si hay otras opciones, agregarla separada por un espacio.
+
+`backend/vercel.json` declara el framework NestJS y fija `NODE_OPTIONS` en `--experimental-require-module` para las funciones publicadas. NestJS 12 usa paquetes ESM y nuestro proyecto compila a CommonJS: esta opción permite que Node los cargue en Vercel. Es una opción pública de ejecución; las credenciales como `MONGODB_URI` siguen solamente en Settings.
+
+Si habías agregado `NODE_OPTIONS` en Settings, mantené el mismo valor para evitar configuraciones diferentes. Si necesitás otras opciones de Node, revisá también el valor del archivo.
 
 Después de modificar variables hay que hacer Redeploy. Para publicar cambios de código, primero subir esos cambios al repositorio conectado y desplegar ese commit.
 
@@ -19,7 +22,7 @@ En la PC, la condición `!process.env['VERCEL']` ejecuta `app.listen()` para esc
 
 Para comprobar el despliegue, abrir `/api/estado`. Si falla, revisar el error completo en Logs de Vercel.
 
-El almacenamiento definitivo de las imágenes sigue pendiente de elegir un servicio. El guardado local actual no proporciona almacenamiento persistente en Vercel.
+Las fotos nuevas se suben a Cloudinary. Configurar también `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` y `CLOUDINARY_API_SECRET` en el backend. Los pasos y la explicación están en `CLOUDINARY.md`. El API Secret nunca se configura en Angular.
 
 Referencias:
 

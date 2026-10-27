@@ -29,6 +29,10 @@ export class Usuario {
   @Prop({ required: true })
   imagenPerfilUrl: string;
 
+  // Opcional para admitir cuentas anteriores con fotos guardadas localmente.
+  @Prop()
+  imagenPerfilPublicId?: string;
+
   @Prop({ default: 'usuario', enum: ['usuario', 'administrador'] })
   perfil: string;
 

@@ -1,18 +1,29 @@
 const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { mkdtemp, readdir, rm } = require('node:fs/promises');
-const { tmpdir } = require('node:os');
-const path = require('node:path');
 require('reflect-metadata');
-const { Module, ValidationPipe, ConflictException } = require('@nestjs/common');
+const { Module, ValidationPipe, ConflictException, BadGatewayException } = require('@nestjs/common');
 const { NestFactory } = require('@nestjs/core');
 const { PasswordHasher } = require('@nestjs/authentication');
 const { AutenticacionController } = require('../dist/autenticacion/autenticacion.controller');
 const { AutenticacionService } = require('../dist/autenticacion/autenticacion.service');
 const { UsuariosService } = require('../dist/usuarios/usuarios.service');
+const { ImagenesService } = require('../dist/imagenes/imagenes.service');
 
-// HTTP, hash y archivos reales; los usuarios de prueba nunca se envían a Atlas.
+// HTTP y hash reales; Atlas y Cloudinary se reemplazan por servicios de prueba.
 const cuentas = new Map();
+const imagenes = new Map();
+let numeroFoto = 0;
+let rechazarSubida = false;
+const imagenesPrueba = {
+  async subirPerfil(imagen) {
+    if (rechazarSubida) throw new BadGatewayException('No se pudo subir la foto.');
+    const publicId = `floppy/perfiles/prueba-${++numeroFoto}`;
+    const url = `https://res.cloudinary.com/prueba/image/upload/${publicId}.png`;
+    imagenes.set(publicId, { url, contenido: imagen.buffer });
+    return { publicId, url };
+  },
+  async eliminar(publicId) { imagenes.delete(publicId); },
+};
 let rechazarCreacion = false;
 const usuariosPrueba = {
   async buscarPorCorreo(correo) { return cuentas.get(correo.trim().toLowerCase()) || null; },
@@ -32,6 +43,7 @@ Module({
     AutenticacionService,
     { provide: UsuariosService, useValue: usuariosPrueba },
     { provide: PasswordHasher, useValue: passwordHasher },
+    { provide: ImagenesService, useValue: imagenesPrueba },
   ],
 })(AutenticacionPruebasModule);
 
@@ -43,9 +55,7 @@ const datos = {
 };
 let app;
 let baseUrl;
-let carpetaTemporal;
 let imagenGuardada;
-const carpetaOriginal = process.cwd();
 
 function login(cambios = {}) {
   return fetch(`${baseUrl}/api/autenticacion/login`, {
@@ -62,28 +72,19 @@ function registrar(cambios = {}, contenido = foto) {
 }
 
 async function fotosGuardadas() {
-  try { return await readdir(path.join(carpetaTemporal, 'uploads', 'perfiles')); }
-  catch (error) { if (error.code === 'ENOENT') return []; throw error; }
+  return [...imagenes.values()];
 }
 
 before(async () => {
-  carpetaTemporal = await mkdtemp(path.join(tmpdir(), 'floppy-autenticacion-'));
-  process.chdir(carpetaTemporal);
   app = await NestFactory.create(AutenticacionPruebasModule, { logger: false });
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
-  app.useStaticAssets(path.join(carpetaTemporal, 'uploads'), { prefix: '/uploads/' });
   await app.listen(0, '127.0.0.1');
   baseUrl = await app.getUrl();
 });
 
 after(async () => {
   if (app) await app.close();
-  process.chdir(carpetaOriginal);
-  if (carpetaTemporal && path.dirname(carpetaTemporal) === path.resolve(tmpdir()) &&
-      path.basename(carpetaTemporal).startsWith('floppy-autenticacion-')) {
-    await rm(carpetaTemporal, { recursive: true, force: true });
-  }
 });
 
 test('registro 201: guarda un hash verificable y devuelve únicamente datos públicos', async () => {
@@ -100,10 +101,11 @@ test('registro 201: guarda un hash verificable y devuelve únicamente datos púb
   assert.equal((await fotosGuardadas()).length, 1);
 });
 
-test('la foto creada es accesible por su URL', async () => {
-  const respuesta = await fetch(baseUrl + imagenGuardada);
-  assert.equal(respuesta.status, 200);
-  assert.deepEqual(Buffer.from(await respuesta.arrayBuffer()), foto);
+test('Mongo recibe la URL HTTPS y el identificador devueltos por el servicio de imágenes', () => {
+  const usuario = cuentas.get(datos.correo);
+  assert.equal(usuario.imagenPerfilUrl, imagenGuardada);
+  assert.equal(imagenes.get(usuario.imagenPerfilPublicId).url, imagenGuardada);
+  assert.deepEqual(imagenes.get(usuario.imagenPerfilPublicId).contenido, foto);
 });
 
 test('registro con correo duplicado en mayúsculas devuelve 409', async () => {
@@ -137,6 +139,15 @@ test('un fallo al crear el documento elimina la foto de ese intento', async () =
     assert.equal((await registrar({ correo: 'otra@example.com' })).status, 409);
     assert.equal((await fotosGuardadas()).length, 1);
   } finally { rechazarCreacion = false; }
+});
+
+test('si falla la subida, no se crea el usuario ni queda una foto nueva', async () => {
+  rechazarSubida = true;
+  try {
+    assert.equal((await registrar({ correo: 'sin-foto@example.com' })).status, 502);
+    assert.equal(cuentas.has('sin-foto@example.com'), false);
+    assert.equal(imagenes.size, 1);
+  } finally { rechazarSubida = false; }
 });
 
 test('login correcto devuelve 200 y los datos públicos, sin hash ni contraseña', async () => {

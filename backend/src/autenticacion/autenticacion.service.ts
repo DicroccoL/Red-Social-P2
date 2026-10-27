@@ -7,9 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { PasswordHasher } from '@nestjs/authentication';
-import { randomUUID } from 'node:crypto';
-import { mkdir, unlink, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { ImagenesService } from '../imagenes/imagenes.service';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { RegistroDto } from './dto/registro.dto';
 import { LoginDto } from './dto/login.dto';
@@ -22,6 +20,7 @@ export class AutenticacionService {
   constructor(
     private readonly usuariosService: UsuariosService,
     private readonly passwordHasher: PasswordHasher,
+    private readonly imagenesService: ImagenesService,
   ) {}
 
   async iniciarSesion(datos: LoginDto) {
@@ -68,14 +67,7 @@ export class AutenticacionService {
     }
 
     const passwordHash = await this.passwordHasher.hash(datos.contrasena);
-    const extension = imagen.mimetype.split('/')[1];
-    const nombreArchivo = `${randomUUID()}.${extension}`;
-    const carpeta = join(process.cwd(), 'uploads', 'perfiles');
-    const rutaArchivo = join(carpeta, nombreArchivo);
-    const imagenPerfilUrl = `/uploads/perfiles/${nombreArchivo}`;
-
-    await mkdir(carpeta, { recursive: true });
-    await writeFile(rutaArchivo, imagen.buffer, { flag: 'wx' });
+    const foto = await this.imagenesService.subirPerfil(imagen);
 
     try {
       const usuario = await this.usuariosService.crear({
@@ -86,7 +78,8 @@ export class AutenticacionService {
         passwordHash,
         fechaNacimiento,
         descripcion: datos.descripcion,
-        imagenPerfilUrl,
+        imagenPerfilUrl: foto.url,
+        imagenPerfilPublicId: foto.publicId,
         perfil: 'usuario',
         activo: true,
       });
@@ -96,7 +89,7 @@ export class AutenticacionService {
         usuario: this.obtenerDatosPublicos(usuario),
       };
     } catch (error) {
-      await unlink(rutaArchivo).catch(() => {
+      await this.imagenesService.eliminar(foto.publicId).catch(() => {
         this.logger.error('No se pudo eliminar la foto de un registro fallido.');
       });
 
