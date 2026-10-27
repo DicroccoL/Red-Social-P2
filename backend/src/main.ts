@@ -16,6 +16,7 @@ async function crearAplicacion() {
       'http://localhost:4200',
       'http://127.0.0.1:4200',
       'https://frontfloppy.vercel.app',
+      'https://floppypet.vercel.app',
     ],
   });
   app.useStaticAssets(join(process.cwd(), 'uploads'), { prefix: '/uploads/' });
