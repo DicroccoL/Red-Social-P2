@@ -7,8 +7,9 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main.js",
-    "pretest:registro": "npm run build",
-    "test:registro": "node --test test/registro.e2e.cjs"
+    "test:registro": "npm run test:autenticacion",
+    "pretest:autenticacion": "npm run build",
+    "test:autenticacion": "node --test test/autenticacion.e2e.cjs"
   },
   "dependencies": {
     "@nestjs/authentication": "^0.1.1",

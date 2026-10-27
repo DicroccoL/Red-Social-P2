@@ -8,46 +8,61 @@
   <div class="auth-card-wrap">
     <div class="auth-card">
       <h2>Hola de nuevo.</h2>
-      <form (submit)="onSubmit($event)">
-        <label for="login-email">Tu email</label
-        ><input
-          id="login-email"
-          name="email"
-          type="email"
-          autocomplete="email"
-          placeholder="vos@ejemplo.com"
-          required
-        />
-        <label for="login-password">Tu contraseña</label>
-        <div class="password-field">
-          <input
-            id="login-password"
-            name="password"
-            [type]="showPassword ? 'text' : 'password'"
-            autocomplete="current-password"
-            placeholder="La de siempre"
-            required
-          /><button
-            type="button"
-            class="password-toggle"
-            (click)="showPassword = !showPassword"
-            [attr.aria-pressed]="showPassword"
-            aria-controls="login-password"
-          >
-            {{ showPassword ? 'Ocultar' : 'Ver' }}
-          </button>
-        </div>
-        <button class="button button-primary" type="submit">
-          Entrar <span aria-hidden="true">↗</span>
+      <form
+        [formGroup]="formulario"
+        (ngSubmit)="iniciarSesion()"
+        novalidate
+        [attr.aria-busy]="enviando"
+      >
+        <fieldset class="auth-fields" [disabled]="enviando">
+          <legend class="visually-hidden">Datos de acceso</legend>
+          <label for="login-email">Tu email</label
+          ><input
+            id="login-email"
+            formControlName="correo"
+            type="email"
+            autocomplete="email"
+            placeholder="vos@ejemplo.com"
+            maxlength="254"
+            [attr.aria-invalid]="!!errorCampo('correo')"
+            aria-describedby="login-error-correo"
+          />
+          @if (errorCampo('correo')) {
+            <p class="field-error" id="login-error-correo">{{ errorCampo('correo') }}</p>
+          }
+          <label for="login-password">Tu contraseña</label>
+          <div class="password-field">
+            <input
+              id="login-password"
+              formControlName="contrasena"
+              [type]="showPassword ? 'text' : 'password'"
+              autocomplete="current-password"
+              placeholder="La de siempre"
+              maxlength="64"
+              [attr.aria-invalid]="!!errorCampo('contrasena')"
+              aria-describedby="login-error-contrasena"
+            /><button
+              type="button"
+              class="password-toggle"
+              (click)="showPassword = !showPassword"
+              [attr.aria-pressed]="showPassword"
+              aria-controls="login-password"
+            >
+              {{ showPassword ? 'Ocultar' : 'Ver' }}
+            </button>
+          </div>
+          @if (errorCampo('contrasena')) {
+            <p class="field-error" id="login-error-contrasena">{{ errorCampo('contrasena') }}</p>
+          }
+        </fieldset>
+        <button class="button button-primary" type="submit" [disabled]="enviando">
+          {{ enviando ? 'Ingresando…' : 'Entrar' }} <span aria-hidden="true">↗</span>
         </button>
-        @if (submitted) {
-          <p class="form-notice" role="status">
-            El acceso todavía no está disponible. Podés
-            <a routerLink="/publicaciones">recorrer la comunidad</a>.
-          </p>
-        }
       </form>
       <div class="card-bottom"><span>¿Sin cuenta?</span><a routerLink="/registro">Sumate ↗</a></div>
     </div>
   </div>
 </section>
+@if (aviso) {
+  <app-aviso-modal titulo="No pudimos iniciar sesión" [mensaje]="aviso" (cerrado)="aviso = null" />
+}

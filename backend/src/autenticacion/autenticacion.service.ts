@@ -1,8 +1,10 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   Logger,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PasswordHasher } from '@nestjs/authentication';
 import { randomUUID } from 'node:crypto';
@@ -10,6 +12,8 @@ import { mkdir, unlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { RegistroDto } from './dto/registro.dto';
+import { LoginDto } from './dto/login.dto';
+import { UsuarioDocument } from '../usuarios/schemas/usuario.schema';
 
 @Injectable()
 export class AutenticacionService {
@@ -19,6 +23,28 @@ export class AutenticacionService {
     private readonly usuariosService: UsuariosService,
     private readonly passwordHasher: PasswordHasher,
   ) {}
+
+  async iniciarSesion(datos: LoginDto) {
+    const usuario = await this.usuariosService.buscarParaLogin(datos.correo);
+    // verify también comprueba un hash de prueba cuando el usuario no existe.
+    const contrasenaValida = await this.passwordHasher.verify(
+      datos.contrasena,
+      usuario?.passwordHash,
+    );
+
+    if (!usuario || !contrasenaValida) {
+      throw new UnauthorizedException('Correo o contraseña incorrectos.');
+    }
+
+    if (!usuario.activo) {
+      throw new ForbiddenException('Tu cuenta está deshabilitada.');
+    }
+
+    return {
+      mensaje: 'Iniciaste sesión correctamente.',
+      usuario: this.obtenerDatosPublicos(usuario),
+    };
+  }
 
   async registrar(datos: RegistroDto, imagen: Express.Multer.File) {
     if (datos.contrasena !== datos.repetirContrasena) {
@@ -67,18 +93,7 @@ export class AutenticacionService {
 
       return {
         mensaje: 'Tu cuenta se creó correctamente.',
-        usuario: {
-          _id: usuario._id.toString(),
-          nombre: usuario.nombre,
-          apellido: usuario.apellido,
-          correo: usuario.correo,
-          nombreUsuario: usuario.nombreUsuario,
-          fechaNacimiento: usuario.fechaNacimiento,
-          descripcion: usuario.descripcion,
-          imagenPerfilUrl: usuario.imagenPerfilUrl,
-          perfil: usuario.perfil,
-          activo: usuario.activo,
-        },
+        usuario: this.obtenerDatosPublicos(usuario),
       };
     } catch (error) {
       await unlink(rutaArchivo).catch(() => {
@@ -87,5 +102,20 @@ export class AutenticacionService {
 
       throw error;
     }
+  }
+
+  private obtenerDatosPublicos(usuario: UsuarioDocument) {
+    return {
+      _id: usuario._id.toString(),
+      nombre: usuario.nombre,
+      apellido: usuario.apellido,
+      correo: usuario.correo,
+      nombreUsuario: usuario.nombreUsuario,
+      fechaNacimiento: usuario.fechaNacimiento,
+      descripcion: usuario.descripcion,
+      imagenPerfilUrl: usuario.imagenPerfilUrl,
+      perfil: usuario.perfil,
+      activo: usuario.activo,
+    };
   }
 }

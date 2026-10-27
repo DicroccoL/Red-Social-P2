@@ -16,6 +16,14 @@ export class UsuariosService {
       .exec();
   }
 
+  buscarParaLogin(correo: string) {
+    // Solo el login necesita recuperar el hash para verificar la contraseña.
+    return this.usuarioModel
+      .findOne({ correo: correo.trim().toLowerCase() })
+      .select('+passwordHash')
+      .exec();
+  }
+
   async crear(datos: Usuario) {
     // Esperamos al índice único antes de aceptar el primer registro.
     await this.usuarioModel.init();

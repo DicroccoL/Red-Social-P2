@@ -2,19 +2,48 @@
   <div class="community-heading">
     <h1 id="page-title">Mi <em>perfil.</em></h1>
   </div>
-  <div class="profile-empty">
-    <img
-      class="empty-pets"
-      src="pets-doodle.svg"
-      alt=""
-      width="260"
-      height="130"
-      aria-hidden="true"
-    />
-    <h2>Acá va tu manada.</h2>
-    <p>Entrá para ver tu perfil y tus publicaciones.</p>
-    <a class="button button-outline" routerLink="/login"
-      >Entrar <span aria-hidden="true">↗</span></a
-    >
-  </div>
+  @if (autenticacion.usuarioActual; as usuario) {
+    <article class="profile-details">
+      @if (!imagenFallida) {
+        <img
+          class="profile-avatar"
+          [src]="autenticacion.urlImagen(usuario.imagenPerfilUrl)"
+          [alt]="'Foto de ' + usuario.nombre"
+          (error)="imagenFallida = true"
+        />
+      } @else {
+        <span class="profile-avatar" aria-hidden="true">{{ usuario.nombre.charAt(0) }}</span>
+      }
+      <h2>{{ usuario.nombre }} {{ usuario.apellido }}</h2>
+      <p>{{ '@' + usuario.nombreUsuario }}</p>
+      <p class="profile-description">{{ usuario.descripcion }}</p>
+      <dl>
+        <dt>Correo</dt>
+        <dd>{{ usuario.correo }}</dd>
+        <dt>Fecha de nacimiento</dt>
+        <dd>{{ usuario.fechaNacimiento | date: 'dd/MM/yyyy' : 'UTC' }}</dd>
+        <dt>Perfil</dt>
+        <dd>{{ usuario.perfil }}</dd>
+      </dl>
+      <button class="button button-outline" type="button" (click)="cerrarSesion()">
+        Cerrar sesión
+      </button>
+    </article>
+  } @else {
+    <div class="profile-empty">
+      <img
+        class="empty-pets"
+        src="pets-doodle.svg"
+        alt=""
+        width="260"
+        height="130"
+        aria-hidden="true"
+      />
+      <h2>Acá va tu manada.</h2>
+      <p>Entrá para ver tu perfil y tus publicaciones.</p>
+      <a class="button button-outline" routerLink="/login"
+        >Entrar <span aria-hidden="true">↗</span></a
+      >
+    </div>
+  }
 </section>

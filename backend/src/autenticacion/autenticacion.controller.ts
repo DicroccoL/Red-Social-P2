@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   FileTypeValidator,
+  HttpCode,
   MaxFileSizeValidator,
   ParseFilePipe,
   Post,
@@ -11,12 +12,19 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AutenticacionService } from './autenticacion.service';
 import { RegistroDto } from './dto/registro.dto';
+import { LoginDto } from './dto/login.dto';
 
 const TAMANO_MAXIMO_IMAGEN = 2 * 1024 * 1024;
 
 @Controller('autenticacion')
 export class AutenticacionController {
   constructor(private readonly autenticacionService: AutenticacionService) {}
+
+  @Post('login')
+  @HttpCode(200)
+  iniciarSesion(@Body() datos: LoginDto) {
+    return this.autenticacionService.iniciarSesion(datos);
+  }
 
   @Post('registro')
   @UseInterceptors(

@@ -1,0 +1,12 @@
+<dialog
+  #dialogo
+  aria-labelledby="aviso-titulo"
+  aria-describedby="aviso-mensaje"
+  (cancel)="cerrar($event)"
+>
+  <h2 id="aviso-titulo">{{ titulo }}</h2>
+  <p id="aviso-mensaje">{{ mensaje }}</p>
+  <button class="button button-primary" type="button" autofocus (click)="cerrar()">
+    {{ etiquetaBoton }}
+  </button>
+</dialog>

@@ -8,54 +8,183 @@
   <div class="auth-card-wrap">
     <div class="auth-card">
       <h2>Sumate a floppy.</h2>
-      <form (submit)="onSubmit($event)">
-        <label for="register-name">¿Cómo te llamás?</label
-        ><input
-          id="register-name"
-          name="name"
-          autocomplete="name"
-          placeholder="Tu nombre"
-          required
-          maxlength="80"
-        /><label for="register-email">Tu email</label
-        ><input
-          id="register-email"
-          name="email"
-          type="email"
-          autocomplete="email"
-          placeholder="vos@ejemplo.com"
-          required
-        /><label for="register-password">Elegí una contraseña</label>
-        <div class="password-field">
-          <input
-            id="register-password"
-            name="password"
-            [type]="showPassword ? 'text' : 'password'"
-            autocomplete="new-password"
-            placeholder="Al menos 8 caracteres"
-            minlength="8"
-            required
-            aria-describedby="password-hint"
-          /><button
-            class="password-toggle"
-            type="button"
-            (click)="showPassword = !showPassword"
-            [attr.aria-pressed]="showPassword"
-            aria-controls="register-password"
-          >
-            {{ showPassword ? 'Ocultar' : 'Ver' }}
-          </button>
-        </div>
-        <p id="password-hint" class="field-hint">Usá al menos 8 caracteres.</p>
-        <button class="button button-primary" type="submit">
-          Crear cuenta <span aria-hidden="true">↗</span>
-        </button>
-        @if (submitted) {
-          <p class="form-notice" role="status">
-            El registro todavía no está disponible. Podés
-            <a routerLink="/publicaciones">conocer la comunidad</a>.
-          </p>
+      <p class="field-hint">Todos los campos son obligatorios.</p>
+      <form
+        [formGroup]="formulario"
+        (ngSubmit)="registrar()"
+        novalidate
+        [attr.aria-busy]="enviando"
+      >
+        <fieldset class="form-grid" [disabled]="enviando">
+          <legend class="visually-hidden">Datos de tu cuenta</legend>
+          <div class="field-group">
+            <label for="register-name">Nombre</label>
+            <input
+              id="register-name"
+              formControlName="nombre"
+              autocomplete="given-name"
+              maxlength="60"
+              placeholder="Tu nombre"
+              [attr.aria-invalid]="!!errorCampo('nombre')"
+              aria-describedby="error-nombre"
+            />
+            @if (errorCampo('nombre')) {
+              <p class="field-error" id="error-nombre">{{ errorCampo('nombre') }}</p>
+            }
+          </div>
+          <div class="field-group">
+            <label for="register-lastname">Apellido</label>
+            <input
+              id="register-lastname"
+              formControlName="apellido"
+              autocomplete="family-name"
+              maxlength="60"
+              placeholder="Tu apellido"
+              [attr.aria-invalid]="!!errorCampo('apellido')"
+              aria-describedby="error-apellido"
+            />
+            @if (errorCampo('apellido')) {
+              <p class="field-error" id="error-apellido">{{ errorCampo('apellido') }}</p>
+            }
+          </div>
+          <div class="field-group field-wide">
+            <label for="register-email">Tu email</label>
+            <input
+              id="register-email"
+              formControlName="correo"
+              type="email"
+              autocomplete="email"
+              maxlength="254"
+              placeholder="vos@ejemplo.com"
+              [attr.aria-invalid]="!!errorCampo('correo')"
+              aria-describedby="error-correo"
+            />
+            @if (errorCampo('correo')) {
+              <p class="field-error" id="error-correo">{{ errorCampo('correo') }}</p>
+            }
+          </div>
+          <div class="field-group">
+            <label for="register-username">Nombre de usuario</label>
+            <input
+              id="register-username"
+              formControlName="nombreUsuario"
+              autocomplete="username"
+              maxlength="30"
+              placeholder="tu_usuario"
+              [attr.aria-invalid]="!!errorCampo('nombreUsuario')"
+              aria-describedby="error-usuario"
+            />
+            @if (errorCampo('nombreUsuario')) {
+              <p class="field-error" id="error-usuario">{{ errorCampo('nombreUsuario') }}</p>
+            }
+          </div>
+          <div class="field-group">
+            <label for="register-birthdate">Fecha de nacimiento</label>
+            <input
+              id="register-birthdate"
+              formControlName="fechaNacimiento"
+              type="date"
+              autocomplete="bday"
+              [attr.aria-invalid]="!!errorCampo('fechaNacimiento')"
+              aria-describedby="error-fecha"
+            />
+            @if (errorCampo('fechaNacimiento')) {
+              <p class="field-error" id="error-fecha">{{ errorCampo('fechaNacimiento') }}</p>
+            }
+          </div>
+          <div class="field-group field-wide">
+            <label for="register-password">Elegí una contraseña</label>
+            <div class="password-field">
+              <input
+                id="register-password"
+                formControlName="contrasena"
+                [type]="showPassword ? 'text' : 'password'"
+                autocomplete="new-password"
+                maxlength="64"
+                placeholder="Al menos 8 caracteres"
+                aria-describedby="password-hint error-contrasena"
+                [attr.aria-invalid]="!!errorCampo('contrasena')"
+              />
+              <button
+                class="password-toggle"
+                type="button"
+                (click)="showPassword = !showPassword"
+                [attr.aria-pressed]="showPassword"
+                aria-controls="register-password"
+              >
+                {{ showPassword ? 'Ocultar' : 'Ver' }}
+              </button>
+            </div>
+            <p id="password-hint" class="field-hint">
+              Al menos 8 caracteres, una mayúscula y un número.
+            </p>
+            @if (errorCampo('contrasena')) {
+              <p class="field-error" id="error-contrasena">{{ errorCampo('contrasena') }}</p>
+            }
+          </div>
+          <div class="field-group field-wide">
+            <label for="register-repeat">Repetí la contraseña</label>
+            <input
+              id="register-repeat"
+              formControlName="repetirContrasena"
+              [type]="showPassword ? 'text' : 'password'"
+              autocomplete="new-password"
+              maxlength="64"
+              placeholder="Escribila otra vez"
+              [attr.aria-invalid]="!!errorCampo('repetirContrasena')"
+              aria-describedby="error-repetir"
+            />
+            @if (errorCampo('repetirContrasena')) {
+              <p class="field-error" id="error-repetir">{{ errorCampo('repetirContrasena') }}</p>
+            }
+          </div>
+          <div class="field-group field-wide">
+            <label for="register-description">Contanos algo de vos</label>
+            <textarea
+              id="register-description"
+              formControlName="descripcion"
+              rows="3"
+              maxlength="300"
+              placeholder="Una breve presentación para la manada"
+              [attr.aria-invalid]="!!errorCampo('descripcion')"
+              aria-describedby="error-descripcion"
+            ></textarea>
+            <p class="field-hint">
+              {{ formulario.controls.descripcion.value.length }}/300 caracteres
+            </p>
+            @if (errorCampo('descripcion')) {
+              <p class="field-error" id="error-descripcion">{{ errorCampo('descripcion') }}</p>
+            }
+          </div>
+          <div class="field-group field-wide">
+            <label for="register-photo">Tu foto de perfil</label>
+            <input
+              id="register-photo"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              (change)="seleccionarImagen($event)"
+              [attr.aria-invalid]="!!errorCampo('imagenPerfil')"
+              aria-describedby="photo-hint error-foto"
+            />
+            <p id="photo-hint" class="field-hint">JPG, PNG o WebP. Menos de 2 MiB.</p>
+            @if (errorCampo('imagenPerfil')) {
+              <p class="field-error" id="error-foto">{{ errorCampo('imagenPerfil') }}</p>
+            }
+            @if (vistaPrevia) {
+              <img
+                class="avatar-preview"
+                [src]="vistaPrevia"
+                alt="Vista previa de tu foto de perfil"
+              />
+            }
+          </div>
+        </fieldset>
+        @if (submitted && formulario.invalid) {
+          <p class="field-error" role="alert">Revisá los campos marcados antes de continuar.</p>
         }
+        <button class="button button-primary" type="submit" [disabled]="enviando">
+          {{ enviando ? 'Creando tu cuenta…' : 'Crear cuenta' }} <span aria-hidden="true">↗</span>
+        </button>
       </form>
       <div class="card-bottom">
         <span>¿Ya tenés cuenta?</span><a routerLink="/login">Entrá ↗</a>
@@ -63,3 +192,11 @@
     </div>
   </div>
 </section>
+@if (aviso; as actual) {
+  <app-aviso-modal
+    [titulo]="actual.titulo"
+    [mensaje]="actual.mensaje"
+    [etiquetaBoton]="actual.exito ? 'Ir al login' : 'Revisar datos'"
+    (cerrado)="cerrarAviso()"
+  />
+}
