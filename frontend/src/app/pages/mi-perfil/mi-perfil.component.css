@@ -1,0 +1,12 @@
+.ultimas-publicaciones {
+  max-width: 760px;
+  margin: 42px auto 0;
+}
+.ultimas-publicaciones > h2 {
+  font-size: 36px;
+}
+.listado-perfil {
+  display: grid;
+  gap: 28px;
+  margin: 24px 0;
+}

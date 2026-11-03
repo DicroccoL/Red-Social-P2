@@ -4,6 +4,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import type { Request, Response } from 'express';
 import { join } from 'node:path';
 import { AppModule } from './app.module';
+import cookieParser = require('cookie-parser');
+import { ORIGENES_PERMITIDOS } from './seguridad/origenes-permitidos';
 
 async function crearAplicacion() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -11,13 +13,10 @@ async function crearAplicacion() {
   });
 
   app.setGlobalPrefix('api');
+  app.use(cookieParser());
   app.enableCors({
-    origin: [
-      'http://localhost:4200',
-      'http://127.0.0.1:4200',
-      'https://frontfloppy.vercel.app',
-      'https://floppypet.vercel.app',
-    ],
+    origin: ORIGENES_PERMITIDOS,
+    credentials: true,
   });
   app.useStaticAssets(join(process.cwd(), 'uploads'), { prefix: '/uploads/' });
   app.useGlobalPipes(

@@ -4,13 +4,16 @@
     class="brand"
     [routerLink]="autenticacion.usuarioActual ? '/publicaciones' : '/login'"
     aria-label="floppy, inicio"
-    >floppy</a
-  >
+    >floppy<span class="brand-paw"
+      ><svg viewBox="0 0 32 32" aria-hidden="true" fill="currentColor">
+        <ellipse cx="8" cy="11" rx="3.1" ry="4.2" transform="rotate(-25 8 11)" />
+        <ellipse cx="14" cy="7" rx="3" ry="4" transform="rotate(-8 14 7)" />
+        <ellipse cx="21" cy="8" rx="3" ry="4" transform="rotate(15 21 8)" />
+        <ellipse cx="26" cy="14" rx="2.8" ry="3.8" transform="rotate(32 26 14)" />
+        <path d="M8 23c-1-3 3-5 5-8 2-2 5-2 7 1 2 3 5 4 4 7-1 4-5 2-8 2-3 0-7 3-8-2Z" /></svg></span
+  ></a>
   <nav aria-label="Navegación principal">
-    <a
-      routerLink="/publicaciones"
-      routerLinkActive="active"
-      ariaCurrentWhenActive="page"
+    <a routerLink="/publicaciones" routerLinkActive="active" ariaCurrentWhenActive="page"
       >La manada <span aria-hidden="true">↗</span></a
     >
     <a
@@ -40,9 +43,7 @@
 </header>
 <main id="contenido" tabindex="-1"><router-outlet /></main>
 <footer class="site-footer">
-  <a
-    [routerLink]="autenticacion.usuarioActual ? '/publicaciones' : '/login'"
-    class="footer-brand"
+  <a [routerLink]="autenticacion.usuarioActual ? '/publicaciones' : '/login'" class="footer-brand"
     >floppy</a
   ><span>La vida, con mascotas.</span>
 </footer>

@@ -1,17 +1,97 @@
 <section class="community-page" aria-labelledby="page-title">
   <div class="community-heading">
     <h1 id="page-title">La <em>manada.</em></h1>
-    <p class="intro">Un día en sus patas.</p>
+    <p class="intro">Fotos, paseos y alguna que otra travesura.</p>
   </div>
-  <div class="empty-feed">
-    <img
-      class="empty-pets"
-      src="pets-doodle.svg"
-      alt=""
-      width="260"
-      height="130"
-      aria-hidden="true"
-    />
-    <h2>Todavía no hay huellas.</h2>
-  </div>
+  @if (autenticacion.usuarioActual) {
+    <div class="barra-feed">
+      <label for="orden-publicaciones"
+        >Ordenar por
+        <select
+          id="orden-publicaciones"
+          [value]="orden"
+          (change)="cambiarOrden($event)"
+          [disabled]="cargando || !!accionPendiente"
+        >
+          <option value="fecha">Más recientes</option>
+          <option value="meGusta">Más me gusta</option>
+        </select>
+      </label>
+      <button
+        class="button button-outline"
+        type="button"
+        [disabled]="mostrarFormulario || !!accionPendiente"
+        (click)="mostrarFormulario = true"
+      >
+        Crear publicación <span aria-hidden="true">+</span>
+      </button>
+    </div>
+    @if (mostrarFormulario) {
+      <app-formulario-publicacion
+        (publicada)="publicacionCreada()"
+        (cancelado)="mostrarFormulario = false"
+      />
+    }
+    @if (error) {
+      <div class="error-feed" role="alert">
+        <p>{{ error }}</p>
+        <button class="button button-outline" type="button" (click)="cargar()">Reintentar</button>
+      </div>
+    }
+    @if (cargando) {
+      <p role="status">Cargando publicaciones…</p>
+    } @else {
+      <div class="listado-publicaciones">
+        @for (publicacion of publicaciones; track publicacion._id) {
+          <app-publicacion
+            [publicacion]="publicacion"
+            [procesando]="!!accionPendiente"
+            (cambiarMeGusta)="cambiarMeGusta($event)"
+            (eliminar)="publicacionParaEliminar = $event"
+          />
+        } @empty {
+          @if (!error) {
+            <div class="empty-feed">
+              <img src="pets-doodle.svg" class="empty-pets" alt="" width="260" height="130" />
+              <h2>Todavía no hay huellas.</h2>
+              <p>Compartí la primera historia de tu mascota.</p>
+            </div>
+          }
+        }
+      </div>
+    }
+    @if (total > 0) {
+      <app-paginacion
+        [offset]="offset"
+        [limit]="limit"
+        [total]="total"
+        [cargando]="cargando || !!accionPendiente"
+        (paginaCambiada)="cambiarPagina($event)"
+      />
+    }
+    @if (publicacionParaEliminar) {
+      <app-confirmar-accion
+        (confirmado)="confirmarBaja()"
+        (cancelado)="publicacionParaEliminar = null"
+      />
+    }
+  } @else {
+    <div class="feed-demo">
+      <div class="feed-demo-heading">
+        <div class="pet-friends" aria-label="Perfiles de ejemplo: Milo y Luna">
+          <img src="images/milo-avatar.webp" alt="Milo" width="38" height="38" /><img
+            src="images/luna-avatar.webp"
+            alt="Luna"
+            width="38"
+            height="38"
+          /><span>Conocé a la manada</span>
+        </div>
+        <span class="demo-note">Demostración</span>
+      </div>
+      <app-pet-post-preview />
+      <p class="feed-demo-caption">
+        Publicación de ejemplo. Los cariños y comentarios son de prueba.
+      </p>
+    </div>
+  }
 </section>

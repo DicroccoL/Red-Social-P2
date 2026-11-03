@@ -1,0 +1,113 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+.publicacion {
+  background: var(--paper);
+  color: var(--wine);
+  overflow: hidden;
+  border: 1px solid var(--paper);
+}
+.autor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px;
+}
+.autor img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.autor > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.autor strong {
+  font-size: 14px;
+}
+.autor span,
+time {
+  font-size: 11px;
+  opacity: 0.75;
+}
+time {
+  margin-left: auto;
+  text-align: right;
+}
+.imagen-publicacion {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  background: #5500220a;
+}
+.contenido {
+  padding: 22px;
+}
+h2 {
+  font-size: 30px;
+  margin-bottom: 12px;
+  overflow-wrap: anywhere;
+}
+.descripcion,
+.comentario p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  border-top: 1px solid #55002230;
+  padding-top: 14px;
+}
+button {
+  background: transparent;
+  color: inherit;
+  border: 0;
+  padding: 8px 0;
+  font: inherit;
+  font-size: 13px;
+}
+button:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+button[aria-pressed='true'] {
+  font-weight: 700;
+}
+.cantidad {
+  margin-left: 7px;
+}
+.comentarios {
+  border-top: 1px solid #55002230;
+  margin-top: 18px;
+  padding-top: 8px;
+  font-size: 13px;
+}
+.comentario {
+  padding: 12px 0;
+  border-bottom: 1px solid #55002220;
+}
+.comentario p {
+  margin: 6px 0;
+}
+@media (max-width: 450px) {
+  .autor,
+  .contenido {
+    padding: 16px;
+  }
+  .autor {
+    flex-wrap: wrap;
+  }
+  time {
+    width: 100%;
+    text-align: left;
+    margin: 0;
+  }
+}

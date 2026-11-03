@@ -136,3 +136,19 @@ main {
     flex-wrap: wrap;
   }
 }
+
+.brand-paw {
+  display: inline-flex;
+  align-self: flex-start;
+  width: 23px;
+  height: 27px;
+  margin: 3px 0 0 3px;
+  transform: rotate(18deg);
+}
+.brand-paw svg {
+  width: 100%;
+  height: 100%;
+}
+.footer-brand .brand-paw {
+  display: none;
+}

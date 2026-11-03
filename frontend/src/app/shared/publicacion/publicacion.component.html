@@ -1,0 +1,67 @@
+<article class="publicacion">
+  <header class="autor">
+    @if (publicacion.autor.imagenPerfilUrl && !fotoFallida) {
+      <img
+        [src]="publicacion.autor.imagenPerfilUrl"
+        [alt]="'Foto de ' + publicacion.autor.nombre"
+        (error)="fotoFallida = true"
+        width="40"
+        height="40"
+        loading="lazy"
+      />
+    }
+    <div>
+      <strong>{{ publicacion.autor.nombre }} {{ publicacion.autor.apellido }}</strong>
+      <span>{{ '@' + publicacion.autor.nombreUsuario }}</span>
+    </div>
+    <time [attr.datetime]="publicacion.fechaCreacion">{{
+      publicacion.fechaCreacion | date: 'dd/MM/yyyy HH:mm'
+    }}</time>
+  </header>
+  @if (publicacion.imagenUrl) {
+    <img
+      class="imagen-publicacion"
+      [src]="publicacion.imagenUrl"
+      [alt]="publicacion.titulo"
+      loading="lazy"
+    />
+  }
+  <div class="contenido">
+    <h2>{{ publicacion.titulo }}</h2>
+    <p class="descripcion">{{ publicacion.descripcion }}</p>
+    <div class="acciones">
+      <button
+        type="button"
+        [attr.aria-pressed]="publicacion.meGustaDelUsuario"
+        [disabled]="procesando"
+        (click)="cambiarMeGusta.emit(publicacion)"
+      >
+        <span aria-hidden="true">♥</span>
+        {{ publicacion.meGustaDelUsuario ? 'Quitar me gusta' : 'Me gusta' }}
+        <span class="cantidad">{{ publicacion.cantidadMeGusta }}</span>
+      </button>
+      @if (publicacion.puedeEliminar) {
+        <button type="button" [disabled]="procesando" (click)="eliminar.emit(publicacion)">
+          Eliminar
+        </button>
+      }
+    </div>
+    @if (publicacion.comentarios; as comentarios) {
+      <section class="comentarios" aria-label="Comentarios de la publicación">
+        <h3>Comentarios</h3>
+        @for (comentario of comentarios; track comentario._id) {
+          <div class="comentario">
+            <strong>{{ comentario.autor.nombre }} {{ comentario.autor.apellido }}</strong>
+            <p>{{ comentario.mensaje }}</p>
+            <small
+              >{{ comentario.fechaCreacion | date: 'dd/MM/yyyy HH:mm'
+              }}{{ comentario.modificado ? ' · Editado' : '' }}</small
+            >
+          </div>
+        } @empty {
+          <p>Todavía no hay comentarios.</p>
+        }
+      </section>
+    }
+  </div>
+</article>

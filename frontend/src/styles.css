@@ -638,3 +638,294 @@ h2 {
     font-size: 64px;
   }
 }
+
+/* Mascotas protagonistas y una muestra breve de la comunidad. */
+.pets-auth {
+  align-items: center;
+  min-height: 580px;
+  gap: 8%;
+  grid-template-columns: 1.15fr 1fr;
+}
+.pets-auth .auth-story h1 {
+  font-size: clamp(62px, 5.9vw, 84px);
+  letter-spacing: -3.8px;
+  line-height: 1.04;
+  margin: 0 0 22px;
+}
+.pets-auth .intro {
+  max-width: none;
+  font-size: 14px;
+  margin: 0;
+}
+.pet-scene {
+  position: relative;
+  max-width: 590px;
+  min-height: 320px;
+  margin-top: 18px;
+  isolation: isolate;
+}
+.pet-scene::before {
+  content: '';
+  position: absolute;
+  left: 25px;
+  bottom: 0;
+  width: 76%;
+  height: 77%;
+  border-radius: 50% 50% 0 0;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  z-index: -1;
+}
+.pets-photo {
+  position: relative;
+  display: block;
+  width: 88%;
+  height: auto;
+  padding-top: 15px;
+  mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
+}
+.pet-tag {
+  position: absolute;
+  z-index: 2;
+  left: 7px;
+  top: 30px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--pink);
+  background: var(--wine);
+  border-radius: 8px 8px 16px 16px;
+  transform: rotate(-9deg);
+  font: 10px var(--mono);
+}
+.pet-tag svg {
+  width: 18px;
+  height: 18px;
+}
+.hero-post {
+  position: absolute;
+  width: 190px;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  transform: rotate(5deg);
+}
+.register-pets {
+  margin-top: 30px;
+  max-width: 460px;
+}
+.register-pets img {
+  width: 100%;
+  height: auto;
+  display: block;
+  mask-image: linear-gradient(to bottom, #000 85%, transparent 100%);
+}
+.feed-demo {
+  max-width: 610px;
+  margin: 0 auto;
+}
+.feed-demo-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 20px;
+}
+.pet-friends {
+  display: flex;
+  align-items: center;
+}
+.pet-friends img {
+  width: 38px;
+  height: 38px;
+  border: 2px solid var(--wine);
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--pink);
+}
+.pet-friends img + img {
+  margin-left: -10px;
+}
+.pet-friends span {
+  font-size: 12px;
+  margin-left: 10px;
+}
+.demo-note {
+  font: 9px var(--mono);
+  letter-spacing: 0.7px;
+  border: 1px solid var(--line);
+  padding: 6px 8px;
+}
+.feed-demo-caption {
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 16px 0 0;
+}
+.community-page .community-heading {
+  margin-bottom: 30px;
+}
+@media (max-width: 1050px) {
+  .pets-auth {
+    gap: 5%;
+  }
+  .pets-auth .auth-story h1 {
+    font-size: clamp(54px, 6vw, 70px);
+  }
+  .pet-scene {
+    min-height: 300px;
+  }
+  .hero-post {
+    width: 170px;
+  }
+  .pets-photo {
+    width: 96%;
+  }
+  .pet-tag {
+    top: 5px;
+    font-size: 9px;
+  }
+}
+@media (max-width: 800px) {
+  .pets-auth .auth-story h1 {
+    font-size: 53px;
+    letter-spacing: -2.7px;
+  }
+  .pets-auth .intro {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .pet-scene {
+    min-height: 290px;
+    margin-top: 25px;
+  }
+  .pets-photo {
+    width: 100%;
+    padding-top: 30px;
+  }
+  .hero-post {
+    width: 148px;
+    bottom: -5px;
+    right: -5px;
+  }
+  .pet-tag {
+    top: 0;
+  }
+  .register-pets {
+    margin-top: 25px;
+  }
+}
+@media (max-width: 650px) {
+  .pets-auth {
+    grid-template-columns: 1fr;
+    gap: 33px;
+    min-height: 0;
+  }
+  .pets-auth .auth-story h1 {
+    font-size: clamp(46px, 10.8vw, 64px);
+    letter-spacing: -2.5px;
+    margin-bottom: 16px;
+  }
+  .pets-auth .intro {
+    font-size: 13px;
+  }
+  .pet-scene {
+    max-width: 400px;
+    min-height: 250px;
+    margin: 12px auto 0;
+  }
+  .pet-scene::before {
+    left: 9px;
+    width: 76%;
+    height: 83%;
+  }
+  .pets-photo {
+    width: 88%;
+    padding-top: 0;
+  }
+  .pet-tag {
+    top: 20px;
+    left: 0;
+    font-size: 8px;
+    padding: 7px 9px;
+  }
+  .pet-tag svg {
+    width: 15px;
+    height: 15px;
+  }
+  .hero-post {
+    width: 144px;
+    right: 3px;
+    bottom: 0;
+    transform: rotate(4deg);
+  }
+  .pets-auth .auth-card-wrap {
+    max-width: 460px;
+  }
+  .pets-register .register-pets {
+    max-width: 270px;
+    margin: 15px auto 0;
+  }
+  .pets-register .auth-story h1 {
+    font-size: 59px;
+  }
+  .pets-register .eyebrow {
+    margin-bottom: 12px;
+  }
+  .pet-friends span {
+    font-size: 10px;
+  }
+  .demo-note {
+    font-size: 8px;
+  }
+  .feed-demo-heading {
+    gap: 10px;
+  }
+  .feed-demo-caption {
+    font-size: 10px;
+  }
+}
+@media (max-width: 350px) {
+  .pets-auth .auth-story h1 {
+    font-size: 43px;
+  }
+  .pet-scene {
+    min-height: 220px;
+  }
+  .hero-post {
+    width: 128px;
+  }
+  .pet-tag {
+    font-size: 7px;
+  }
+  .pet-friends span {
+    max-width: 90px;
+    line-height: 1.5;
+  }
+}
+
+.hero-post {
+  width: 170px;
+  right: -5px;
+  bottom: -10px;
+}
+@media (max-width: 800px) {
+  .hero-post {
+    width: 148px;
+    right: -5px;
+    bottom: -5px;
+  }
+}
+@media (max-width: 650px) {
+  .hero-post {
+    width: 144px;
+    right: 3px;
+    bottom: 0;
+  }
+}
+@media (max-width: 350px) {
+  .hero-post {
+    width: 128px;
+  }
+}

@@ -12,6 +12,7 @@ import { UsuariosService } from '../usuarios/usuarios.service';
 import { RegistroDto } from './dto/registro.dto';
 import { LoginDto } from './dto/login.dto';
 import { UsuarioDocument } from '../usuarios/schemas/usuario.schema';
+import { TokensService } from '../seguridad/tokens.service';
 
 @Injectable()
 export class AutenticacionService {
@@ -21,6 +22,7 @@ export class AutenticacionService {
     private readonly usuariosService: UsuariosService,
     private readonly passwordHasher: PasswordHasher,
     private readonly imagenesService: ImagenesService,
+    private readonly tokensService: TokensService,
   ) {}
 
   async iniciarSesion(datos: LoginDto) {
@@ -41,6 +43,7 @@ export class AutenticacionService {
 
     return {
       mensaje: 'Iniciaste sesión correctamente.',
+      token: await this.tokensService.generar(usuario._id.toString()),
       usuario: this.obtenerDatosPublicos(usuario),
     };
   }
@@ -95,6 +98,13 @@ export class AutenticacionService {
 
       throw error;
     }
+  }
+
+  async recuperarSesion(id: string) {
+    const usuario = await this.usuariosService.buscarPorId(id);
+    if (!usuario) throw new UnauthorizedException('El usuario de esta sesión ya no existe.');
+    if (!usuario.activo) throw new ForbiddenException('Tu cuenta está deshabilitada.');
+    return { usuario: this.obtenerDatosPublicos(usuario) };
   }
 
   private obtenerDatosPublicos(usuario: UsuarioDocument) {

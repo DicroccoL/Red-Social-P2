@@ -30,7 +30,15 @@ export class ImagenesService {
     });
   }
 
-  async subirPerfil(imagen: Express.Multer.File) {
+  subirPerfil(imagen: Express.Multer.File) {
+    return this.subir(imagen, 'floppy/perfiles');
+  }
+
+  subirPublicacion(imagen: Express.Multer.File) {
+    return this.subir(imagen, 'floppy/publicaciones');
+  }
+
+  private async subir(imagen: Express.Multer.File, carpeta: string) {
     this.configurar();
 
     // El archivo ya está en memoria. Base64 lo representa como texto para
@@ -39,7 +47,7 @@ export class ImagenesService {
 
     try {
       const resultado = await cloudinary.uploader.upload(contenido, {
-        folder: 'floppy/perfiles',
+        folder: carpeta,
         resource_type: 'image',
         timeout: 30000,
       });
@@ -49,7 +57,7 @@ export class ImagenesService {
         publicId: resultado.public_id,
       };
     } catch {
-      this.logger.error('Cloudinary no pudo guardar la foto de perfil.');
+      this.logger.error('Cloudinary no pudo guardar la imagen.');
       throw new BadGatewayException(
         'No se pudo subir la foto. Intentá nuevamente en unos minutos.',
       );

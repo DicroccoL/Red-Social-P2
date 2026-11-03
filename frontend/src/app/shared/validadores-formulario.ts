@@ -1,11 +1,14 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
+//Compara contraseña y repetición.
 export function contrasenasIguales(grupo: AbstractControl): ValidationErrors | null {
   return grupo.get('contrasena')?.value === grupo.get('repetirContrasena')?.value
     ? null
     : { contrasenasDiferentes: true };
 }
 
+
+//Rechaza una fecha posterior a hoy.
 export function fechaNoFutura(control: AbstractControl): ValidationErrors | null {
   if (!control.value) return null;
   const fecha = new Date(`${control.value}T00:00:00`);
@@ -14,6 +17,8 @@ export function fechaNoFutura(control: AbstractControl): ValidationErrors | null
   return Number.isNaN(fecha.getTime()) || fecha > hoy ? { fechaInvalida: true } : null;
 }
 
+
+//Convierte los errores del control en mensajes para mostrar.
 export function mensajeErrorCampo(control: AbstractControl | null, enviado: boolean): string {
   if (!control || !(control.touched || enviado)) return '';
   if (control.hasError('required')) return 'Completá este campo.';

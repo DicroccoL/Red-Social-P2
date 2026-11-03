@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { PetPostPreviewComponent } from '../../shared/pet-post-preview/pet-post-preview.component';
 import { AutenticacionService } from '../../services/autenticacion.service';
 import { AvisoModalComponent } from '../../shared/aviso-modal/aviso-modal.component';
 import { mensajeErrorCampo } from '../../shared/validadores-formulario';
@@ -9,7 +10,7 @@ import { mensajeErrorApi } from '../../shared/mensaje-error-api';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink, ReactiveFormsModule, AvisoModalComponent],
+  imports: [RouterLink, ReactiveFormsModule, AvisoModalComponent, PetPostPreviewComponent],
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnDestroy {
@@ -56,7 +57,7 @@ export class LoginComponent implements OnDestroy {
     this.enviando = true;
     this.solicitud = this.autenticacion.iniciarSesion(this.formulario.getRawValue()).subscribe({
       next: (respuesta) => {
-        this.autenticacion.usuarioActual = respuesta.usuario;
+        this.autenticacion.guardarSesion(respuesta);
         this.formulario.controls.contrasena.reset();
         this.enviando = false;
         this.router.navigate(['/publicaciones']);

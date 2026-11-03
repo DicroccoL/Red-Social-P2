@@ -25,10 +25,41 @@
         <dt>Perfil</dt>
         <dd>{{ usuario.perfil }}</dd>
       </dl>
-      <button class="button button-outline" type="button" (click)="cerrarSesion()">
-        Cerrar sesión
+      <button class="button button-outline" type="button" [disabled]="cerrandoSesion" (click)="cerrarSesion()">
+        {{ cerrandoSesion ? 'Cerrando sesión…' : 'Cerrar sesión' }}
       </button>
     </article>
+    <section class="ultimas-publicaciones" aria-labelledby="titulo-ultimas">
+      <h2 id="titulo-ultimas">Tus últimas publicaciones</h2>
+      @if (cargando) {
+        <p role="status">Cargando tus publicaciones…</p>
+      } @else if (error) {
+        <p role="alert">{{ error }}</p>
+        <button class="button button-outline" type="button" (click)="cargarPublicaciones()">
+          Reintentar
+        </button>
+      } @else {
+        <div class="listado-perfil">
+          @for (publicacion of misPublicaciones; track publicacion._id) {
+            <app-publicacion
+              [publicacion]="publicacion"
+              [procesando]="accionPendiente"
+              (cambiarMeGusta)="cambiarMeGusta($event)"
+              (eliminar)="publicacionParaEliminar = $event"
+            />
+          } @empty {
+            <p>Todavía no compartiste ninguna publicación.</p>
+          }
+        </div>
+      }
+      <a class="button button-outline" routerLink="/publicaciones">Ir a La manada</a>
+    </section>
+    @if (publicacionParaEliminar) {
+      <app-confirmar-accion
+        (confirmado)="confirmarBaja()"
+        (cancelado)="publicacionParaEliminar = null"
+      />
+    }
   } @else {
     <div class="profile-empty">
       <img

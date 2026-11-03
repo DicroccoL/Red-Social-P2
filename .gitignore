@@ -1,0 +1,23 @@
+**/node_modules/
+**/dist/
+**/.angular/
+.npm-cache/
+**/.env
+**/.env.*
+!**/.env.example
+backend/uploads/
+*.log
+.tmp/
+**/.vercel/
+
+# Guías y explicaciones en Markdown
+*.md
+
+# Pruebas y sus resultados
+**/test/
+**/tests/
+**/__tests__/
+*.spec.*
+*.test.*
+*.e2e.*
+**/coverage/

@@ -1,9 +1,26 @@
-<section class="auth-layout" aria-labelledby="page-title">
+<section class="auth-layout pets-auth" aria-labelledby="page-title">
   <div class="auth-story">
-    <p class="lema-inicio">La red de las mascotas</p>
-    <h1 id="page-title">Su mundo.<br />Tu <em>lugar.</em></h1>
-    <p class="intro">Fotos, travesuras y nuevas amistades.</p>
-    <img class="pet-art" src="pets-doodle.svg" alt="" width="360" height="180" aria-hidden="true" />
+    <h1 id="page-title">La red social<br />de tu <em>mascota.</em></h1>
+    <p class="intro">Sus fotos. Sus amigos. Sus mejores momentos.</p>
+    <div class="pet-scene">
+      <span class="pet-tag"
+        ><svg viewBox="0 0 32 32" aria-hidden="true" fill="currentColor">
+          <ellipse cx="8" cy="11" rx="3.1" ry="4.2" transform="rotate(-25 8 11)" />
+          <ellipse cx="14" cy="7" rx="3" ry="4" transform="rotate(-8 14 7)" />
+          <ellipse cx="21" cy="8" rx="3" ry="4" transform="rotate(15 21 8)" />
+          <ellipse cx="26" cy="14" rx="2.8" ry="3.8" transform="rotate(32 26 14)" />
+          <path d="M8 23c-1-3 3-5 5-8 2-2 5-2 7 1 2 3 5 4 4 7-1 4-5 2-8 2-3 0-7 3-8-2Z" /></svg
+        ><span>La vida, con ellos.</span></span
+      ><img
+        class="pets-photo"
+        src="images/pets-hero.webp"
+        alt="Un perro golden y un gato juntos"
+        width="1000"
+        height="667"
+        fetchpriority="high"
+      />
+      <div class="hero-post"><app-pet-post-preview [compact]="true" /></div>
+    </div>
   </div>
   <div class="auth-card-wrap">
     <div class="auth-card">

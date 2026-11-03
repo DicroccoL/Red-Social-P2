@@ -16,6 +16,10 @@ export class UsuariosService {
       .exec();
   }
 
+  buscarPorId(id: string) {
+    return this.usuarioModel.findById(id).exec();
+  }
+
   buscarParaLogin(correo: string) {
     // Solo el login necesita recuperar el hash para verificar la contraseña.
     return this.usuarioModel

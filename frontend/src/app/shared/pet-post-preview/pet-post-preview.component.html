@@ -1,0 +1,62 @@
+<article class="pet-post" aria-label="Publicación de demostración de Milo">
+  <header class="post-header">
+    <img src="images/milo-avatar.webp" alt="" width="38" height="38" />
+    <div class="post-author"><strong>Milo</strong><span>De paseo</span></div>
+    <span class="demo-label">Ejemplo</span>
+  </header>
+  <img
+    class="post-photo"
+    src="images/milo-paseo.webp"
+    alt="Milo, un golden retriever, paseando con una hoja en la boca"
+    width="1000"
+    height="667"
+    [attr.loading]="compact ? 'eager' : 'lazy'"
+  />
+  <div class="post-content">
+    <p>El tesoro del paseo.</p>
+    @if (compact) {
+      <a class="post-peek" routerLink="/publicaciones"
+        >Ver la manada <span aria-hidden="true">↗</span></a
+      >
+    } @else {
+      <div class="post-actions">
+        <button
+          type="button"
+          (click)="liked = !liked"
+          [attr.aria-pressed]="liked"
+          [attr.aria-label]="liked ? 'Quitar cariño de ejemplo' : 'Dar cariño de ejemplo'"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" [attr.fill]="liked ? 'currentColor' : 'none'">
+            <path d="M20 5c-2-2-5-2-8 1-3-3-6-3-8-1-3 3-1 6 1 8l7 7 7-7c2-2 4-5 1-8Z" /></svg
+          >{{ liked ? 'Te gusta' : 'Dar cariño' }}</button
+        ><button
+          type="button"
+          (click)="showComment = !showComment"
+          [attr.aria-expanded]="showComment"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 11a8 8 0 0 1-8 8H5l-3 3V11a9 9 0 1 1 18 0Z" /></svg
+          >Comentar
+        </button>
+      </div>
+      @if (showComment) {
+        <form class="demo-comment" (submit)="addComment($event, commentInput)">
+          <label class="visually-hidden" for="demo-comment">Comentario de prueba</label
+          ><input
+            #commentInput
+            id="demo-comment"
+            placeholder="Un comentario de prueba…"
+            maxlength="180"
+            required
+            autocomplete="off"
+          /><button type="submit" aria-label="Agregar comentario de prueba">↗</button>
+        </form>
+      }
+      @if (comment) {
+        <p class="sample-comment" role="status">
+          <strong>Tu comentario de prueba</strong>{{ comment }}
+        </p>
+      }
+    }
+  </div>
+</article>

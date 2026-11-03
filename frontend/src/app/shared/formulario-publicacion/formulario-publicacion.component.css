@@ -1,0 +1,32 @@
+.formulario-publicacion {
+  padding: 28px;
+  margin-bottom: 32px;
+}
+.formulario-publicacion h2 {
+  font-size: 36px;
+}
+.acciones-formulario {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+.acciones-formulario .button {
+  width: auto;
+  margin: 0;
+}
+.cancelar {
+  color: var(--wine);
+  background: transparent;
+}
+.vista-previa {
+  display: block;
+  max-width: 100%;
+  max-height: 300px;
+  margin-top: 18px;
+}
+@media (max-width: 450px) {
+  .formulario-publicacion {
+    padding: 20px;
+  }
+}
