@@ -1,0 +1,39 @@
+<article class="comentario">
+  <header>
+    <strong>{{ comentario.autor.nombre }} {{ comentario.autor.apellido }}</strong>
+    <small
+      >{{ comentario.fechaCreacion | date: 'dd/MM/yyyy HH:mm'
+      }}{{ comentario.modificado ? ' · Editado' : '' }}</small
+    >
+  </header>
+  @if (editando) {
+    <form [formGroup]="formulario" (ngSubmit)="guardar()">
+      <label [for]="'editar-' + comentario._id">Editar comentario</label>
+      <textarea
+        [id]="'editar-' + comentario._id"
+        formControlName="mensaje"
+        maxlength="2000"
+        rows="3"
+      ></textarea>
+      @if (formulario.invalid && formulario.touched) {
+        <p role="alert">Escribí un mensaje de hasta 2000 caracteres.</p>
+      }
+      @if (error) {
+        <p role="alert">{{ error }}</p>
+      }
+      <div class="botones">
+        <button type="submit" [disabled]="guardando">
+          {{ guardando ? 'Guardando…' : 'Guardar cambios' }}
+        </button>
+        <button type="button" [disabled]="guardando" (click)="editando = false">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  } @else {
+    <p class="mensaje">{{ comentario.mensaje }}</p>
+    @if (comentario.autor._id === autenticacion.usuarioActual?._id) {
+      <button type="button" (click)="editar()">Editar</button>
+    }
+  }
+</article>

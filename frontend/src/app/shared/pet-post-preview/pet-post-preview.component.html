@@ -21,14 +21,19 @@
     } @else {
       <div class="post-actions">
         <button
+          class="boton-me-gusta"
           type="button"
           (click)="liked = !liked"
+          [class.marcado]="liked"
           [attr.aria-pressed]="liked"
-          [attr.aria-label]="liked ? 'Quitar cariño de ejemplo' : 'Dar cariño de ejemplo'"
+          [attr.aria-label]="liked ? 'Quitar me gusta de ejemplo' : 'Me gusta de ejemplo'"
+          [title]="liked ? 'Quitar me gusta' : 'Me gusta'"
         >
-          <svg viewBox="0 0 24 24" aria-hidden="true" [attr.fill]="liked ? 'currentColor' : 'none'">
-            <path d="M20 5c-2-2-5-2-8 1-3-3-6-3-8-1-3 3-1 6 1 8l7 7 7-7c2-2 4-5 1-8Z" /></svg
-          >{{ liked ? 'Te gusta' : 'Dar cariño' }}</button
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"
+            />
+          </svg></button
         ><button
           type="button"
           (click)="showComment = !showComment"

@@ -29,24 +29,40 @@
   <div class="contenido">
     <h2>{{ publicacion.titulo }}</h2>
     <p class="descripcion">{{ publicacion.descripcion }}</p>
+    @if (mostrarEnlace) {
+      <p>
+        <a [routerLink]="['/publicaciones', publicacion._id]">Ver publicación y comentar ↗</a>
+      </p>
+    }
     <div class="acciones">
-      <button
-        type="button"
-        [attr.aria-pressed]="publicacion.meGustaDelUsuario"
-        [disabled]="procesando"
-        (click)="cambiarMeGusta.emit(publicacion)"
-      >
-        <span aria-hidden="true">♥</span>
-        {{ publicacion.meGustaDelUsuario ? 'Quitar me gusta' : 'Me gusta' }}
-        <span class="cantidad">{{ publicacion.cantidadMeGusta }}</span>
-      </button>
+      <div class="me-gusta">
+        <button
+          class="boton-me-gusta"
+          type="button"
+          [class.marcado]="publicacion.meGustaDelUsuario"
+          [attr.aria-pressed]="publicacion.meGustaDelUsuario"
+          [attr.aria-label]="publicacion.meGustaDelUsuario ? 'Quitar me gusta' : 'Me gusta'"
+          [title]="publicacion.meGustaDelUsuario ? 'Quitar me gusta' : 'Me gusta'"
+          [disabled]="procesando"
+          (click)="cambiarMeGusta.emit(publicacion)"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"
+            />
+          </svg>
+        </button>
+        <span class="cantidad" [attr.aria-label]="publicacion.cantidadMeGusta + ' me gusta'">{{
+          publicacion.cantidadMeGusta
+        }}</span>
+      </div>
       @if (publicacion.puedeEliminar) {
         <button type="button" [disabled]="procesando" (click)="eliminar.emit(publicacion)">
           Eliminar
         </button>
       }
     </div>
-    @if (publicacion.comentarios; as comentarios) {
+    @if (mostrarComentarios && publicacion.comentarios; as comentarios) {
       <section class="comentarios" aria-label="Comentarios de la publicación">
         <h3>Comentarios</h3>
         @for (comentario of comentarios; track comentario._id) {

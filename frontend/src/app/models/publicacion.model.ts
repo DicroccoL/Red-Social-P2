@@ -1,3 +1,4 @@
+// Tipos compartidos para publicaciones, autores, comentarios y consultas paginadas de la API.
 export interface AutorPublicacion {
   _id: string;
   nombre: string;

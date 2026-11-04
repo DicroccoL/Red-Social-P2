@@ -8,6 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
+// Muestra un aviso reutilizable y notifica al componente padre cuando se cierra.
 @Component({
   selector: 'app-aviso-modal',
   templateUrl: './aviso-modal.component.html',

@@ -1,0 +1,39 @@
+.comentario {
+  padding: 22px 0;
+  border-bottom: 1px solid var(--wine);
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+small {
+  opacity: 0.75;
+}
+.mensaje {
+  margin: 14px 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  margin: 12px 0;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--wine);
+}
+.botones {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+button {
+  padding: 8px 14px;
+  color: var(--wine);
+  background: transparent;
+  border: 1px solid var(--wine);
+}

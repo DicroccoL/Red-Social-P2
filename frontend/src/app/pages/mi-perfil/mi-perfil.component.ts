@@ -8,10 +8,20 @@ import { PublicacionesService } from '../../services/publicaciones.service';
 import { ErroresApiService } from '../../services/errores-api.service';
 import { PublicacionComponent } from '../../shared/publicacion/publicacion.component';
 import { ConfirmarAccionComponent } from '../../shared/confirmar-accion/confirmar-accion.component';
+import { EditarPerfilComponent } from '../../shared/editar-perfil/editar-perfil.component';
+import { PerfilService } from '../../services/perfil.service';
+import { UsuarioPublico } from '../../models/usuario.model';
 
+// Muestra los datos del usuario y sus últimas publicaciones con comentarios, y permite cerrar sesión.
 @Component({
   selector: 'app-mi-perfil',
-  imports: [RouterLink, DatePipe, PublicacionComponent, ConfirmarAccionComponent],
+  imports: [
+    RouterLink,
+    DatePipe,
+    PublicacionComponent,
+    ConfirmarAccionComponent,
+    EditarPerfilComponent,
+  ],
   templateUrl: './mi-perfil.component.html',
   styleUrl: './mi-perfil.component.css',
 })
@@ -22,6 +32,10 @@ export class MiPerfilComponent implements OnInit, OnDestroy {
   accionPendiente = false;
   cerrandoSesion = false;
   error = '';
+  editando = false;
+  cargandoPerfil = false;
+  errorPerfil = '';
+  mensajePerfil = '';
   publicacionParaEliminar: PublicacionPublica | null = null;
   private readonly suscripciones = new Subscription();
 
@@ -31,9 +45,38 @@ export class MiPerfilComponent implements OnInit, OnDestroy {
     private readonly publicaciones: PublicacionesService,
     private readonly errores: ErroresApiService,
     private readonly cambios: ChangeDetectorRef,
+    private readonly perfil: PerfilService,
   ) {}
 
   ngOnInit() {
+    this.cargarPerfil();
+    this.cargarPublicaciones();
+  }
+
+  cargarPerfil() {
+    this.cargandoPerfil = true;
+    this.errorPerfil = '';
+    this.suscripciones.add(
+      this.perfil.obtener().subscribe({
+        next: (respuesta) => {
+          this.autenticacion.actualizarUsuario(respuesta.usuario);
+          this.cargandoPerfil = false;
+          this.cambios.markForCheck();
+        },
+        error: (error) => {
+          this.errorPerfil = this.errores.obtenerMensaje(error);
+          this.cargandoPerfil = false;
+          this.cambios.markForCheck();
+        },
+      }),
+    );
+  }
+
+  perfilGuardado(usuario: UsuarioPublico) {
+    this.autenticacion.actualizarUsuario(usuario);
+    this.imagenFallida = false;
+    this.editando = false;
+    this.mensajePerfil = 'Tu perfil se actualizó correctamente.';
     this.cargarPublicaciones();
   }
 
@@ -108,14 +151,16 @@ export class MiPerfilComponent implements OnInit, OnDestroy {
     if (this.cerrandoSesion) return;
     this.cerrandoSesion = true;
     this.error = '';
-    this.suscripciones.add(this.autenticacion.cerrarSesion().subscribe({
-      next: () => this.router.navigate(['/login']),
-      error: () => {
-        this.cerrandoSesion = false;
-        this.error = 'No se pudo cerrar la sesión. Intentá nuevamente.';
-        this.cambios.markForCheck();
-      },
-    }));
+    this.suscripciones.add(
+      this.autenticacion.cerrarSesion().subscribe({
+        next: () => this.router.navigate(['/login']),
+        error: () => {
+          this.cerrandoSesion = false;
+          this.error = 'No se pudo cerrar la sesión. Intentá nuevamente.';
+          this.cambios.markForCheck();
+        },
+      }),
+    );
   }
 
   ngOnDestroy() {

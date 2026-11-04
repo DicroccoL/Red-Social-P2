@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes, Types } from 'mongoose';
 import { Usuario } from '../../usuarios/schemas/usuario.schema';
 
-// En este sprint solo se leen. Las rutas de escritura corresponden al sprint 3.
+// Guarda el mensaje, su autor y la marca que permite identificar comentarios editados.
 @Schema()
 export class Comentario {
   @Prop({ type: SchemaTypes.ObjectId, ref: 'Publicacion', required: true })
@@ -11,7 +11,7 @@ export class Comentario {
   @Prop({ type: SchemaTypes.ObjectId, ref: Usuario.name, required: true })
   usuario: Types.ObjectId;
 
-  @Prop({ required: true, trim: true })
+  @Prop({ required: true, trim: true, maxlength: 2000 })
   mensaje: string;
 
   @Prop({ default: Date.now })

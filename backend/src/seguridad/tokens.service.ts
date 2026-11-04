@@ -1,8 +1,14 @@
 import 'dotenv/config';
-import { Injectable, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  ServiceUnavailableException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DURACION_SESION_SEGUNDOS } from './configuracion-sesion';
+import { ContenidoToken } from './contenido-token';
 
+// Genera JWT con vencimiento y comprueba su firma usando JWT_SECRET del backend.
 @Injectable()
 export class TokensService {
   constructor(private readonly jwt: JwtService) {}
@@ -17,24 +23,45 @@ export class TokensService {
     return clave;
   }
 
-  generar(usuarioId: string) {
-    return this.jwt.signAsync(
-      { sub: usuarioId },
+  comprobarConfiguracion() {
+    this.obtenerClave();
+  }
+
+  async generar(usuarioId: string, correo: string, perfil: string) {
+    const ahora = Math.floor(Date.now() / 1000);
+    const token = await this.jwt.signAsync(
+      { sub: usuarioId, correo, perfil, iat: ahora },
       {
         secret: this.obtenerClave(),
         algorithm: 'HS256',
         expiresIn: DURACION_SESION_SEGUNDOS,
       },
     );
+    return { token, vencimiento: (ahora + DURACION_SESION_SEGUNDOS) * 1000 };
   }
 
-  async verificar(token: string): Promise<{ sub: string }> {
+  renovar(contenido: ContenidoToken) {
+    // Conserva identidad y rol; actualiza los tiempos de emisión y vencimiento.
+    return this.generar(contenido.sub, contenido.correo, contenido.perfil);
+  }
+
+  async verificar(token: string): Promise<ContenidoToken> {
     const clave = this.obtenerClave();
     try {
-      return await this.jwt.verifyAsync<{ sub: string }>(token, {
+      const contenido = await this.jwt.verifyAsync<ContenidoToken>(token, {
         secret: clave,
         algorithms: ['HS256'],
       });
+      if (
+        typeof contenido.sub !== 'string' ||
+        typeof contenido.correo !== 'string' ||
+        !['usuario', 'administrador'].includes(contenido.perfil) ||
+        typeof contenido.exp !== 'number' ||
+        typeof contenido.iat !== 'number'
+      ) {
+        throw new Error('El token no tiene los datos de sesión esperados.');
+      }
+      return contenido;
     } catch {
       throw new UnauthorizedException('La sesión venció o no es válida. Volvé a ingresar.');
     }

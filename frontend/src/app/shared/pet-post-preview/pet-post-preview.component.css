@@ -7,6 +7,7 @@
   margin: 0;
   background: var(--paper);
   border: 1px solid var(--paper);
+  border-radius: 20px;
   text-align: left;
   overflow: hidden;
 }
@@ -137,6 +138,7 @@
   font-size: 10px;
 }
 :host(.compact) .pet-post {
+  border-radius: 12px;
   box-shadow: 6px 7px 0 #2500102b;
 }
 :host(.compact) .post-header {
@@ -190,5 +192,64 @@
   }
   :host(.compact) .post-peek {
     padding-top: 8px;
+  }
+}
+
+.post-actions {
+  align-items: center;
+}
+
+/* Corazón: contorno sin me gusta, relleno al marcarlo. */
+.post-actions .boton-me-gusta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--wine);
+  text-decoration: none;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}
+.post-actions .boton-me-gusta:hover:not(:disabled) {
+  background: #5500220a;
+}
+.post-actions .boton-me-gusta svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.post-actions .boton-me-gusta.marcado {
+  color: #ed4956;
+}
+.post-actions .boton-me-gusta.marcado svg {
+  fill: currentColor;
+}
+.post-actions .boton-me-gusta:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .post-actions .boton-me-gusta.marcado svg {
+    animation: marcar-corazon 260ms ease-out;
+  }
+  @keyframes marcar-corazon {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    45% {
+      transform: scale(1.18);
+    }
   }
 }

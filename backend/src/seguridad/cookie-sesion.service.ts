@@ -4,6 +4,7 @@ import { DURACION_SESION_SEGUNDOS } from './configuracion-sesion';
 
 export const NOMBRE_COOKIE = 'floppy_sesion';
 
+// Guarda y elimina la cookie HttpOnly que transporta el JWT de la sesión.
 @Injectable()
 export class CookieSesionService {
   private opciones(): CookieOptions {

@@ -1,0 +1,54 @@
+<section aria-labelledby="titulo-comentarios">
+  <h2 id="titulo-comentarios">
+    La conversación <small>({{ total }})</small>
+  </h2>
+  <div class="lista-comentarios" role="region" aria-label="Lista de comentarios" tabindex="0">
+    @for (comentario of comentarios; track comentario._id) {
+      <app-comentario
+        [comentario]="comentario"
+        [publicacionId]="publicacionId"
+        (actualizado)="actualizar($event)"
+      />
+    } @empty {
+      @if (!cargando && !errorLectura) {
+        <p>Todavía no hay comentarios. ¡Podés escribir el primero!</p>
+      }
+    }
+    @if (cargando) {
+      <p role="status">Cargando comentarios…</p>
+    }
+    @if (errorLectura) {
+      <p role="alert">{{ errorLectura }}</p>
+      <button type="button" class="button button-outline" (click)="cargar()">Reintentar</button>
+    }
+    @if (hayMas && !errorLectura) {
+      <button
+        class="button button-outline cargar-mas"
+        type="button"
+        [disabled]="cargando || enviando"
+        (click)="cargar()"
+      >
+        Cargar más
+      </button>
+    }
+  </div>
+  <form [formGroup]="formulario" (ngSubmit)="comentar()">
+    <label for="nuevo-comentario">Dejá tu comentario</label>
+    <textarea
+      id="nuevo-comentario"
+      formControlName="mensaje"
+      maxlength="2000"
+      rows="2"
+      placeholder="¿Qué te gustaría compartir?"
+    ></textarea>
+    @if (formulario.invalid && formulario.touched) {
+      <p role="alert">Escribí un mensaje de hasta 2000 caracteres.</p>
+    }
+    @if (errorEnvio) {
+      <p role="alert">{{ errorEnvio }}</p>
+    }
+    <button class="button button-primary" type="submit" [disabled]="enviando || cargando">
+      {{ enviando ? 'Enviando…' : 'Comentar' }}
+    </button>
+  </form>
+</section>

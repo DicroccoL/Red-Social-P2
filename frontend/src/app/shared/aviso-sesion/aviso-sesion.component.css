@@ -1,0 +1,23 @@
+dialog {
+  max-width: 540px;
+  width: calc(100% - 32px);
+  padding: 30px;
+  border: 1px solid var(--wine);
+  background: var(--pink);
+  color: var(--wine);
+}
+dialog::backdrop {
+  background: #250010b8;
+}
+h2 {
+  font-size: 30px;
+}
+p {
+  margin: 20px 0;
+  line-height: 1.6;
+}
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}

@@ -12,6 +12,7 @@ export interface ComentarioPublico {
   autor: ReturnType<typeof autorPublico>;
 }
 
+// Consulta comentarios activos y los agrupa por publicación para mostrarlos en el perfil.
 @Injectable()
 export class ComentariosService {
   constructor(@InjectModel(Comentario.name) private readonly comentarios: Model<Comentario>) {}

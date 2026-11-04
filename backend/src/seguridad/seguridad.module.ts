@@ -6,6 +6,7 @@ import { SesionGuard } from './sesion.guard';
 import { CookieSesionService } from './cookie-sesion.service';
 import { OrigenGuard } from './origen.guard';
 
+// Comparte los servicios de JWT, cookies y guards con los módulos que necesitan autenticar usuarios.
 @Module({
   imports: [JwtModule.register({}), UsuariosModule],
   providers: [TokensService, SesionGuard, CookieSesionService, OrigenGuard],

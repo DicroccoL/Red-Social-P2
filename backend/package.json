@@ -11,7 +11,9 @@
     "pretest:autenticacion": "npm run build",
     "test:autenticacion": "node --test test/autenticacion.e2e.cjs test/imagenes.test.cjs",
     "pretest:sprint2": "npm run build",
-    "test:sprint2": "node --test test/sprint2.e2e.cjs"
+    "test:sprint2": "node --test test/sprint2.e2e.cjs",
+    "pretest:sprint3": "npm run build",
+    "test:sprint3": "node --test test/sprint3.e2e.cjs"
   },
   "dependencies": {
     "@nestjs/authentication": "^0.1.1",

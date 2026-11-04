@@ -3,6 +3,18 @@
     <h1 id="page-title">Mi <em>perfil.</em></h1>
   </div>
   @if (autenticacion.usuarioActual; as usuario) {
+    @if (cargandoPerfil) {
+      <p role="status">Actualizando los datos de tu perfil…</p>
+    }
+    @if (errorPerfil) {
+      <p role="alert">{{ errorPerfil }}</p>
+      <button class="button button-outline" type="button" (click)="cargarPerfil()">
+        Reintentar perfil
+      </button>
+    }
+    @if (mensajePerfil) {
+      <p class="aviso-perfil" role="status">{{ mensajePerfil }}</p>
+    }
     <article class="profile-details">
       @if (!imagenFallida) {
         <img
@@ -24,13 +36,35 @@
         <dd>{{ usuario.fechaNacimiento | date: 'dd/MM/yyyy' : 'UTC' }}</dd>
         <dt>Perfil</dt>
         <dd>{{ usuario.perfil }}</dd>
+        <dt>Estado de la cuenta</dt>
+        <dd>{{ usuario.activo ? 'Activa' : 'Deshabilitada' }}</dd>
       </dl>
-      <button class="button button-outline" type="button" [disabled]="cerrandoSesion" (click)="cerrarSesion()">
+      <button
+        class="button button-outline"
+        type="button"
+        [disabled]="cargandoPerfil || editando || cerrandoSesion"
+        (click)="editando = true; mensajePerfil = ''"
+      >
+        Editar mi perfil
+      </button>
+      <button
+        class="button button-outline"
+        type="button"
+        [disabled]="cerrandoSesion"
+        (click)="cerrarSesion()"
+      >
         {{ cerrandoSesion ? 'Cerrando sesión…' : 'Cerrar sesión' }}
       </button>
     </article>
+    @if (editando) {
+      <app-editar-perfil
+        [usuario]="usuario"
+        (guardado)="perfilGuardado($event)"
+        (cancelado)="editando = false"
+      />
+    }
     <section class="ultimas-publicaciones" aria-labelledby="titulo-ultimas">
-      <h2 id="titulo-ultimas">Tus últimas publicaciones</h2>
+      <h2 id="titulo-ultimas">Tus últimas 3 publicaciones</h2>
       @if (cargando) {
         <p role="status">Cargando tus publicaciones…</p>
       } @else if (error) {

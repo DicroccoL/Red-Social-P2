@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AutenticacionService } from './autenticacion.service';
 import { mensajeErrorApi } from '../shared/mensaje-error-api';
 
+// Traduce errores de la API y vuelve al login cuando una solicitud protegida recibe 401.
 @Injectable({ providedIn: 'root' })
 export class ErroresApiService {
   constructor(

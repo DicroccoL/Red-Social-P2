@@ -1,0 +1,31 @@
+.detalle-publicacion {
+  max-width: 1180px;
+  margin: 0 auto;
+  min-width: 0;
+}
+.volver {
+  display: inline-block;
+  margin-bottom: 28px;
+  font-size: 13px;
+  text-underline-offset: 4px;
+}
+.detalle-contenido {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+.detalle-contenido > * {
+  min-width: 0;
+}
+@media (max-width: 850px) {
+  .detalle-contenido {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+}
+@media (max-width: 450px) {
+  .volver {
+    margin-bottom: 22px;
+  }
+}

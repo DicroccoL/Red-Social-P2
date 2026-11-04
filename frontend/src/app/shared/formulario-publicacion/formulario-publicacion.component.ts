@@ -6,6 +6,7 @@ import { PublicacionesService } from '../../services/publicaciones.service';
 import { ErroresApiService } from '../../services/errores-api.service';
 import { mensajeErrorCampo } from '../validadores-formulario';
 
+// Valida y envía una publicación con imagen opcional, y avisa al padre cuando se crea.
 @Component({
   selector: 'app-formulario-publicacion',
   imports: [ReactiveFormsModule],
@@ -86,6 +87,7 @@ export class FormularioPublicacionComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    // Al salir, cancelamos la suscripción y liberamos la URL temporal de la vista previa.
     this.solicitud?.unsubscribe();
     if (this.vistaPrevia) URL.revokeObjectURL(this.vistaPrevia);
   }

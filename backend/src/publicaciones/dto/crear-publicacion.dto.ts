@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString, Matches, MaxLength } from 'class-validator';
 
+// Valida título y descripción; la identidad del autor se obtiene de la sesión.
 export class CrearPublicacionDto {
   @IsString()
   @IsNotEmpty()

@@ -1,6 +1,7 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { UsuarioPublico } from '../models/usuario.model';
 
+// Muestra su plantilla cuando hay un usuario conectado; controla la visibilidad del menú.
 @Directive({
   selector: '[appSoloUsuarios]',
 })

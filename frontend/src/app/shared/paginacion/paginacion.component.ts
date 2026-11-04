@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+// Muestra el rango de resultados y emite el offset de la página elegida.
 @Component({
   selector: 'app-paginacion',
   template: ` <nav aria-label="Páginas de publicaciones">

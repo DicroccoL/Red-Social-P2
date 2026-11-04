@@ -7,6 +7,7 @@
   color: var(--wine);
   overflow: hidden;
   border: 1px solid var(--paper);
+  border-radius: 20px;
 }
 .autor {
   display: flex;
@@ -109,5 +110,68 @@ button[aria-pressed='true'] {
     width: 100%;
     text-align: left;
     margin: 0;
+  }
+}
+
+.me-gusta {
+  display: inline-flex;
+  align-items: center;
+}
+.acciones {
+  align-items: center;
+}
+
+/* Corazón: contorno sin me gusta, relleno al marcarlo. */
+.acciones .boton-me-gusta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--wine);
+  text-decoration: none;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}
+.acciones .boton-me-gusta:hover:not(:disabled) {
+  background: #5500220a;
+}
+.acciones .boton-me-gusta svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.acciones .boton-me-gusta.marcado {
+  color: #ed4956;
+}
+.acciones .boton-me-gusta.marcado svg {
+  fill: currentColor;
+}
+.acciones .boton-me-gusta:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .acciones .boton-me-gusta.marcado svg {
+    animation: marcar-corazon 260ms ease-out;
+  }
+  @keyframes marcar-corazon {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    45% {
+      transform: scale(1.18);
+    }
   }
 }

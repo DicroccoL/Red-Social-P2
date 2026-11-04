@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ImagenesService } from './imagenes.service';
 
-// Exportamos el servicio para que AutenticacionModule pueda inyectarlo.
+// Comparte el servicio de Cloudinary con autenticación y publicaciones.
 @Module({
   providers: [ImagenesService],
   exports: [ImagenesService],

@@ -2,7 +2,9 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, mongo } from 'mongoose';
 import { Usuario, UsuarioDocument } from './schemas/usuario.schema';
+import { ActualizarPerfilDto } from './perfil/dto/actualizar-perfil.dto';
 
+// Centraliza las consultas y escrituras de usuarios, controlando correos duplicados.
 @Injectable()
 export class UsuariosService {
   constructor(
@@ -11,9 +13,7 @@ export class UsuariosService {
   ) {}
 
   buscarPorCorreo(correo: string) {
-    return this.usuarioModel
-      .findOne({ correo: correo.trim().toLowerCase() })
-      .exec();
+    return this.usuarioModel.findOne({ correo: correo.trim().toLowerCase() }).exec();
   }
 
   buscarPorId(id: string) {
@@ -39,6 +39,39 @@ export class UsuariosService {
         throw new ConflictException('Ya existe una cuenta con ese correo.');
       }
 
+      throw error;
+    }
+  }
+
+  async actualizarPerfil(
+    id: string,
+    datos: ActualizarPerfilDto,
+    foto?: { url: string; publicId: string },
+  ) {
+    try {
+      return await this.usuarioModel
+        .findByIdAndUpdate(
+          id,
+          {
+            $set: {
+              nombre: datos.nombre.trim(),
+              apellido: datos.apellido.trim(),
+              correo: datos.correo.trim().toLowerCase(),
+              nombreUsuario: datos.nombreUsuario,
+              fechaNacimiento: new Date(datos.fechaNacimiento),
+              descripcion: datos.descripcion.trim(),
+              ...(foto
+                ? { imagenPerfilUrl: foto.url, imagenPerfilPublicId: foto.publicId }
+                : {}),
+            },
+          },
+        { returnDocument: 'after', runValidators: true },
+        )
+        .exec();
+    } catch (error) {
+      if (error instanceof mongo.MongoServerError && error.code === 11000) {
+        throw new ConflictException('Ya existe una cuenta con ese correo.');
+      }
       throw error;
     }
   }

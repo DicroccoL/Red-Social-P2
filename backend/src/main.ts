@@ -7,6 +7,7 @@ import { AppModule } from './app.module';
 import cookieParser = require('cookie-parser');
 import { ORIGENES_PERMITIDOS } from './seguridad/origenes-permitidos';
 
+// Prepara Nest con cookies, orígenes permitidos y validación global de los DTO.
 async function crearAplicacion() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     abortOnError: false,

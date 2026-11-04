@@ -1,12 +1,21 @@
-import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideHttpClient } from '@angular/common/http';
+import {
+  ApplicationConfig,
+  inject,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
+} from '@angular/core';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { AutenticacionService } from './services/autenticacion.service';
+import { sesionInterceptor } from './services/sesion.interceptor';
 
+// Registra HTTP y rutas; espera la recuperación de sesión antes de mostrar la aplicación.
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(), provideHttpClient(), provideRouter(routes),
+    provideBrowserGlobalErrorListeners(),
+    provideHttpClient(withInterceptors([sesionInterceptor])),
+    provideRouter(routes),
     provideAppInitializer(() => inject(AutenticacionService).recuperarSesion()),
   ],
 };

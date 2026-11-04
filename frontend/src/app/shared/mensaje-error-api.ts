@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
+// Convierte la respuesta de error del servidor en un mensaje para mostrar en pantalla.
 export function mensajeErrorApi(error: HttpErrorResponse): string {
   if (error.status === 0) return 'No pudimos conectar. Volvé a intentarlo en unos momentos.';
   if (error.status >= 500)

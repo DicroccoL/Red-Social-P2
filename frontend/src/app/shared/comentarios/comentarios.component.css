@@ -1,0 +1,93 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+section {
+  padding: 26px;
+  border: 1px solid var(--paper);
+  border-radius: 20px;
+  background: var(--paper);
+  color: var(--wine);
+}
+h2 {
+  font-size: clamp(26px, 2.5vw, 32px);
+  margin-bottom: 20px;
+}
+h2 small {
+  font-family: inherit;
+  font-size: 0.6em;
+}
+.lista-comentarios {
+  min-height: 120px;
+  max-height: 440px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 8px;
+  scrollbar-color: #55002260 transparent;
+  overflow-wrap: anywhere;
+}
+.lista-comentarios > p {
+  font-size: 13px;
+  line-height: 1.7;
+}
+form {
+  border-top: 1px solid #55002225;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+label {
+  font-size: 12px;
+  font-weight: 600;
+}
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 76px;
+  padding: 12px;
+  margin: 10px 0;
+  background: transparent;
+  border: 1px solid #55002265;
+  border-radius: 12px;
+  color: inherit;
+  color-scheme: light;
+  resize: vertical;
+  font: inherit;
+  font-size: 13px;
+}
+textarea::placeholder {
+  color: #79354d;
+}
+form > p {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.button {
+  border-radius: 12px;
+}
+.button-primary {
+  margin-top: 12px;
+}
+.button-outline {
+  color: var(--wine);
+  border-color: var(--wine);
+}
+.button-outline:hover {
+  color: var(--paper);
+  background: var(--wine);
+}
+.cargar-mas {
+  margin-top: 18px;
+}
+@media (max-width: 850px) {
+  .lista-comentarios {
+    max-height: none;
+    min-height: 0;
+    overflow-y: visible;
+    padding-right: 0;
+  }
+}
+@media (max-width: 450px) {
+  section {
+    padding: 20px;
+  }
+}

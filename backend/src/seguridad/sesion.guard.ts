@@ -12,6 +12,7 @@ import type { SolicitudAutenticada } from './usuario-autenticado';
 import { NOMBRE_COOKIE } from './cookie-sesion.service';
 import { comprobarOrigen } from './origen.guard';
 
+// Valida el JWT recibido y agrega a la solicitud la identidad de un usuario activo de MongoDB.
 @Injectable()
 export class SesionGuard implements CanActivate {
   constructor(
@@ -24,9 +25,12 @@ export class SesionGuard implements CanActivate {
     comprobarOrigen(solicitud);
     const partes = solicitud.headers.authorization?.split(' ');
     const cookie = solicitud.cookies?.[NOMBRE_COOKIE];
-    const token = typeof cookie === 'string' && cookie
-      ? cookie
-      : partes?.length === 2 && partes[0] === 'Bearer' ? partes[1] : undefined;
+    const token =
+      typeof cookie === 'string' && cookie
+        ? cookie
+        : partes?.length === 2 && partes[0] === 'Bearer'
+          ? partes[1]
+          : undefined;
     if (!token) {
       throw new UnauthorizedException('Iniciá sesión para realizar esta acción.');
     }
@@ -40,6 +44,7 @@ export class SesionGuard implements CanActivate {
 
     // El rol se toma de MongoDB: no del body ni de un rol desactualizado del token.
     solicitud.usuario = { id: usuario._id.toString(), perfil: usuario.perfil };
+    solicitud.sesion = contenido;
     return true;
   }
 }

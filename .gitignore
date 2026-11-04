@@ -10,6 +10,22 @@ backend/uploads/
 .tmp/
 **/.vercel/
 
+# Cachés y archivos generados al compilar
+*.tsbuildinfo
+**/out-tsc/
+**/.cache/
+**/.sass-cache/
+**/__pycache__/
+*.py[cod]
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+*.swp
+*.swo
+
 # Guías y explicaciones en Markdown
 *.md
 
@@ -21,3 +37,11 @@ backend/uploads/
 *.test.*
 *.e2e.*
 **/coverage/
+**/.nyc_output/
+**/.pytest_cache/
+**/playwright-report/
+**/test-results/
+**/__screenshots__/
+
+# Angular puede referenciar esta configuración desde tsconfig.json.
+!**/tsconfig.spec.json

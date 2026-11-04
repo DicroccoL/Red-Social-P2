@@ -929,3 +929,24 @@ h2 {
     width: 128px;
   }
 }
+/* Pantalla visible mientras se comprueba la cookie de sesión al arrancar. */
+.pantalla-carga {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  color: var(--wine, #550022);
+  background: var(--pink, #ffa7ad);
+}
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 4px solid #55002233;
+  border-top-color: #550022;
+  border-radius: 50%;
+  animation: girar-carga 0.9s linear infinite;
+}
+@keyframes girar-carga { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }

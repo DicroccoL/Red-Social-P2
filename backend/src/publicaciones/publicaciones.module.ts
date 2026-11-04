@@ -5,11 +5,12 @@ import { ImagenesModule } from '../imagenes/imagenes.module';
 import { SeguridadModule } from '../seguridad/seguridad.module';
 import { Publicacion, PublicacionSchema } from './schemas/publicacion.schema';
 import { PublicacionesController } from './publicaciones.controller';
-import { MeGustaController } from './me-gusta.controller';
+import { MeGustaController } from './me-gusta/me-gusta.controller';
 import { PublicacionesService } from './publicaciones.service';
 import { ConsultasPublicacionesService } from './consultas-publicaciones.service';
-import { MeGustaService } from './me-gusta.service';
+import { MeGustaService } from './me-gusta/me-gusta.service';
 
+// Conecta el modelo y los servicios de publicaciones y me gusta con seguridad, imágenes y comentarios.
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Publicacion.name, schema: PublicacionSchema }]),

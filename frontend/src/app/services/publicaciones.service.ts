@@ -7,13 +7,12 @@ import {
   PublicacionPublica,
 } from '../models/publicacion.model';
 
+// Centraliza las solicitudes HTTP de publicaciones y me gusta, enviando la cookie de sesión.
 @Injectable({ providedIn: 'root' })
 export class PublicacionesService {
   private readonly ruta = `${environment.apiUrl}/publicaciones`;
 
-  constructor(
-    private readonly http: HttpClient,
-  ) {}
+  constructor(private readonly http: HttpClient) {}
 
   private opciones() {
     return { withCredentials: true };
@@ -38,6 +37,10 @@ export class PublicacionesService {
     formulario.append('descripcion', descripcion);
     if (imagen) formulario.append('imagen', imagen);
     return this.http.post<PublicacionPublica>(this.ruta, formulario, this.opciones());
+  }
+
+  obtener(id: string) {
+    return this.http.get<PublicacionPublica>(`${this.ruta}/${id}`, this.opciones());
   }
 
   eliminar(id: string) {

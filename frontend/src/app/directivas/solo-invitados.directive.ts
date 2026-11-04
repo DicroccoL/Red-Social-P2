@@ -1,6 +1,7 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { UsuarioPublico } from '../models/usuario.model';
 
+// Muestra su plantilla cuando no hay sesión, como los enlaces de login y registro.
 @Directive({
   selector: '[appSoloInvitados]',
 })

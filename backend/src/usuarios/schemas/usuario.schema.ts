@@ -3,6 +3,7 @@ import { HydratedDocument } from 'mongoose';
 
 export type UsuarioDocument = HydratedDocument<Usuario>;
 
+// Define cómo se guarda la cuenta en MongoDB; el hash queda excluido de las consultas habituales.
 @Schema()
 export class Usuario {
   @Prop({ required: true, trim: true, maxlength: 60 })

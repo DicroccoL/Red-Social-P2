@@ -24,6 +24,7 @@ import { OrigenGuard } from '../seguridad/origen.guard';
 
 const TAMANO_MAXIMO_IMAGEN = 2 * 1024 * 1024;
 
+// Recibe registro, login y sesión; delega las validaciones y maneja la cookie de respuesta.
 @Controller('autenticacion')
 @UseGuards(OrigenGuard)
 export class AutenticacionController {
@@ -34,7 +35,10 @@ export class AutenticacionController {
 
   @Post('login')
   @HttpCode(200)
-  async iniciarSesion(@Body() datos: LoginDto, @Res({ passthrough: true }) respuesta: Response) {
+  async iniciarSesion(
+    @Body() datos: LoginDto,
+    @Res({ passthrough: true }) respuesta: Response,
+  ) {
     const { token, ...datosPublicos } = await this.autenticacionService.iniciarSesion(datos);
     this.cookieSesion.guardar(respuesta, token);
     return datosPublicos;
@@ -44,7 +48,24 @@ export class AutenticacionController {
   @HttpCode(200)
   @UseGuards(SesionGuard)
   recuperarSesion(@Req() solicitud: SolicitudAutenticada) {
-    return this.autenticacionService.recuperarSesion(solicitud.usuario.id);
+    return this.autenticacionService.recuperarSesion(
+      solicitud.usuario.id,
+      solicitud.sesion.exp * 1000,
+    );
+  }
+
+  @Post('refrescar')
+  @HttpCode(200)
+  @UseGuards(SesionGuard)
+  async refrescarSesion(
+    @Req() solicitud: SolicitudAutenticada,
+    @Res({ passthrough: true }) respuesta: Response,
+  ) {
+    const { token, ...datosPublicos } = await this.autenticacionService.refrescarSesion(
+      solicitud.sesion,
+    );
+    this.cookieSesion.guardar(respuesta, token);
+    return datosPublicos;
   }
 
   @Post('salir')
@@ -60,8 +81,9 @@ export class AutenticacionController {
       limits: { fileSize: TAMANO_MAXIMO_IMAGEN, files: 1 },
     }),
   )
-  registrar(
+  async registrar(
     @Body() datos: RegistroDto,
+    @Res({ passthrough: true }) respuesta: Response,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -76,6 +98,11 @@ export class AutenticacionController {
     )
     imagen: Express.Multer.File,
   ) {
-    return this.autenticacionService.registrar(datos, imagen);
+    const { token, ...datosPublicos } = await this.autenticacionService.registrar(
+      datos,
+      imagen,
+    );
+    this.cookieSesion.guardar(respuesta, token);
+    return datosPublicos;
   }
 }

@@ -13,6 +13,7 @@ export function comprobarOrigen(solicitud: Request) {
   }
 }
 
+// Comprueba el origen de las solicitudes de autenticación antes de ejecutar el controlador.
 @Injectable()
 export class OrigenGuard implements CanActivate {
   canActivate(contexto: ExecutionContext) {

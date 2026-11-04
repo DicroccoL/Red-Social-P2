@@ -11,6 +11,7 @@ import {
 } from '../../shared/validadores-formulario';
 import { mensajeErrorApi } from '../../shared/mensaje-error-api';
 
+// Gestiona el formulario reactivo de registro, la foto de perfil y el resultado de la solicitud.
 @Component({
   selector: 'app-registro',
   imports: [RouterLink, ReactiveFormsModule, AvisoModalComponent],
@@ -127,6 +128,7 @@ export class RegistroComponent implements OnDestroy {
     this.enviando = true;
     this.solicitud = this.autenticacion.registrar(datos, imagen).subscribe({
       next: (respuesta) => {
+        this.autenticacion.guardarSesion(respuesta);
         this.enviando = false;
         this.formulario.controls.contrasena.reset();
         this.formulario.controls.repetirContrasena.reset();
@@ -148,7 +150,7 @@ export class RegistroComponent implements OnDestroy {
   cerrarAviso() {
     const exito = this.aviso?.exito;
     this.aviso = null;
-    if (exito) this.router.navigate(['/login']);
+    if (exito) this.router.navigate(['/publicaciones']);
   }
 
   ngOnDestroy() {

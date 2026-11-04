@@ -1,10 +1,11 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { UsuarioAutenticado } from '../seguridad/usuario-autenticado';
-import { ConsultasPublicacionesService } from './consultas-publicaciones.service';
-import { Publicacion } from './schemas/publicacion.schema';
+import { UsuarioAutenticado } from '../../seguridad/usuario-autenticado';
+import { ConsultasPublicacionesService } from '../consultas-publicaciones.service';
+import { Publicacion } from '../schemas/publicacion.schema';
 
+// Actualiza los me gusta en MongoDB y devuelve la publicación con su estado actualizado.
 @Injectable()
 export class MeGustaService {
   constructor(
@@ -29,6 +30,7 @@ export class MeGustaService {
     const resultado = await this.publicaciones.updateOne(
       { _id: id, activo: true, meGusta: usuario.id },
       {
+        // Quita únicamente el ID del usuario que realiza la solicitud.
         $pull: { meGusta: new Types.ObjectId(usuario.id) },
       },
     );

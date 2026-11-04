@@ -8,6 +8,7 @@ import { AvisoModalComponent } from '../../shared/aviso-modal/aviso-modal.compon
 import { mensajeErrorCampo } from '../../shared/validadores-formulario';
 import { mensajeErrorApi } from '../../shared/mensaje-error-api';
 
+// Valida el formulario de login, guarda los datos públicos del usuario y abre el feed.
 @Component({
   selector: 'app-login',
   imports: [RouterLink, ReactiveFormsModule, AvisoModalComponent, PetPostPreviewComponent],

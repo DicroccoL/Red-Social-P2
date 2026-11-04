@@ -8,6 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 
+// Define los campos admitidos en el registro y sus reglas de validación.
 export class RegistroDto {
   @IsString()
   @IsNotEmpty()

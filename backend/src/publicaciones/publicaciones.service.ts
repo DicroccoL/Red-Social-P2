@@ -7,6 +7,7 @@ import { ConsultasPublicacionesService } from './consultas-publicaciones.service
 import { CrearPublicacionDto } from './dto/crear-publicacion.dto';
 import { Publicacion } from './schemas/publicacion.schema';
 
+// Crea publicaciones con imagen opcional y permite su baja al autor o a un administrador.
 @Injectable()
 export class PublicacionesService {
   private readonly logger = new Logger(PublicacionesService.name);

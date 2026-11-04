@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { v2 as cloudinary } from 'cloudinary';
 
+// Gestiona la configuración, subida y eliminación de imágenes en Cloudinary.
 @Injectable()
 export class ImagenesService {
   private readonly logger = new Logger(ImagenesService.name);

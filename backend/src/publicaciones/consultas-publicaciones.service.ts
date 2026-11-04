@@ -8,6 +8,7 @@ import { ListarPublicacionesDto } from './dto/listar-publicaciones.dto';
 import { publicacionPublica } from './respuesta-publicacion';
 import { Publicacion } from './schemas/publicacion.schema';
 
+// Obtiene publicaciones activas con orden, paginación y los datos públicos de sus autores.
 @Injectable()
 export class ConsultasPublicacionesService {
   constructor(
@@ -45,6 +46,7 @@ export class ConsultasPublicacionesService {
       consulta.incluirComentarios === 'true'
         ? await this.comentarios.agruparPorPublicacion(ids)
         : null;
+    // La segunda consulta no conserva el orden de la agregación: lo reconstruimos con sus IDs.
     const resultados = identificadores.flatMap(({ _id }) => {
       const documento = documentos.find((elemento) => elemento._id.equals(_id));
       if (!documento) return [];

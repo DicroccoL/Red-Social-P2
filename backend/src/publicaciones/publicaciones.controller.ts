@@ -21,6 +21,7 @@ import { CrearPublicacionDto } from './dto/crear-publicacion.dto';
 import { ListarPublicacionesDto } from './dto/listar-publicaciones.dto';
 import { PublicacionesService } from './publicaciones.service';
 
+// Recibe las solicitudes de publicaciones; SesionGuard comprueba quién realiza cada acción.
 @Controller('publicaciones')
 @UseGuards(SesionGuard)
 export class PublicacionesController {
@@ -49,5 +50,10 @@ export class PublicacionesController {
   @Delete(':id')
   eliminar(@Param('id', IdMongoPipe) id: string, @Req() solicitud: SolicitudAutenticada) {
     return this.publicaciones.darDeBaja(id, solicitud.usuario);
+  }
+
+  @Get(':id')
+  obtener(@Param('id', IdMongoPipe) id: string, @Req() solicitud: SolicitudAutenticada) {
+    return this.consultas.obtener(id, solicitud.usuario);
   }
 }

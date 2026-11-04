@@ -8,6 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
+// Solicita confirmar una eliminación y emite la decisión para que el padre realice la acción.
 @Component({
   selector: 'app-confirmar-accion',
   template: `<dialog #dialogo (cancel)="cancelar($event)">

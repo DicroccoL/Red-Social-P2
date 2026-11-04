@@ -1,0 +1,25 @@
+<dialog #dialogo (cancel)="posponer($event)" aria-labelledby="titulo-sesion">
+  <h2 id="titulo-sesion">Tu sesión está por terminar</h2>
+  <p>Quedan 5 minutos de sesión o menos. ¿Querés extenderla por otros 15 minutos?</p>
+  @if (error) {
+    <p role="alert">{{ error }}</p>
+  }
+  <div class="botones">
+    <button
+      class="button button-outline"
+      type="button"
+      [disabled]="renovando"
+      (click)="posponer()"
+    >
+      Ahora no
+    </button>
+    <button
+      class="button button-primary"
+      type="button"
+      [disabled]="renovando"
+      (click)="extender()"
+    >
+      {{ renovando ? 'Extendiendo…' : 'Extender sesión' }}
+    </button>
+  </div>
+</dialog>

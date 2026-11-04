@@ -1,0 +1,25 @@
+<section class="detalle-publicacion">
+  <a class="volver" routerLink="/publicaciones">← Volver a la manada</a>
+  @if (cargando) {
+    <p role="status">Cargando publicación…</p>
+  }
+  @if (error) {
+    <p role="alert">{{ error }}</p>
+  }
+  @if (publicacion; as actual) {
+    <div class="detalle-contenido">
+      <app-publicacion
+        [publicacion]="actual"
+        [procesando]="procesando"
+        [mostrarEnlace]="false"
+        [mostrarComentarios]="false"
+        (cambiarMeGusta)="cambiarMeGusta()"
+        (eliminar)="confirmarEliminacion = true"
+      />
+      <app-comentarios [publicacionId]="actual._id" />
+    </div>
+  }
+</section>
+@if (confirmarEliminacion) {
+  <app-confirmar-accion (confirmado)="eliminar()" (cancelado)="confirmarEliminacion = false" />
+}

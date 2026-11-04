@@ -12,8 +12,11 @@ import { UsuariosService } from '../usuarios/usuarios.service';
 import { RegistroDto } from './dto/registro.dto';
 import { LoginDto } from './dto/login.dto';
 import { UsuarioDocument } from '../usuarios/schemas/usuario.schema';
+import { usuarioPublico } from '../usuarios/usuario-publico';
 import { TokensService } from '../seguridad/tokens.service';
+import { ContenidoToken } from '../seguridad/contenido-token';
 
+// Aplica las reglas de registro y login, y devuelve los datos públicos del usuario.
 @Injectable()
 export class AutenticacionService {
   private readonly logger = new Logger(AutenticacionService.name);
@@ -41,11 +44,7 @@ export class AutenticacionService {
       throw new ForbiddenException('Tu cuenta está deshabilitada.');
     }
 
-    return {
-      mensaje: 'Iniciaste sesión correctamente.',
-      token: await this.tokensService.generar(usuario._id.toString()),
-      usuario: this.obtenerDatosPublicos(usuario),
-    };
+    return this.crearSesion(usuario, 'Iniciaste sesión correctamente.');
   }
 
   async registrar(datos: RegistroDto, imagen: Express.Multer.File) {
@@ -69,11 +68,12 @@ export class AutenticacionService {
       throw new ConflictException('Ya existe una cuenta con ese correo.');
     }
 
+    this.tokensService.comprobarConfiguracion();
     const passwordHash = await this.passwordHasher.hash(datos.contrasena);
     const foto = await this.imagenesService.subirPerfil(imagen);
-
+    let usuario: UsuarioDocument;
     try {
-      const usuario = await this.usuariosService.crear({
+      usuario = await this.usuariosService.crear({
         nombre: datos.nombre,
         apellido: datos.apellido,
         correo: datos.correo.trim().toLowerCase(),
@@ -86,39 +86,36 @@ export class AutenticacionService {
         perfil: 'usuario',
         activo: true,
       });
-
-      return {
-        mensaje: 'Tu cuenta se creó correctamente.',
-        usuario: this.obtenerDatosPublicos(usuario),
-      };
     } catch (error) {
+      // Si falla el guardado del usuario, eliminamos la foto subida para ese intento.
       await this.imagenesService.eliminar(foto.publicId).catch(() => {
         this.logger.error('No se pudo eliminar la foto de un registro fallido.');
       });
 
       throw error;
     }
+    return this.crearSesion(usuario, 'Tu cuenta se creó correctamente.');
   }
 
-  async recuperarSesion(id: string) {
+  async recuperarSesion(id: string, vencimiento: number) {
     const usuario = await this.usuariosService.buscarPorId(id);
     if (!usuario) throw new UnauthorizedException('El usuario de esta sesión ya no existe.');
     if (!usuario.activo) throw new ForbiddenException('Tu cuenta está deshabilitada.');
-    return { usuario: this.obtenerDatosPublicos(usuario) };
+    return { usuario: usuarioPublico(usuario), vencimiento };
   }
 
-  private obtenerDatosPublicos(usuario: UsuarioDocument) {
-    return {
-      _id: usuario._id.toString(),
-      nombre: usuario.nombre,
-      apellido: usuario.apellido,
-      correo: usuario.correo,
-      nombreUsuario: usuario.nombreUsuario,
-      fechaNacimiento: usuario.fechaNacimiento,
-      descripcion: usuario.descripcion,
-      imagenPerfilUrl: usuario.imagenPerfilUrl,
-      perfil: usuario.perfil,
-      activo: usuario.activo,
-    };
+  async refrescarSesion(contenido: ContenidoToken) {
+    const datos = await this.recuperarSesion(contenido.sub, contenido.exp * 1000);
+    const renovacion = await this.tokensService.renovar(contenido);
+    return { ...datos, ...renovacion, mensaje: 'Extendiste tu sesión por 15 minutos.' };
+  }
+
+  private async crearSesion(usuario: UsuarioDocument, mensaje: string) {
+    const sesion = await this.tokensService.generar(
+      usuario._id.toString(),
+      usuario.correo,
+      usuario.perfil,
+    );
+    return { mensaje, ...sesion, usuario: usuarioPublico(usuario) };
   }
 }

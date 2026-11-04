@@ -10,3 +10,12 @@
   gap: 28px;
   margin: 24px 0;
 }
+.aviso-perfil {
+  max-width: 760px;
+  margin: 20px auto;
+  padding: 14px;
+  border: 1px solid currentColor;
+}
+.profile-details > button + button {
+  margin-left: 12px;
+}

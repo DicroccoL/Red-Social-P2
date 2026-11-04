@@ -10,6 +10,7 @@ import { PaginacionComponent } from '../../shared/paginacion/paginacion.componen
 import { ConfirmarAccionComponent } from '../../shared/confirmar-accion/confirmar-accion.component';
 import { PetPostPreviewComponent } from '../../shared/pet-post-preview/pet-post-preview.component';
 
+// Coordina el feed: listado, orden, páginas, creación, me gusta y confirmación de baja.
 @Component({
   selector: 'app-publicaciones',
   imports: [
@@ -48,6 +49,7 @@ export class PublicacionesComponent implements OnInit, OnDestroy {
   }
 
   cargar() {
+    // Cancelamos el listado anterior para que una respuesta vieja no reemplace la página actual.
     this.consulta?.unsubscribe();
     this.cargando = true;
     this.error = '';

@@ -1,3 +1,4 @@
+// Tipos de datos para formularios y respuestas de autenticación; no contienen hashes ni JWT.
 export interface UsuarioPublico {
   _id: string;
   nombre: string;
@@ -14,6 +15,7 @@ export interface UsuarioPublico {
 export interface RespuestaAutenticacion {
   mensaje: string;
   usuario: UsuarioPublico;
+  vencimiento: number;
 }
 
 export interface DatosRegistro {

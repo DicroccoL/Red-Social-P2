@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 
+// Campos del autor que populate recupera y que se muestran en publicaciones y comentarios.
 export interface AutorPoblado {
   _id: Types.ObjectId;
   nombre: string;

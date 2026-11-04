@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes, Types } from 'mongoose';
 import { Usuario } from '../../usuarios/schemas/usuario.schema';
 
+// Define los datos de una publicación en MongoDB, su autor y los usuarios que dieron me gusta.
 @Schema()
 export class Publicacion {
   @Prop({ required: true, trim: true, maxlength: 120 })

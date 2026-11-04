@@ -1,0 +1,116 @@
+<section class="editar-perfil" aria-labelledby="titulo-edicion">
+  <h2 id="titulo-edicion">Editar mi perfil</h2>
+  <form [formGroup]="formulario" (ngSubmit)="guardar()">
+    <fieldset [disabled]="guardando">
+      <legend class="sr-only">Datos personales</legend>
+      <div class="campos">
+        <div>
+          <label for="perfil-nombre">Nombre</label
+          ><input
+            id="perfil-nombre"
+            formControlName="nombre"
+            autocomplete="given-name"
+            maxlength="60"
+          />
+          @if (errorCampo('nombre'); as mensaje) {
+            <p class="field-error">{{ mensaje }}</p>
+          }
+        </div>
+        <div>
+          <label for="perfil-apellido">Apellido</label
+          ><input
+            id="perfil-apellido"
+            formControlName="apellido"
+            autocomplete="family-name"
+            maxlength="60"
+          />
+          @if (errorCampo('apellido'); as mensaje) {
+            <p class="field-error">{{ mensaje }}</p>
+          }
+        </div>
+        <div>
+          <label for="perfil-correo">Correo</label
+          ><input
+            id="perfil-correo"
+            type="email"
+            formControlName="correo"
+            autocomplete="email"
+            maxlength="254"
+          />
+          @if (errorCampo('correo'); as mensaje) {
+            <p class="field-error">{{ mensaje }}</p>
+          }
+        </div>
+        <div>
+          <label for="perfil-usuario">Nombre de usuario</label
+          ><input
+            id="perfil-usuario"
+            formControlName="nombreUsuario"
+            autocomplete="username"
+            maxlength="30"
+          />
+          @if (errorCampo('nombreUsuario'); as mensaje) {
+            <p class="field-error">{{ mensaje }}</p>
+          }
+        </div>
+        <div>
+          <label for="perfil-fecha">Fecha de nacimiento</label
+          ><input
+            id="perfil-fecha"
+            type="date"
+            formControlName="fechaNacimiento"
+            autocomplete="bday"
+          />
+          @if (errorCampo('fechaNacimiento'); as mensaje) {
+            <p class="field-error">{{ mensaje }}</p>
+          }
+        </div>
+        <div class="ancho-completo">
+          <label for="perfil-descripcion">Descripción</label
+          ><textarea
+            id="perfil-descripcion"
+            formControlName="descripcion"
+            rows="3"
+            maxlength="300"
+          ></textarea>
+          @if (errorCampo('descripcion'); as mensaje) {
+            <p class="field-error">{{ mensaje }}</p>
+          }
+        </div>
+        <div class="ancho-completo">
+          <label for="perfil-foto">Cambiar foto de perfil</label
+          ><input
+            id="perfil-foto"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            (change)="seleccionarImagen($event)"
+          />
+          <p class="ayuda">
+            JPG, PNG o WebP. Menos de 2 MiB. Si no elegís otra foto, conservamos la actual.
+          </p>
+          @if (errorCampo('imagen'); as mensaje) {
+            <p class="field-error">{{ mensaje }}</p>
+          }
+          @if (vistaPrevia) {
+            <img
+              class="vista-previa"
+              [src]="vistaPrevia"
+              alt="Vista previa de la nueva foto"
+            />
+          }
+        </div>
+      </div>
+      @if (error) {
+        <p role="alert">{{ error }}</p>
+      }
+      <div class="acciones">
+        <button class="button button-primary" type="submit">
+          {{ guardando ? 'Guardando…' : 'Guardar cambios' }}
+        </button>
+        <button class="button button-outline" type="button" (click)="cancelado.emit()">
+          Cancelar
+        </button>
+      </div>
+    </fieldset>
+  </form>
+</section>

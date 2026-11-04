@@ -2,7 +2,7 @@ import { FileTypeValidator, MaxFileSizeValidator, ParseFilePipe } from '@nestjs/
 
 export const TAMANO_MAXIMO_IMAGEN = 2 * 1024 * 1024;
 
-// Una sola configuración para fotos de perfil obligatorias e imágenes de post opcionales.
+// Construye el pipe de tamaño y formato; obligatoria indica si se exige enviar una imagen.
 export function validarImagen(obligatoria: boolean) {
   return new ParseFilePipe({
     fileIsRequired: obligatoria,
