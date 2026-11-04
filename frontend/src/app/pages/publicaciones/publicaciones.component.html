@@ -23,7 +23,11 @@
         [disabled]="mostrarFormulario || !!accionPendiente"
         (click)="mostrarFormulario = true"
       >
-        Crear publicación <span aria-hidden="true">+</span>
+        Crear publicación
+        <span aria-hidden="true"
+          ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <use href="icons.svg#plus"></use></svg
+        ></span>
       </button>
     </div>
     @if (mostrarFormulario) {

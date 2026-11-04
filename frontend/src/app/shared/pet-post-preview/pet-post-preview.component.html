@@ -16,8 +16,11 @@
     <p>El tesoro del paseo.</p>
     @if (compact) {
       <a class="post-peek" routerLink="/publicaciones"
-        >Ver la manada <span aria-hidden="true">↗</span></a
-      >
+        >Ver la manada
+        <span aria-hidden="true"
+          ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <use href="icons.svg#arrow-up-right"></use></svg></span
+      ></a>
     } @else {
       <div class="post-actions">
         <button
@@ -54,7 +57,11 @@
             maxlength="180"
             required
             autocomplete="off"
-          /><button type="submit" aria-label="Agregar comentario de prueba">↗</button>
+          /><button type="submit" aria-label="Agregar comentario de prueba">
+            <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <use href="icons.svg#arrow-up-right"></use>
+            </svg>
+          </button>
         </form>
       }
       @if (comment) {

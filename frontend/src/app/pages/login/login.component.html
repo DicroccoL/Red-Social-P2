@@ -73,10 +73,21 @@
           }
         </fieldset>
         <button class="button button-primary" type="submit" [disabled]="enviando">
-          {{ enviando ? 'Ingresando…' : 'Entrar' }} <span aria-hidden="true">↗</span>
+          {{ enviando ? 'Ingresando…' : 'Entrar' }}
+          <span aria-hidden="true"
+            ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <use href="icons.svg#arrow-up-right"></use></svg
+          ></span>
         </button>
       </form>
-      <div class="card-bottom"><span>¿Sin cuenta?</span><a routerLink="/registro">Sumate ↗</a></div>
+      <div class="card-bottom">
+        <span>¿Sin cuenta?</span
+        ><a routerLink="/registro"
+          >Sumate
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <use href="icons.svg#arrow-up-right"></use></svg
+        ></a>
+      </div>
     </div>
   </div>
 </section>

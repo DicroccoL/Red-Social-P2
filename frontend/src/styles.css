@@ -288,9 +288,7 @@ h2 {
   font-weight: 600;
   line-height: 1.5;
 }
-.field-error::before {
-  content: '↳ ';
-}
+
 .auth-card [aria-invalid='true'] {
   border: 2px solid var(--wine);
 }
@@ -948,5 +946,27 @@ h2 {
   border-radius: 50%;
   animation: girar-carga 0.9s linear infinite;
 }
-@keyframes girar-carga { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+@keyframes girar-carga {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}
+
+/* Íconos vectoriales: no dependen de glifos ni fuentes emoji del dispositivo. */
+.ui-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: -0.14em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

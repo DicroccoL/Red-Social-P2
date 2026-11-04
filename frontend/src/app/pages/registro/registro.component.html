@@ -190,11 +190,20 @@
           <p class="field-error" role="alert">Revisá los campos marcados antes de continuar.</p>
         }
         <button class="button button-primary" type="submit" [disabled]="enviando">
-          {{ enviando ? 'Creando tu cuenta…' : 'Crear cuenta' }} <span aria-hidden="true">↗</span>
+          {{ enviando ? 'Creando tu cuenta…' : 'Crear cuenta' }}
+          <span aria-hidden="true"
+            ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <use href="icons.svg#arrow-up-right"></use></svg
+          ></span>
         </button>
       </form>
       <div class="card-bottom">
-        <span>¿Ya tenés cuenta?</span><a routerLink="/login">Entrá ↗</a>
+        <span>¿Ya tenés cuenta?</span
+        ><a routerLink="/login"
+          >Entrá
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <use href="icons.svg#arrow-up-right"></use></svg
+        ></a>
       </div>
     </div>
   </div>

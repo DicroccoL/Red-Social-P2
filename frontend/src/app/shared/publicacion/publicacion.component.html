@@ -31,7 +31,11 @@
     <p class="descripcion">{{ publicacion.descripcion }}</p>
     @if (mostrarEnlace) {
       <p>
-        <a [routerLink]="['/publicaciones', publicacion._id]">Ver publicación y comentar ↗</a>
+        <a [routerLink]="['/publicaciones', publicacion._id]"
+          >Ver publicación y comentar
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <use href="icons.svg#arrow-up-right"></use></svg
+        ></a>
       </p>
     }
     <div class="acciones">

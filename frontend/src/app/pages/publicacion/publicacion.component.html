@@ -1,5 +1,10 @@
 <section class="detalle-publicacion">
-  <a class="volver" routerLink="/publicaciones">← Volver a la manada</a>
+  <a class="volver" routerLink="/publicaciones"
+    ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <use href="icons.svg#arrow-left"></use>
+    </svg>
+    Volver a la manada</a
+  >
   @if (cargando) {
     <p role="status">Cargando publicación…</p>
   }
