@@ -25,15 +25,23 @@
         <button type="submit" [disabled]="guardando">
           {{ guardando ? 'Guardando…' : 'Guardar cambios' }}
         </button>
-        <button type="button" [disabled]="guardando" (click)="editando = false">
-          Cancelar
-        </button>
+        <button type="button" [disabled]="guardando" (click)="editando = false">Cancelar</button>
       </div>
     </form>
   } @else {
     <p class="mensaje">{{ comentario.mensaje }}</p>
     @if (comentario.autor._id === autenticacion.usuarioActual?._id) {
-      <button type="button" (click)="editar()">Editar</button>
+      <button
+        class="editar-comentario"
+        type="button"
+        (click)="editar()"
+        aria-label="Editar mi comentario"
+      >
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <use href="icons.svg#edit"></use>
+        </svg>
+        Editar
+      </button>
     }
   }
 </article>

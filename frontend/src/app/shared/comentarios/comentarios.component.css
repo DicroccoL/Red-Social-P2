@@ -18,8 +18,8 @@ h2 small {
   font-size: 0.6em;
 }
 .lista-comentarios {
-  min-height: 120px;
-  max-height: 440px;
+  min-height: 0;
+  max-height: 460px;
   overflow-y: auto;
   overscroll-behavior: contain;
   padding-right: 8px;
@@ -90,4 +90,91 @@ form > p {
   section {
     padding: 20px;
   }
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+h2 small {
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 50px;
+  background: #55002209;
+  font:
+    11px 'Segoe UI',
+    sans-serif;
+  letter-spacing: 0;
+}
+.conversacion-vacia {
+  text-align: center;
+  padding: 30px 10px;
+}
+.conversacion-vacia > svg {
+  display: block;
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 14px;
+  opacity: 0.5;
+}
+.conversacion-vacia strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+}
+.conversacion-vacia p {
+  max-width: 220px;
+  margin: 8px auto 0;
+  color: #79354d;
+  font-size: 12px;
+  line-height: 1.6;
+}
+form {
+  background: #55002205;
+  border: 1px solid #55002218;
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 22px;
+}
+textarea {
+  min-height: 88px;
+  padding: 12px 0;
+  margin: 6px 0;
+  border: 0;
+  border-radius: 0;
+  font-size: 13px;
+}
+textarea:focus-visible {
+  outline-offset: 2px;
+}
+.pie-comentario {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid #55002215;
+  padding-top: 10px;
+}
+.contador {
+  color: #79354d;
+  font-size: 10px;
+}
+.pie-comentario .button-primary {
+  width: auto;
+  min-height: 38px;
+  gap: 10px;
+  margin: 0;
+  padding: 9px 13px;
+  border-radius: 10px;
+  font-size: 11px;
+}
+.pie-comentario svg {
+  width: 15px;
+  height: 15px;
 }

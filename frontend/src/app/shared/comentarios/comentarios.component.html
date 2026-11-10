@@ -11,7 +11,13 @@
       />
     } @empty {
       @if (!cargando && !errorLectura) {
-        <p>Todavía no hay comentarios. ¡Podés escribir el primero!</p>
+        <div class="conversacion-vacia">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="icons.svg#comment"></use>
+          </svg>
+          <strong>Una historia, muchas voces.</strong>
+          <p>Empezá la conversación con el primer comentario.</p>
+        </div>
       }
     }
     @if (cargando) {
@@ -32,7 +38,7 @@
       </button>
     }
   </div>
-  <form [formGroup]="formulario" (ngSubmit)="comentar()">
+  <form [formGroup]="formulario" (ngSubmit)="comentar()" [attr.aria-busy]="enviando">
     <label for="nuevo-comentario">Dejá tu comentario</label>
     <textarea
       id="nuevo-comentario"
@@ -40,6 +46,7 @@
       maxlength="2000"
       rows="2"
       placeholder="¿Qué te gustaría compartir?"
+      [readOnly]="enviando"
     ></textarea>
     @if (formulario.invalid && formulario.touched) {
       <p role="alert">Escribí un mensaje de hasta 2000 caracteres.</p>
@@ -47,8 +54,18 @@
     @if (errorEnvio) {
       <p role="alert">{{ errorEnvio }}</p>
     }
-    <button class="button button-primary" type="submit" [disabled]="enviando || cargando">
-      {{ enviando ? 'Enviando…' : 'Comentar' }}
-    </button>
+    <div class="pie-comentario">
+      <span class="contador">{{ formulario.controls.mensaje.value.length }} / 2000</span>
+      <button
+        class="button button-primary"
+        type="submit"
+        [disabled]="enviando || cargando || formulario.invalid"
+      >
+        {{ enviando ? 'Enviando…' : 'Comentar' }}
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <use href="icons.svg#send"></use>
+        </svg>
+      </button>
+    </div>
   </form>
 </section>

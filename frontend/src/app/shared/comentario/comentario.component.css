@@ -1,21 +1,26 @@
 .comentario {
-  padding: 22px 0;
-  border-bottom: 1px solid var(--wine);
+  padding: 18px 0;
+  border-bottom: 1px solid #55002214;
 }
 header {
   display: flex;
-  justify-content: space-between;
+  align-items: baseline;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px 12px;
+}
+strong {
+  font-size: 12px;
 }
 small {
-  opacity: 0.75;
+  color: #79354d;
+  font-size: 10px;
 }
 .mensaje {
-  margin: 14px 0;
+  margin: 10px 0 4px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  line-height: 1.6;
+  line-height: 1.7;
+  font-size: 13px;
 }
 textarea {
   width: 100%;
@@ -23,17 +28,58 @@ textarea {
   padding: 12px;
   margin: 12px 0;
   color: inherit;
-  background: transparent;
-  border: 1px solid var(--wine);
+  background: #ffffff20;
+  border: 1px solid #55002240;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+label,
+[role='alert'] {
+  font-size: 12px;
 }
 .botones {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 button {
-  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 8px 12px;
   color: var(--wine);
+  background: #55002208;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 11px;
+}
+button:hover:not(:disabled) {
+  background: #55002212;
+}
+button:disabled {
+  opacity: 0.5;
+}
+button.editar-comentario {
+  min-height: 32px;
+  padding: 6px 0;
   background: transparent;
-  border: 1px solid var(--wine);
+  color: #79354d;
+  font-size: 10px;
+}
+.editar-comentario:hover {
+  color: var(--wine);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.editar-comentario svg {
+  width: 12px;
+  height: 12px;
+}
+.botones button[type='submit'] {
+  background: var(--wine);
+  color: var(--paper);
 }

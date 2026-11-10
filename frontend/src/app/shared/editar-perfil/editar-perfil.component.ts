@@ -13,11 +13,12 @@ import { UsuarioPublico } from '../../models/usuario.model';
 import { PerfilService } from '../../services/perfil.service';
 import { ErroresApiService } from '../../services/errores-api.service';
 import { fechaNoFutura, mensajeErrorCampo } from '../validadores-formulario';
+import { SelectorFechaComponent } from '../selector-fecha/selector-fecha.component';
 
 // Formulario de datos personales y foto opcional, separado de las publicaciones del perfil.
 @Component({
   selector: 'app-editar-perfil',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, SelectorFechaComponent],
   templateUrl: './editar-perfil.component.html',
   styleUrl: './editar-perfil.component.css',
 })

@@ -1,0 +1,57 @@
+:host {
+  display: block;
+  width: 100%;
+}
+.fecha-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 49px;
+  padding: 0 12px;
+  border: 1px solid #55002265;
+  border-radius: 10px;
+  color: var(--wine);
+  background: #ffffff12;
+}
+.fecha-control:focus-within {
+  outline: 2px solid var(--wine);
+  outline-offset: 2px;
+  background: #ffffff25;
+}
+.fecha-control.invalida {
+  border-width: 2px;
+}
+.fecha-control.deshabilitado {
+  opacity: 0.55;
+}
+.ui-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  opacity: 0.65;
+}
+.fecha-control input {
+  width: 2.2em;
+  min-width: 0;
+  height: 45px;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  text-align: center;
+  font: inherit;
+  font-size: 13px;
+  color-scheme: light;
+}
+.fecha-control input.anio {
+  width: 3.8em;
+}
+.fecha-control input::placeholder {
+  color: #79354d;
+  opacity: 0.8;
+  font-size: 11px;
+}
+.fecha-control span {
+  opacity: 0.4;
+}

@@ -195,61 +195,82 @@
   }
 }
 
+.demo-social {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-bottom: 14px;
+  font-size: 11px;
+  color: #79354d;
+}
+.demo-social strong {
+  color: var(--wine);
+}
+.demo-social > span {
+  margin-left: auto;
+  font-size: 10px;
+}
 .post-actions {
   align-items: center;
+  gap: 6px;
+  padding-top: 10px;
 }
-
-/* Corazón: contorno sin me gusta, relleno al marcarlo. */
-.post-actions .boton-me-gusta {
+.post-actions button,
+.post-actions a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  gap: 8px;
   min-height: 44px;
-  padding: 8px;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  color: var(--wine);
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: inherit;
+  font-size: 12px;
+  font-weight: 600;
   text-decoration: none;
-  transition:
-    color 150ms ease,
-    background-color 150ms ease;
 }
-.post-actions .boton-me-gusta:hover:not(:disabled) {
+.post-actions button:hover,
+.post-actions a:hover {
   background: #5500220a;
+  text-decoration: none;
 }
-.post-actions .boton-me-gusta svg {
-  width: 26px;
-  height: 26px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.post-actions .ver-demo {
+  margin-left: auto;
+  font-weight: 400;
+}
+.post-actions svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.7;
 }
 .post-actions .boton-me-gusta.marcado {
-  color: #ed4956;
+  color: #b62c4e;
+  background: #b62c4e0a;
 }
 .post-actions .boton-me-gusta.marcado svg {
   fill: currentColor;
 }
-.post-actions .boton-me-gusta:disabled {
-  opacity: 0.5;
-  cursor: wait;
+.demo-comment {
+  padding: 8px;
+  border: 1px solid #55002220;
+  border-radius: 14px;
+  background: #55002205;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .post-actions .boton-me-gusta.marcado svg {
-    animation: marcar-corazon 260ms ease-out;
+.demo-comment input {
+  border: 0;
+  background: transparent;
+}
+.demo-comment button {
+  border-radius: 10px;
+}
+@media (max-width: 400px) {
+  .post-actions button,
+  .post-actions a {
+    gap: 6px;
+    padding: 10px 8px;
+    font-size: 11px;
   }
-  @keyframes marcar-corazon {
-    0%,
-    100% {
-      transform: scale(1);
-    }
-    45% {
-      transform: scale(1.18);
-    }
+  .demo-social > span {
+    display: none;
   }
 }

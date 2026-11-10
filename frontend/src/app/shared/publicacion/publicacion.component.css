@@ -60,43 +60,124 @@ h2 {
   overflow-wrap: anywhere;
   line-height: 1.7;
 }
-.acciones {
+
+.avatar-inicial {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 50%;
+  background: #55002212;
+  font:
+    22px Georgia,
+    serif;
+}
+.descripcion {
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+.pie-publicacion {
+  margin-top: 24px;
+}
+.resumen-social {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  border-top: 1px solid #55002230;
-  padding-top: 14px;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  color: #79354d;
+  font-size: 11px;
 }
-button {
-  background: transparent;
-  color: inherit;
-  border: 0;
-  padding: 8px 0;
-  font: inherit;
-  font-size: 13px;
-}
-button:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-button[aria-pressed='true'] {
+.resumen-social strong {
+  color: var(--wine);
   font-weight: 700;
 }
-.cantidad {
-  margin-left: 7px;
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px solid #55002220;
+}
+.acciones button,
+.acciones a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background 150ms ease,
+    color 150ms ease;
+}
+.acciones button:hover:not(:disabled),
+.acciones a:hover {
+  background: #5500220a;
+}
+.acciones svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.acciones .boton-me-gusta.marcado {
+  color: #b62c4e;
+  background: #b62c4e0a;
+}
+.boton-me-gusta.marcado svg {
+  fill: currentColor;
+}
+.acciones .ver-publicacion {
+  margin-left: auto;
+  font-weight: 400;
+}
+.acciones button:disabled {
+  opacity: 0.5;
+  cursor: wait;
 }
 .comentarios {
-  border-top: 1px solid #55002230;
   margin-top: 18px;
-  padding-top: 8px;
-  font-size: 13px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #55002205;
+  font-size: 12px;
+}
+.comentarios h3 {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #79354d;
 }
 .comentario {
   padding: 12px 0;
-  border-bottom: 1px solid #55002220;
+  border-bottom: 1px solid #55002212;
+}
+.comentario:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 .comentario p {
   margin: 6px 0;
+}
+.comentario small {
+  font-size: 10px;
+  color: #79354d;
+}
+.comentarios > p {
+  margin: 12px 0 0;
+  color: #79354d;
 }
 @media (max-width: 450px) {
   .autor,
@@ -104,65 +185,33 @@ button[aria-pressed='true'] {
     padding: 16px;
   }
   .autor {
+    gap: 9px;
     flex-wrap: wrap;
   }
   time {
     width: 100%;
     text-align: left;
-    margin: 0;
+    margin: 0 0 0 49px;
+  }
+  h2 {
+    font-size: 26px;
+  }
+  .acciones {
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+  .acciones button,
+  .acciones a {
+    padding: 10px 8px;
+    font-size: 11px;
+    gap: 6px;
+  }
+  .resumen-social {
+    font-size: 10px;
   }
 }
-
-.me-gusta {
-  display: inline-flex;
-  align-items: center;
-}
-.acciones {
-  align-items: center;
-}
-
-/* Corazón: contorno sin me gusta, relleno al marcarlo. */
-.acciones .boton-me-gusta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  min-height: 44px;
-  padding: 8px;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  color: var(--wine);
-  text-decoration: none;
-  transition:
-    color 150ms ease,
-    background-color 150ms ease;
-}
-.acciones .boton-me-gusta:hover:not(:disabled) {
-  background: #5500220a;
-}
-.acciones .boton-me-gusta svg {
-  width: 26px;
-  height: 26px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.acciones .boton-me-gusta.marcado {
-  color: #ed4956;
-}
-.acciones .boton-me-gusta.marcado svg {
-  fill: currentColor;
-}
-.acciones .boton-me-gusta:disabled {
-  opacity: 0.5;
-  cursor: wait;
-}
 @media (prefers-reduced-motion: no-preference) {
-  .acciones .boton-me-gusta.marcado svg {
+  .boton-me-gusta.marcado svg {
     animation: marcar-corazon 260ms ease-out;
   }
   @keyframes marcar-corazon {
@@ -173,5 +222,42 @@ button[aria-pressed='true'] {
     45% {
       transform: scale(1.18);
     }
+  }
+}
+
+.autor {
+  position: relative;
+}
+.eliminar-publicacion {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 36px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: inherit;
+  opacity: 0.5;
+}
+.eliminar-publicacion:hover:not(:disabled) {
+  opacity: 1;
+  background: #5500220a;
+}
+.eliminar-publicacion:disabled {
+  opacity: 0.3;
+}
+.eliminar-publicacion svg {
+  width: 16px;
+  height: 16px;
+}
+@media (max-width: 450px) {
+  .autor {
+    padding-right: 52px;
+  }
+  .eliminar-publicacion {
+    position: absolute;
+    top: 16px;
+    right: 12px;
   }
 }

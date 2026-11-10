@@ -1,4 +1,13 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ComentarioPublico } from '../../models/publicacion.model';
@@ -35,7 +44,15 @@ export class ComentariosComponent implements OnChanges, OnDestroy {
     private readonly servicio: ComentariosService,
     private readonly errores: ErroresApiService,
     private readonly cambios: ChangeDetectorRef,
-  ) {}
+    route: ActivatedRoute,
+    elemento: ElementRef<HTMLElement>,
+  ) {
+    afterNextRender(() => {
+      if (route.snapshot.fragment === 'nuevo-comentario') {
+        elemento.nativeElement.querySelector<HTMLTextAreaElement>('#nuevo-comentario')?.focus();
+      }
+    });
+  }
 
   ngOnChanges() {
     this.consulta?.unsubscribe();

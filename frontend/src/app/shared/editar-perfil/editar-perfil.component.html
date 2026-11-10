@@ -55,14 +55,14 @@
         </div>
         <div>
           <label for="perfil-fecha">Fecha de nacimiento</label
-          ><input
-            id="perfil-fecha"
-            type="date"
+          ><app-selector-fecha
+            inputId="perfil-fecha"
             formControlName="fechaNacimiento"
-            autocomplete="bday"
+            [invalid]="!!errorCampo('fechaNacimiento')"
+            describedBy="error-perfil-fecha"
           />
           @if (errorCampo('fechaNacimiento'); as mensaje) {
-            <p class="field-error">{{ mensaje }}</p>
+            <p class="field-error" id="error-perfil-fecha">{{ mensaje }}</p>
           }
         </div>
         <div class="ancho-completo">
@@ -92,11 +92,7 @@
             <p class="field-error">{{ mensaje }}</p>
           }
           @if (vistaPrevia) {
-            <img
-              class="vista-previa"
-              [src]="vistaPrevia"
-              alt="Vista previa de la nueva foto"
-            />
+            <img class="vista-previa" [src]="vistaPrevia" alt="Vista previa de la nueva foto" />
           }
         </div>
       </div>

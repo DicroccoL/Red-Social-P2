@@ -40,12 +40,15 @@
         <dd>{{ usuario.activo ? 'Activa' : 'Deshabilitada' }}</dd>
       </dl>
       <button
-        class="button button-outline"
+        class="editar-perfil-sutil"
         type="button"
         [disabled]="cargandoPerfil || editando || cerrandoSesion"
         (click)="editando = true; mensajePerfil = ''"
       >
-        Editar mi perfil
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <use href="icons.svg#edit"></use>
+        </svg>
+        Editar perfil
       </button>
       <button
         class="button button-outline"

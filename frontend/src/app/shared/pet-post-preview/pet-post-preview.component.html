@@ -22,6 +22,9 @@
             <use href="icons.svg#arrow-up-right"></use></svg></span
       ></a>
     } @else {
+      <div class="demo-social">
+        <strong>{{ liked ? 25 : 24 }}</strong> me gusta <span>Una aventura de Milo</span>
+      </div>
       <div class="post-actions">
         <button
           class="boton-me-gusta"
@@ -35,8 +38,8 @@
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path
               d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"
-            />
-          </svg></button
+            /></svg
+          ><span>Me gusta</span></button
         ><button
           type="button"
           (click)="showComment = !showComment"
@@ -46,6 +49,11 @@
             <path d="M20 11a8 8 0 0 1-8 8H5l-3 3V11a9 9 0 1 1 18 0Z" /></svg
           >Comentar
         </button>
+        <a class="ver-demo" routerLink="/registro"
+          >Sumarme
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="icons.svg#arrow-up-right"></use></svg
+        ></a>
       </div>
       @if (showComment) {
         <form class="demo-comment" (submit)="addComment($event, commentInput)">

@@ -10,9 +10,32 @@
       name="description"
       content="floppy. La red social para compartir la vida con tus mascotas."
     />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico?v=huella" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" sizes="any" />
   </head>
   <body>
-    <app-root><section class="pantalla-carga" role="status"><span class="spinner" aria-hidden="true"></span><p>Comprobando tu sesión…</p></section></app-root>
+    <app-root>
+      <section
+        class="pantalla-carga"
+        role="status"
+        aria-live="polite"
+        aria-label="Comprobando tu sesión"
+      >
+        <div class="carga-identidad" aria-hidden="true">
+          <span class="carga-marca"
+            >floppy<svg viewBox="0 0 32 32"><use href="icons.svg#paw"></use></svg
+          ></span>
+          <span class="carga-lema">La vida, con mascotas.</span>
+        </div>
+        <div class="carga-huellas" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><use href="icons.svg#paw"></use></svg>
+          <svg viewBox="0 0 32 32"><use href="icons.svg#paw"></use></svg>
+          <svg viewBox="0 0 32 32"><use href="icons.svg#paw"></use></svg>
+        </div>
+        <p class="carga-mensaje">
+          Preparando tu lugar en la manada<span aria-hidden="true">…</span>
+        </p>
+      </section>
+    </app-root>
   </body>
 </html>

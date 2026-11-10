@@ -18,4 +18,8 @@ export class PublicacionComponent {
   @Output() cambiarMeGusta = new EventEmitter<PublicacionPublica>();
   @Output() eliminar = new EventEmitter<PublicacionPublica>();
   fotoFallida = false;
+
+  enfocarComentario() {
+    document.getElementById('nuevo-comentario')?.focus();
+  }
 }

@@ -1,0 +1,60 @@
+<div
+  class="fecha-control"
+  role="group"
+  aria-label="Fecha de nacimiento"
+  [class.invalida]="invalid"
+  [class.deshabilitado]="deshabilitado"
+>
+  <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+    <use href="icons.svg#calendar"></use>
+  </svg>
+  <input
+    [id]="inputId"
+    type="text"
+    inputmode="numeric"
+    maxlength="2"
+    placeholder="DD"
+    aria-label="Día"
+    autocomplete="bday-day"
+    [value]="dia"
+    [disabled]="deshabilitado"
+    [attr.aria-invalid]="invalid"
+    [attr.aria-describedby]="describedBy || null"
+    (input)="escribir('dia', $event)"
+    (focus)="$any($event.target).select()"
+    (blur)="completar('dia')"
+  />
+  <span aria-hidden="true">/</span>
+  <input
+    type="text"
+    inputmode="numeric"
+    maxlength="2"
+    placeholder="MM"
+    aria-label="Mes"
+    autocomplete="bday-month"
+    [value]="mes"
+    [disabled]="deshabilitado"
+    [attr.aria-invalid]="invalid"
+    [attr.aria-describedby]="describedBy || null"
+    (input)="escribir('mes', $event)"
+    (focus)="$any($event.target).select()"
+    (blur)="completar('mes')"
+  />
+  <span aria-hidden="true">/</span>
+  <input
+    class="anio"
+    type="text"
+    inputmode="numeric"
+    maxlength="4"
+    placeholder="AAAA"
+    aria-label="Año"
+    autocomplete="bday-year"
+    [value]="anio"
+    [disabled]="deshabilitado"
+    [attr.aria-invalid]="invalid"
+    [attr.aria-describedby]="describedBy || null"
+    (input)="escribir('anio', $event)"
+    (focus)="$any($event.target).select()"
+    (blur)="completar('anio')"
+  />
+</div>

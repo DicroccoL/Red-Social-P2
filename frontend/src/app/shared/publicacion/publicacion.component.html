@@ -9,6 +9,10 @@
         height="40"
         loading="lazy"
       />
+    } @else {
+      <span class="avatar-inicial" aria-hidden="true">{{
+        publicacion.autor.nombre.charAt(0)
+      }}</span>
     }
     <div>
       <strong>{{ publicacion.autor.nombre }} {{ publicacion.autor.apellido }}</strong>
@@ -17,6 +21,20 @@
     <time [attr.datetime]="publicacion.fechaCreacion">{{
       publicacion.fechaCreacion | date: 'dd/MM/yyyy HH:mm'
     }}</time>
+    @if (publicacion.puedeEliminar) {
+      <button
+        class="eliminar-publicacion"
+        type="button"
+        aria-label="Eliminar publicación"
+        title="Eliminar publicación"
+        [disabled]="procesando"
+        (click)="eliminar.emit(publicacion)"
+      >
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <use href="icons.svg#trash"></use>
+        </svg>
+      </button>
+    }
   </header>
   @if (publicacion.imagenUrl) {
     <img
@@ -29,17 +47,16 @@
   <div class="contenido">
     <h2>{{ publicacion.titulo }}</h2>
     <p class="descripcion">{{ publicacion.descripcion }}</p>
-    @if (mostrarEnlace) {
-      <p>
-        <a [routerLink]="['/publicaciones', publicacion._id]"
-          >Ver publicación y comentar
-          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <use href="icons.svg#arrow-up-right"></use></svg
-        ></a>
-      </p>
-    }
-    <div class="acciones">
-      <div class="me-gusta">
+    <footer class="pie-publicacion">
+      <div class="resumen-social">
+        <span
+          ><strong>{{ publicacion.cantidadMeGusta }}</strong> me gusta</span
+        >
+        @if (mostrarComentarios && publicacion.comentarios?.length) {
+          <span>Últimos comentarios abajo</span>
+        }
+      </div>
+      <div class="acciones">
         <button
           class="boton-me-gusta"
           type="button"
@@ -55,20 +72,32 @@
               d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"
             />
           </svg>
+          <span>Me gusta</span>
         </button>
-        <span class="cantidad" [attr.aria-label]="publicacion.cantidadMeGusta + ' me gusta'">{{
-          publicacion.cantidadMeGusta
-        }}</span>
+        <a
+          class="accion-comentar"
+          [routerLink]="['/publicaciones', publicacion._id]"
+          fragment="nuevo-comentario"
+          (click)="enfocarComentario()"
+        >
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="icons.svg#comment"></use>
+          </svg>
+          <span>Comentar</span>
+        </a>
+        @if (mostrarEnlace) {
+          <a class="ver-publicacion" [routerLink]="['/publicaciones', publicacion._id]">
+            <span>Ver publicación</span>
+            <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <use href="icons.svg#arrow-up-right"></use>
+            </svg>
+          </a>
+        }
       </div>
-      @if (publicacion.puedeEliminar) {
-        <button type="button" [disabled]="procesando" (click)="eliminar.emit(publicacion)">
-          Eliminar
-        </button>
-      }
-    </div>
+    </footer>
     @if (mostrarComentarios && publicacion.comentarios; as comentarios) {
       <section class="comentarios" aria-label="Comentarios de la publicación">
-        <h3>Comentarios</h3>
+        <h3>En la conversación</h3>
         @for (comentario of comentarios; track comentario._id) {
           <div class="comentario">
             <strong>{{ comentario.autor.nombre }} {{ comentario.autor.apellido }}</strong>

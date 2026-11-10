@@ -87,13 +87,11 @@
           </div>
           <div class="field-group">
             <label for="register-birthdate">Fecha de nacimiento</label>
-            <input
-              id="register-birthdate"
+            <app-selector-fecha
+              inputId="register-birthdate"
               formControlName="fechaNacimiento"
-              type="date"
-              autocomplete="bday"
-              [attr.aria-invalid]="!!errorCampo('fechaNacimiento')"
-              aria-describedby="error-fecha"
+              [invalid]="!!errorCampo('fechaNacimiento')"
+              describedBy="error-fecha"
             />
             @if (errorCampo('fechaNacimiento')) {
               <p class="field-error" id="error-fecha">{{ errorCampo('fechaNacimiento') }}</p>

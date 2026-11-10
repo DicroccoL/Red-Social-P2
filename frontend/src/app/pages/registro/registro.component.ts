@@ -10,11 +10,12 @@ import {
   mensajeErrorCampo,
 } from '../../shared/validadores-formulario';
 import { mensajeErrorApi } from '../../shared/mensaje-error-api';
+import { SelectorFechaComponent } from '../../shared/selector-fecha/selector-fecha.component';
 
 // Gestiona el formulario reactivo de registro, la foto de perfil y el resultado de la solicitud.
 @Component({
   selector: 'app-registro',
-  imports: [RouterLink, ReactiveFormsModule, AvisoModalComponent],
+  imports: [RouterLink, ReactiveFormsModule, AvisoModalComponent, SelectorFechaComponent],
   templateUrl: './registro.component.html',
 })
 export class RegistroComponent implements OnDestroy {
@@ -63,7 +64,7 @@ export class RegistroComponent implements OnDestroy {
       }),
       fechaNacimiento: new FormControl('', {
         nonNullable: true,
-        validators: [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/), fechaNoFutura],
+        validators: [Validators.required, fechaNoFutura],
       }),
       descripcion: new FormControl('', {
         nonNullable: true,
