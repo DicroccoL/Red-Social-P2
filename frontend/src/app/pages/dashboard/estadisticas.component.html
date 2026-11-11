@@ -1,0 +1,120 @@
+<section class="dashboard" aria-labelledby="titulo-estadisticas">
+  <header class="dashboard-header">
+    <h1 id="titulo-estadisticas">Estadísticas</h1>
+    <app-navegacion-dashboard />
+  </header>
+
+  <form [formGroup]="rango" (ngSubmit)="consultar()">
+    <fieldset class="rango" [disabled]="cargando()">
+      <legend>Período (hora argentina)</legend>
+      <div class="rango-fecha">
+        <label for="estadisticas-desde">Desde</label>
+        <app-selector-fecha
+          inputId="estadisticas-desde"
+          etiqueta="Fecha inicial"
+          [nacimiento]="false"
+          [invalid]="rango.controls.desde.touched && rango.controls.desde.invalid"
+          [describedBy]="error() ? 'error-estadisticas' : ''"
+          formControlName="desde"
+        />
+      </div>
+      <div class="rango-fecha">
+        <label for="estadisticas-hasta">Hasta</label>
+        <app-selector-fecha
+          inputId="estadisticas-hasta"
+          etiqueta="Fecha final"
+          [nacimiento]="false"
+          [invalid]="rango.controls.hasta.touched && rango.controls.hasta.invalid"
+          [describedBy]="error() ? 'error-estadisticas' : ''"
+          formControlName="hasta"
+        />
+      </div>
+      <button class="button button-primary" type="submit">Aplicar</button>
+    </fieldset>
+  </form>
+  @if (error()) {
+    <p id="error-estadisticas" class="field-error" role="alert">{{ error() }}</p>
+  }
+  @if (cargando()) {
+    <p role="status">Cargando estadísticas…</p>
+  }
+
+  @if (datos(); as estadisticas) {
+    <p class="periodo">Período consultado: {{ aplicado().desde }} a {{ aplicado().hasta }}</p>
+    <div class="graficos">
+      <section class="grafico">
+        <h2>Publicaciones por usuario</h2>
+        <ul class="barras">
+          @for (usuario of estadisticas.publicacionesPorUsuario; track usuario._id) {
+            <li>
+              <span>{{ usuario.nombre ? '@' + usuario.nombre : 'Cuenta no disponible' }}</span>
+              <strong>{{ usuario.cantidad }}</strong>
+              <span class="barra-fondo" aria-hidden="true">
+                <span
+                  class="barra"
+                  [style.width.%]="(usuario.cantidad * 100) / maximoPublicaciones"
+                ></span>
+              </span>
+            </li>
+          } @empty {
+            <li>No hubo publicaciones en este período.</li>
+          }
+        </ul>
+      </section>
+      <section class="grafico">
+        <h2>Comentarios por día</h2>
+        <p>{{ totalComentarios | cantidadTexto: 'comentario' : 'comentarios' }} en el período</p>
+        @if (totalComentarios) {
+          <svg class="actividad" viewBox="0 0 600 160" aria-hidden="true">
+            <path d="M10 10V150H590" fill="none" stroke="var(--admin-borde)" stroke-width="2" />
+            <polyline [attr.points]="puntos" fill="none" stroke="currentColor" stroke-width="3" />
+            @if (
+              estadisticas.comentariosPorDia.length === 1 && aplicado().desde === aplicado().hasta
+            ) {
+              <circle cx="300" cy="10" r="5" fill="currentColor" />
+            }
+          </svg>
+          <details>
+            <summary>Ver cantidades por día</summary>
+            <ul>
+              @for (dia of estadisticas.comentariosPorDia; track dia._id) {
+                <li>
+                  {{ dia._id }} · {{ dia.cantidad | cantidadTexto: 'comentario' : 'comentarios' }}
+                </li>
+              }
+            </ul>
+          </details>
+        }
+      </section>
+      <section class="grafico">
+        <h2>Comentarios por publicación</h2>
+        @if (segmentos.length) {
+          <div class="anillo" [style.background]="fondoAnillo" aria-hidden="true"></div>
+          <ul class="referencias">
+            @for (segmento of segmentos; track $index) {
+              <li>
+                <span class="muestra" [style.background]="segmento.color" aria-hidden="true"></span>
+                {{ segmento.nombre }} · {{ segmento.cantidad }}
+              </li>
+            }
+          </ul>
+          @if (estadisticas.comentariosPorPublicacion.length > 8) {
+            <details>
+              <summary>Ver todas las publicaciones</summary>
+              <ul>
+                @for (post of estadisticas.comentariosPorPublicacion; track post._id) {
+                  <li>
+                    {{ post.nombre }} ·
+                    {{ post.cantidad | cantidadTexto: 'comentario' : 'comentarios' }}
+                  </li>
+                }
+              </ul>
+            </details>
+          }
+        } @else {
+          <p>No hubo comentarios en este período.</p>
+        }
+      </section>
+    </div>
+  }
+</section>

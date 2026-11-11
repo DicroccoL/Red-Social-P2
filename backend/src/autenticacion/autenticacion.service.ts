@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { PasswordHasher } from '@nestjs/authentication';
 import { ImagenesService } from '../imagenes/imagenes.service';
+import { esCorreoAdministrador } from '../usuarios/perfil-efectivo';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { RegistroDto } from './dto/registro.dto';
 import { LoginDto } from './dto/login.dto';
@@ -48,6 +49,15 @@ export class AutenticacionService {
   }
 
   async registrar(datos: RegistroDto, imagen: Express.Multer.File) {
+    this.tokensService.comprobarConfiguracion();
+    const usuario = await this.crearCuenta(datos, imagen);
+    return this.crearSesion(usuario, 'Tu cuenta se creó correctamente.');
+  }
+
+  async crearCuenta(datos: RegistroDto, imagen: Express.Multer.File) {
+    if (esCorreoAdministrador(datos.correo)) {
+      throw new ForbiddenException('Este correo está reservado para la cuenta administradora.');
+    }
     if (datos.contrasena !== datos.repetirContrasena) {
       throw new BadRequestException('Las contraseñas no coinciden.');
     }
@@ -68,7 +78,6 @@ export class AutenticacionService {
       throw new ConflictException('Ya existe una cuenta con ese correo.');
     }
 
-    this.tokensService.comprobarConfiguracion();
     const passwordHash = await this.passwordHasher.hash(datos.contrasena);
     const foto = await this.imagenesService.subirPerfil(imagen);
     let usuario: UsuarioDocument;
@@ -94,7 +103,7 @@ export class AutenticacionService {
 
       throw error;
     }
-    return this.crearSesion(usuario, 'Tu cuenta se creó correctamente.');
+    return usuario;
   }
 
   async recuperarSesion(id: string, vencimiento: number) {
@@ -106,16 +115,13 @@ export class AutenticacionService {
 
   async refrescarSesion(contenido: ContenidoToken) {
     const datos = await this.recuperarSesion(contenido.sub, contenido.exp * 1000);
-    const renovacion = await this.tokensService.renovar(contenido);
+    const renovacion = await this.tokensService.generar(datos.usuario._id, datos.usuario.correo, datos.usuario.perfil);
     return { ...datos, ...renovacion, mensaje: 'Extendiste tu sesión por 15 minutos.' };
   }
 
   private async crearSesion(usuario: UsuarioDocument, mensaje: string) {
-    const sesion = await this.tokensService.generar(
-      usuario._id.toString(),
-      usuario.correo,
-      usuario.perfil,
-    );
-    return { mensaje, ...sesion, usuario: usuarioPublico(usuario) };
+    const datos = usuarioPublico(usuario);
+    const sesion = await this.tokensService.generar(datos._id, datos.correo, datos.perfil);
+    return { mensaje, ...sesion, usuario: datos };
   }
 }

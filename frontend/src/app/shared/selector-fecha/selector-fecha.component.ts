@@ -18,6 +18,8 @@ export class SelectorFechaComponent implements ControlValueAccessor {
   @Input({ required: true }) inputId = '';
   @Input() invalid = false;
   @Input() describedBy = '';
+  @Input() etiqueta = 'Fecha de nacimiento';
+  @Input() nacimiento = true;
   dia = '';
   mes = '';
   anio = '';

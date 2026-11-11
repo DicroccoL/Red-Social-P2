@@ -1,20 +1,27 @@
-<section class="auth-layout register-layout pets-register" aria-labelledby="page-title">
-  <div class="auth-story">
-    <p class="eyebrow">VOS Y TU MEJOR COMPAÑÍA</p>
-    <h1 id="page-title">Hola,<br /><em>manada.</em></h1>
-    <p class="intro">La red social para compartir la vida con tu mascota.</p>
-    <div class="register-pets">
-      <img
-        src="images/pets-hero.webp"
-        alt="Un golden y un gato te dan la bienvenida a floppy"
-        width="1000"
-        height="667"
-      />
+<section
+  [class]="
+    desdeAdministracion ? 'registro-administrativo' : 'auth-layout register-layout pets-register'
+  "
+  aria-labelledby="titulo-registro"
+>
+  @if (!desdeAdministracion) {
+    <div class="auth-story">
+      <p class="eyebrow">VOS Y TU MEJOR COMPAÑÍA</p>
+      <h1 id="page-title">Hola,<br /><em>manada.</em></h1>
+      <p class="intro">La red social para compartir la vida con tu mascota.</p>
+      <div class="register-pets">
+        <img
+          src="images/pets-hero.webp"
+          alt="Un golden y un gato te dan la bienvenida a floppy"
+          width="1000"
+          height="667"
+        />
+      </div>
     </div>
-  </div>
+  }
   <div class="auth-card-wrap">
     <div class="auth-card">
-      <h2>Sumate a floppy.</h2>
+      <h2 id="titulo-registro">{{ desdeAdministracion ? 'Nueva cuenta' : 'Sumate a floppy.' }}</h2>
       <p class="field-hint">Todos los campos son obligatorios.</p>
       <form
         [formGroup]="formulario"
@@ -184,25 +191,41 @@
             }
           </div>
         </fieldset>
+        @if (desdeAdministracion) {
+          <fieldset class="perfil-registro" [disabled]="enviando">
+            <legend>Perfil de la cuenta</legend>
+            <label
+              ><input type="radio" name="perfil" value="usuario" [formControl]="perfil" />
+              Usuario</label
+            >
+            <label
+              ><input type="radio" name="perfil" value="administrador" disabled />
+              Administrador</label
+            >
+            <p class="field-hint">Por ahora hay una sola cuenta administradora.</p>
+          </fieldset>
+        }
         @if (submitted && formulario.invalid) {
           <p class="field-error" role="alert">Revisá los campos marcados antes de continuar.</p>
         }
         <button class="button button-primary" type="submit" [disabled]="enviando">
-          {{ enviando ? 'Creando tu cuenta…' : 'Crear cuenta' }}
+          {{ enviando ? 'Creando cuenta…' : 'Crear cuenta' }}
           <span aria-hidden="true"
             ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <use href="icons.svg#arrow-up-right"></use></svg
           ></span>
         </button>
       </form>
-      <div class="card-bottom">
-        <span>¿Ya tenés cuenta?</span
-        ><a routerLink="/login"
-          >Entrá
-          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <use href="icons.svg#arrow-up-right"></use></svg
-        ></a>
-      </div>
+      @if (!desdeAdministracion) {
+        <div class="card-bottom">
+          <span>¿Ya tenés cuenta?</span
+          ><a routerLink="/login"
+            >Entrá
+            <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <use href="icons.svg#arrow-up-right"></use></svg
+          ></a>
+        </div>
+      }
     </div>
   </div>
 </section>

@@ -1,0 +1,209 @@
+.dashboard {
+  --admin-fondo: #681b39;
+  --admin-borde: #dfc1ce;
+  --admin-claro: #fff8fa;
+  --admin-rosa: #f8dce7;
+  --admin-tinta: #611935;
+  --admin-acento: #8b2852;
+  width: min(72rem, calc(100% - 2rem));
+  margin: 2.5rem auto;
+}
+
+.dashboard-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding: clamp(1rem, 3vw, 1.6rem);
+  background: var(--admin-fondo);
+  border: 1px solid #a95374;
+  border-radius: 1rem;
+}
+
+.dashboard h1 {
+  margin: 0;
+  color: var(--pink);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+.tabla-desplazable {
+  overflow-x: auto;
+  margin-top: 1rem;
+  border: 1px solid var(--admin-borde);
+  border-radius: 1rem;
+}
+table {
+  color: var(--admin-tinta);
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--admin-claro);
+}
+th,
+td {
+  padding: 0.85rem;
+  border-bottom: 1px solid var(--admin-borde);
+  text-align: left;
+}
+thead {
+  background: var(--admin-rosa);
+  color: var(--admin-tinta);
+}
+tbody tr:nth-child(even) {
+  background: #fff0f5;
+}
+tbody tr:last-child > * {
+  border-bottom: 0;
+}
+td {
+  overflow-wrap: anywhere;
+}
+th small {
+  display: block;
+  font-weight: normal;
+}
+.accion {
+  padding: 0.35rem 0.7rem;
+  color: var(--admin-tinta);
+  background: var(--admin-claro);
+  border: 1px solid currentColor;
+  border-radius: 0.5rem;
+}
+.accion:not(:disabled):hover {
+  background: var(--admin-rosa);
+}
+.estado-cuenta {
+  display: inline-block;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: #f6dce4;
+  color: #751736;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.estado-activo {
+  background: #ddf2e8;
+  color: #205843;
+}
+.rango {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid var(--admin-borde);
+  border-radius: 1rem;
+  background: var(--admin-claro);
+  color: var(--admin-tinta);
+}
+.rango legend {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--admin-borde);
+  border-radius: 0.5rem;
+  background: var(--admin-rosa);
+  font-weight: 700;
+}
+.dashboard > .button,
+.rango .button {
+  width: auto;
+  margin-top: 0;
+  background: var(--pink);
+  color: var(--admin-tinta);
+  border-color: var(--pink);
+}
+.rango .button {
+  min-height: 49px;
+}
+.dashboard > .button:hover,
+.rango .button:not(:disabled):hover {
+  background: var(--admin-rosa);
+}
+.rango .button:focus-visible,
+.tabla-desplazable :focus-visible {
+  outline-color: var(--admin-tinta);
+}
+.rango-fecha {
+  --fecha-texto: var(--admin-tinta);
+  --fecha-borde: #a57388;
+  --fecha-fondo: white;
+  display: grid;
+  gap: 0.3rem;
+  font-weight: 700;
+}
+.periodo {
+  margin: 1.25rem 0 0.75rem;
+}
+.graficos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: 1rem;
+}
+.grafico {
+  color: var(--admin-tinta);
+  min-width: 0;
+  padding: 1rem;
+  background: var(--admin-claro);
+  border: 1px solid var(--admin-borde);
+  border-top: 4px solid #b46b8a;
+  border-radius: 1rem;
+  overflow-wrap: anywhere;
+}
+.grafico h2 {
+  font-size: 1.25rem;
+  margin: 0 0 0.75rem;
+  color: var(--admin-tinta);
+}
+.barras,
+.referencias {
+  list-style: none;
+  padding: 0;
+}
+.barras li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+.barra-fondo {
+  grid-column: 1 / -1;
+  background: var(--admin-rosa);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.barra {
+  display: block;
+  height: 0.65rem;
+  background: var(--admin-acento);
+}
+.actividad {
+  color: var(--admin-acento);
+  width: 100%;
+  display: block;
+  margin-bottom: 1rem;
+}
+.anillo {
+  width: min(100%, 9rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  margin: 1rem auto;
+  display: grid;
+  place-items: center;
+}
+.anillo::after {
+  content: '';
+  width: 58%;
+  aspect-ratio: 1;
+  background: var(--admin-claro);
+  border-radius: 50%;
+}
+.muestra {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.25rem;
+  border-radius: 0.2rem;
+}
+summary {
+  cursor: pointer;
+}

@@ -40,11 +40,6 @@ export class TokensService {
     return { token, vencimiento: (ahora + DURACION_SESION_SEGUNDOS) * 1000 };
   }
 
-  renovar(contenido: ContenidoToken) {
-    // Conserva identidad y rol; actualiza los tiempos de emisión y vencimiento.
-    return this.generar(contenido.sub, contenido.correo, contenido.perfil);
-  }
-
   async verificar(token: string): Promise<ContenidoToken> {
     const clave = this.obtenerClave();
     try {

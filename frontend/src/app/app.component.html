@@ -30,6 +30,9 @@
       ariaCurrentWhenActive="page"
       >Mi perfil</a
     >
+    <a *appSoloAdministradores="autenticacion.usuarioActual"
+      routerLink="/dashboard/usuarios" routerLinkActive="active" ariaCurrentWhenActive="page"
+      >Administración</a>
     <a
       *appSoloInvitados="autenticacion.usuarioActual"
       class="nav-login"

@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, mongo } from 'mongoose';
 import { Usuario, UsuarioDocument } from './schemas/usuario.schema';
@@ -26,6 +26,18 @@ export class UsuariosService {
       .findOne({ correo: correo.trim().toLowerCase() })
       .select('+passwordHash')
       .exec();
+  }
+
+  listar() {
+    return this.usuarioModel.find().sort({ apellido: 1, nombre: 1, _id: 1 }).exec();
+  }
+
+  async cambiarEstado(id: string, activo: boolean) {
+    const usuario = await this.usuarioModel
+      .findByIdAndUpdate(id, { $set: { activo } }, { returnDocument: 'after' })
+      .exec();
+    if (!usuario) throw new NotFoundException('La cuenta no está disponible.');
+    return usuario;
   }
 
   async crear(datos: Usuario) {

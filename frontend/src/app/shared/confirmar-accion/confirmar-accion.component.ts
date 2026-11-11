@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-// Solicita confirmar una eliminación y emite la decisión para que el padre realice la acción.
+// Solicita confirmar una acción y emite la decisión para que el padre realice la acción.
 @Component({
   selector: 'app-confirmar-accion',
   template: `<dialog #dialogo (cancel)="cancelar($event)">
@@ -16,7 +16,7 @@ import {
     <p>{{ mensaje }}</p>
     <div>
       <button type="button" (click)="cancelar()" autofocus>Cancelar</button>
-      <button type="button" (click)="confirmar()">Eliminar publicación</button>
+      <button type="button" (click)="confirmar()">{{ etiquetaConfirmar }}</button>
     </div>
   </dialog>`,
   styles: [
@@ -57,6 +57,7 @@ import {
   ],
 })
 export class ConfirmarAccionComponent implements AfterViewInit {
+  @Input() etiquetaConfirmar = 'Eliminar publicación';
   @Input() titulo = 'Eliminar publicación';
   @Input() mensaje = 'La publicación dejará de aparecer en el feed. ¿Querés continuar?';
   @Output() confirmado = new EventEmitter<void>();

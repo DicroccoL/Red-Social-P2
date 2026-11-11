@@ -9,6 +9,7 @@ import { AutenticacionService } from './autenticacion.service';
 // Reúne registro y login con los servicios de usuarios, imágenes, JWT y hash de contraseñas.
 @Module({
   imports: [UsuariosModule, ImagenesModule, SeguridadModule],
+  exports: [AutenticacionService],
   controllers: [AutenticacionController],
   providers: [
     AutenticacionService,

@@ -5,6 +5,7 @@ import { AutenticacionModule } from './autenticacion/autenticacion.module';
 import { BaseDatosModule } from './base-datos/base-datos.module';
 import { PublicacionesModule } from './publicaciones/publicaciones.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
+import { AdministracionUsuariosModule } from './usuarios/administracion/administracion-usuarios.module';
 import { PerfilModule } from './usuarios/perfil/perfil.module';
 
 // El módulo principal reúne los módulos de la aplicación.
@@ -15,6 +16,7 @@ import { PerfilModule } from './usuarios/perfil/perfil.module';
     AutenticacionModule,
     UsuariosModule,
     PerfilModule,
+    AdministracionUsuariosModule,
     PublicacionesModule,
   ],
   controllers: [AppController],

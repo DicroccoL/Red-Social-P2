@@ -6,6 +6,12 @@ import { AutenticacionService } from '../services/autenticacion.service';
 export const sesionGuard: CanActivateFn = () =>
   inject(AutenticacionService).usuarioActual ? true : inject(Router).createUrlTree(['/login']);
 
+export const administradorGuard: CanActivateFn = () => {
+  const usuario = inject(AutenticacionService).usuarioActual;
+  if (usuario?.perfil === 'administrador') return true;
+  return inject(Router).createUrlTree([usuario ? '/publicaciones' : '/login']);
+};
+
 export const invitadoGuard: CanActivateFn = () =>
   inject(AutenticacionService).usuarioActual
     ? inject(Router).createUrlTree(['/publicaciones'])

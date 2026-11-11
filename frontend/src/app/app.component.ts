@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SoloInvitadosDirective } from './directivas/solo-invitados.directive';
+import { SoloAdministradoresDirective } from './directivas/solo-administradores.directive';
 import { SoloUsuariosDirective } from './directivas/solo-usuarios.directive';
 import { AutenticacionService } from './services/autenticacion.service';
 import { AsyncPipe } from '@angular/common';
@@ -16,6 +17,7 @@ import { AvisoSesionComponent } from './shared/aviso-sesion/aviso-sesion.compone
     RouterOutlet,
     SoloInvitadosDirective,
     SoloUsuariosDirective,
+    SoloAdministradoresDirective,
     AsyncPipe,
     AvisoSesionComponent,
   ],

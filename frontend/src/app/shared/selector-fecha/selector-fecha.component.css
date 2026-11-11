@@ -8,15 +8,15 @@
   gap: 6px;
   min-height: 49px;
   padding: 0 12px;
-  border: 1px solid #55002265;
+  border: 1px solid var(--fecha-borde, #55002265);
   border-radius: 10px;
-  color: var(--wine);
-  background: #ffffff12;
+  color: var(--fecha-texto, var(--wine));
+  background: var(--fecha-fondo, #ffffff12);
 }
 .fecha-control:focus-within {
-  outline: 2px solid var(--wine);
+  outline: 2px solid var(--fecha-texto, var(--wine));
   outline-offset: 2px;
-  background: #ffffff25;
+  background: var(--fecha-fondo, #ffffff25);
 }
 .fecha-control.invalida {
   border-width: 2px;

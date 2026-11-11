@@ -6,6 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Types } from 'mongoose';
+import { perfilEfectivo } from '../usuarios/perfil-efectivo';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { TokensService } from './tokens.service';
 import type { SolicitudAutenticada } from './usuario-autenticado';
@@ -42,8 +43,8 @@ export class SesionGuard implements CanActivate {
     if (!usuario) throw new UnauthorizedException('El usuario de esta sesión ya no existe.');
     if (!usuario.activo) throw new ForbiddenException('Tu cuenta está deshabilitada.');
 
-    // El rol se toma de MongoDB: no del body ni de un rol desactualizado del token.
-    solicitud.usuario = { id: usuario._id.toString(), perfil: usuario.perfil };
+    // La cuenta administradora se identifica por el correo actual guardado en MongoDB.
+    solicitud.usuario = { id: usuario._id.toString(), perfil: perfilEfectivo(usuario.correo) };
     solicitud.sesion = contenido;
     return true;
   }

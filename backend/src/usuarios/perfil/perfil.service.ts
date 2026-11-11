@@ -1,5 +1,6 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ImagenesService } from '../../imagenes/imagenes.service';
+import { esCorreoAdministrador } from '../perfil-efectivo';
 import { UsuariosService } from '../usuarios.service';
 import { usuarioPublico } from '../usuario-publico';
 import { ActualizarPerfilDto } from './dto/actualizar-perfil.dto';
@@ -28,6 +29,9 @@ export class PerfilService {
       throw new BadRequestException('La fecha de nacimiento no puede ser futura.');
     }
     const anterior = await this.buscarUsuario(id);
+    if (esCorreoAdministrador(anterior.correo) !== esCorreoAdministrador(datos.correo)) {
+      throw new ForbiddenException('El correo de la cuenta administradora está reservado.');
+    }
     const foto = imagen ? await this.imagenes.subirPerfil(imagen) : undefined;
     let actualizado;
     try {

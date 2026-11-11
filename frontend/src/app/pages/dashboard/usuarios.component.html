@@ -1,0 +1,92 @@
+<section class="dashboard" aria-labelledby="titulo-dashboard">
+  <header class="dashboard-header">
+    <h1 id="titulo-dashboard">Usuarios</h1>
+    <app-navegacion-dashboard />
+  </header>
+
+  <button
+    class="button button-primary"
+    type="button"
+    (click)="creando.set(!creando())"
+    [attr.aria-expanded]="creando()"
+    aria-controls="alta-usuario"
+  >
+    {{ creando() ? 'Cerrar formulario' : 'Crear usuario' }}
+  </button>
+  <div id="alta-usuario">
+    @if (creando()) {
+      <app-registro [desdeAdministracion]="true" (cuentaCreada)="usuarioCreado($event)" />
+    }
+  </div>
+
+  @if (mensaje()) {
+    <p role="status">{{ mensaje() }}</p>
+  }
+  @if (error()) {
+    <p class="field-error" role="alert">{{ error() }}</p>
+  }
+  @if (cargando()) {
+    <p role="status">Cargando usuarios…</p>
+  } @else if (usuarios().length) {
+    <div class="tabla-desplazable" tabindex="0" role="region" aria-label="Listado de usuarios">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Perfil</th>
+            <th scope="col">Cuenta</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (usuario of usuarios(); track usuario._id) {
+            <tr>
+              <th scope="row">
+                {{ usuario.nombre }} {{ usuario.apellido
+                }}<small>{{ '@' + usuario.nombreUsuario }}</small>
+              </th>
+              <td>{{ usuario.correo }}</td>
+              <td>{{ usuario.perfil | perfilUsuario }}</td>
+              <td>
+                <span class="estado-cuenta" [class.estado-activo]="usuario.activo">
+                  {{ usuario.activo | estadoCuenta }}
+                </span>
+              </td>
+              <td>
+                @if (usuario._id !== sesion.usuarioActual?._id) {
+                  <button
+                    class="accion"
+                    type="button"
+                    [disabled]="procesando()"
+                    [attr.aria-label]="
+                      (usuario.activo ? 'Deshabilitar a ' : 'Habilitar a ') + usuario.nombreUsuario
+                    "
+                    (click)="pendiente.set(usuario)"
+                  >
+                    {{ usuario.activo ? 'Deshabilitar' : 'Habilitar' }}
+                  </button>
+                } @else {
+                  Tu cuenta
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else if (!error()) {
+    <p>No hay usuarios.</p>
+  }
+  @if (pendiente(); as usuario) {
+    <app-confirmar-accion
+      [titulo]="usuario.activo ? 'Deshabilitar cuenta' : 'Habilitar cuenta'"
+      [mensaje]="
+        (usuario.activo ? 'Deshabilitar a ' : 'Habilitar a ') + usuario.nombreUsuario + '?'
+      "
+      [etiquetaConfirmar]="usuario.activo ? 'Deshabilitar' : 'Habilitar'"
+      (confirmado)="confirmarEstado()"
+      (cancelado)="pendiente.set(null)"
+    />
+  }
+</section>

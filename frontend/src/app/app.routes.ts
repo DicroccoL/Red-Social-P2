@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { invitadoGuard, sesionGuard } from './guards/sesion.guard';
+import { administradorGuard, invitadoGuard, sesionGuard } from './guards/sesion.guard';
 
 // Define las páginas y las carga con lazy loading cuando se navega a su ruta.
 export const routes: Routes = [
@@ -54,6 +54,29 @@ export const routes: Routes = [
         (componente) => componente.DetallePublicacionComponent,
       ),
     title: 'Publicación | floppy',
+  },
+  {
+    path: 'dashboard',
+    canActivateChild: [administradorGuard],
+    children: [
+      { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
+      {
+        path: 'usuarios',
+        loadComponent: () =>
+          import('./pages/dashboard/usuarios.component').then(
+            (componente) => componente.DashboardUsuariosComponent,
+          ),
+        title: 'Usuarios | floppy',
+      },
+      {
+        path: 'estadisticas',
+        loadComponent: () =>
+          import('./pages/dashboard/estadisticas.component').then(
+            (componente) => componente.DashboardEstadisticasComponent,
+          ),
+        title: 'Estadísticas | floppy',
+      },
+    ],
   },
   { path: '**', redirectTo: '' },
 ];

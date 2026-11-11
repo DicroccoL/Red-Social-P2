@@ -1,5 +1,7 @@
 import { UsuarioDocument } from './schemas/usuario.schema';
 
+import { perfilEfectivo } from './perfil-efectivo';
+
 // Selecciona los datos de la cuenta que pueden devolverse, sin hash ni identificadores de Cloudinary.
 export function usuarioPublico(usuario: UsuarioDocument) {
   return {
@@ -11,7 +13,7 @@ export function usuarioPublico(usuario: UsuarioDocument) {
     fechaNacimiento: usuario.fechaNacimiento,
     descripcion: usuario.descripcion,
     imagenPerfilUrl: usuario.imagenPerfilUrl,
-    perfil: usuario.perfil,
+    perfil: perfilEfectivo(usuario.correo),
     activo: usuario.activo,
   };
 }

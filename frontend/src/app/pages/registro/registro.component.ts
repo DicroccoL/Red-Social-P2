@@ -1,7 +1,16 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { map, Subscription } from 'rxjs';
+import { UsuarioPublico } from '../../models/usuario.model';
+import { AdministracionService } from '../../services/administracion.service';
 import { AutenticacionService } from '../../services/autenticacion.service';
 import { AvisoModalComponent } from '../../shared/aviso-modal/aviso-modal.component';
 import {
@@ -17,8 +26,37 @@ import { SelectorFechaComponent } from '../../shared/selector-fecha/selector-fec
   selector: 'app-registro',
   imports: [RouterLink, ReactiveFormsModule, AvisoModalComponent, SelectorFechaComponent],
   templateUrl: './registro.component.html',
+  styles: `
+    .registro-administrativo {
+      margin: 1rem 0;
+    }
+    .registro-administrativo .auth-card-wrap {
+      padding: 0;
+    }
+    .perfil-registro {
+      margin: 1rem 0;
+      padding: 0.7rem;
+      border: 1px solid #d7bfc9;
+      border-radius: 0.5rem;
+    }
+    .perfil-registro label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-right: 1rem;
+    }
+    .perfil-registro input {
+      width: auto;
+      min-height: 0;
+      margin: 0;
+    }
+  `,
 })
 export class RegistroComponent implements OnDestroy {
+  @Input() desdeAdministracion = false;
+  @Output() cuentaCreada = new EventEmitter<UsuarioPublico>();
+  readonly perfil = new FormControl<UsuarioPublico['perfil']>('usuario', { nonNullable: true });
+
   showPassword = false;
   submitted = false;
   enviando = false;
@@ -77,6 +115,7 @@ export class RegistroComponent implements OnDestroy {
 
   constructor(
     private readonly autenticacion: AutenticacionService,
+    private readonly administracion: AdministracionService,
     private readonly router: Router,
     private readonly cambios: ChangeDetectorRef,
   ) {}
@@ -127,10 +166,23 @@ export class RegistroComponent implements OnDestroy {
     if (this.formulario.invalid || !imagen) return;
     const { imagenPerfil, ...datos } = this.formulario.getRawValue();
     this.enviando = true;
-    this.solicitud = this.autenticacion.registrar(datos, imagen).subscribe({
+    const solicitud = this.desdeAdministracion
+      ? this.administracion
+          .crearUsuario(datos, imagen, this.perfil.value)
+          .pipe(map((usuario) => ({ usuario, mensaje: 'Creaste la cuenta.' })))
+      : this.autenticacion.registrar(datos, imagen).pipe(
+          map((respuesta) => {
+            this.autenticacion.guardarSesion(respuesta);
+            return respuesta;
+          }),
+        );
+    this.solicitud = solicitud.subscribe({
       next: (respuesta) => {
-        this.autenticacion.guardarSesion(respuesta);
         this.enviando = false;
+        if (this.desdeAdministracion) {
+          this.cuentaCreada.emit(respuesta.usuario);
+          return;
+        }
         this.formulario.controls.contrasena.reset();
         this.formulario.controls.repetirContrasena.reset();
         this.aviso = { titulo: 'Tu cuenta está lista', mensaje: respuesta.mensaje, exito: true };
@@ -139,7 +191,9 @@ export class RegistroComponent implements OnDestroy {
       error: (error) => {
         this.enviando = false;
         this.aviso = {
-          titulo: 'No pudimos crear tu cuenta',
+          titulo: this.desdeAdministracion
+            ? 'No pudimos crear la cuenta'
+            : 'No pudimos crear tu cuenta',
           mensaje: mensajeErrorApi(error),
           exito: false,
         };
