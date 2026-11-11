@@ -10,7 +10,7 @@ backend/uploads/
 .tmp/
 **/.vercel/
 
-# Cachés y archivos generados al compilar
+# Caché
 *.tsbuildinfo
 **/out-tsc/
 **/.cache/
@@ -18,7 +18,7 @@ backend/uploads/
 **/__pycache__/
 *.py[cod]
 
-# Archivos temporales del sistema
+# Temporales
 .DS_Store
 Thumbs.db
 Desktop.ini
@@ -26,10 +26,10 @@ Desktop.ini
 *.swp
 *.swo
 
-# Guías y explicaciones en Markdown
+# Markdown
 *.md
 
-# Pruebas y sus resultados
+# Pruebas
 **/test/
 **/tests/
 **/__tests__/
@@ -43,5 +43,5 @@ Desktop.ini
 **/test-results/
 **/__screenshots__/
 
-# Angular puede referenciar esta configuración desde tsconfig.json.
+# Angular
 !**/tsconfig.spec.json
