@@ -199,10 +199,9 @@
               Usuario</label
             >
             <label
-              ><input type="radio" name="perfil" value="administrador" disabled />
+              ><input type="radio" name="perfil" value="administrador" [formControl]="perfil" />
               Administrador</label
             >
-            <p class="field-hint">Por ahora hay una sola cuenta administradora.</p>
           </fieldset>
         }
         @if (submitted && formulario.invalid) {

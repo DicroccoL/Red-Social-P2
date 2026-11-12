@@ -13,7 +13,7 @@ export function usuarioPublico(usuario: UsuarioDocument) {
     fechaNacimiento: usuario.fechaNacimiento,
     descripcion: usuario.descripcion,
     imagenPerfilUrl: usuario.imagenPerfilUrl,
-    perfil: perfilEfectivo(usuario.correo),
+    perfil: perfilEfectivo(usuario.correo, usuario.perfil),
     activo: usuario.activo,
   };
 }

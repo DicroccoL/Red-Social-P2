@@ -54,7 +54,11 @@ export class AutenticacionService {
     return this.crearSesion(usuario, 'Tu cuenta se creó correctamente.');
   }
 
-  async crearCuenta(datos: RegistroDto, imagen: Express.Multer.File) {
+  async crearCuenta(
+    datos: RegistroDto,
+    imagen: Express.Multer.File,
+    perfil: 'usuario' | 'administrador' = 'usuario',
+  ) {
     if (esCorreoAdministrador(datos.correo)) {
       throw new ForbiddenException('Este correo está reservado para la cuenta administradora.');
     }
@@ -92,7 +96,7 @@ export class AutenticacionService {
         descripcion: datos.descripcion,
         imagenPerfilUrl: foto.url,
         imagenPerfilPublicId: foto.publicId,
-        perfil: 'usuario',
+        perfil,
         activo: true,
       });
     } catch (error) {

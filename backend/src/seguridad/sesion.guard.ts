@@ -43,8 +43,11 @@ export class SesionGuard implements CanActivate {
     if (!usuario) throw new UnauthorizedException('El usuario de esta sesión ya no existe.');
     if (!usuario.activo) throw new ForbiddenException('Tu cuenta está deshabilitada.');
 
-    // La cuenta administradora se identifica por el correo actual guardado en MongoDB.
-    solicitud.usuario = { id: usuario._id.toString(), perfil: perfilEfectivo(usuario.correo) };
+    // Para los permisos se consulta la cuenta actual en MongoDB.
+    solicitud.usuario = {
+      id: usuario._id.toString(),
+      perfil: perfilEfectivo(usuario.correo, usuario.perfil),
+    };
     solicitud.sesion = contenido;
     return true;
   }
