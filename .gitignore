@@ -28,6 +28,7 @@ Desktop.ini
 
 # Markdown
 *.md
+!/README.md
 
 # Pruebas
 **/test/
