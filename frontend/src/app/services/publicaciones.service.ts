@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import {
   ConsultaPublicaciones,
   PaginaPublicaciones,
   PublicacionPublica,
 } from '../models/publicacion.model';
+import { prepararFormularioImagen } from '../shared/preparar-formulario-imagen';
 
 // Centraliza las solicitudes HTTP de publicaciones y me gusta, enviando la cookie de sesión.
 @Injectable({ providedIn: 'root' })
@@ -35,8 +37,9 @@ export class PublicacionesService {
     const formulario = new FormData();
     formulario.append('titulo', titulo);
     formulario.append('descripcion', descripcion);
-    if (imagen) formulario.append('imagen', imagen);
-    return this.http.post<PublicacionPublica>(this.ruta, formulario, this.opciones());
+    return prepararFormularioImagen(formulario, 'imagen', imagen).pipe(
+      switchMap((cuerpo) => this.http.post<PublicacionPublica>(this.ruta, cuerpo, this.opciones())),
+    );
   }
 
   obtener(id: string) {

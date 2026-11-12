@@ -10,13 +10,14 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { AutenticacionService } from './services/autenticacion.service';
+import { formularioInterceptor } from './services/formulario.interceptor';
 import { sesionInterceptor } from './services/sesion.interceptor';
 
 // Registra HTTP y rutas; espera la recuperación de sesión antes de mostrar la aplicación.
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideHttpClient(withInterceptors([sesionInterceptor])),
+    provideHttpClient(withInterceptors([sesionInterceptor, formularioInterceptor])),
     provideRouter(routes),
     provideServiceWorker('ngsw-worker.js', { enabled: !isDevMode() }),
     provideAppInitializer(() => inject(AutenticacionService).recuperarSesion()),

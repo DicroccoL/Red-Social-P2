@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { DatosRegistro, UsuarioPublico } from '../models/usuario.model';
+import { prepararFormularioImagen } from '../shared/preparar-formulario-imagen';
 
 export interface ConteoEstadistica {
   _id: string;
@@ -28,9 +30,12 @@ export class AdministracionService {
   crearUsuario(datos: DatosRegistro, imagen: File, perfil: UsuarioPublico['perfil']) {
     const formulario = new FormData();
     for (const [campo, valor] of Object.entries(datos)) formulario.append(campo, valor);
-    formulario.append('imagenPerfil', imagen);
     formulario.append('perfil', perfil);
-    return this.http.post<UsuarioPublico>(this.url + '/usuarios', formulario, this.credenciales);
+    return prepararFormularioImagen(formulario, 'imagenPerfil', imagen).pipe(
+      switchMap((cuerpo) =>
+        this.http.post<UsuarioPublico>(this.url + '/usuarios', cuerpo, this.credenciales),
+      ),
+    );
   }
 
   cambiarEstado(id: string, habilitar: boolean) {

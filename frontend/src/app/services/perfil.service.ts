@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { DatosPerfil, RespuestaPerfil } from '../models/perfil.model';
+import { prepararFormularioImagen } from '../shared/preparar-formulario-imagen';
 
 // Consulta y modifica la cuenta identificada por la cookie, sin recibir IDs desde el formulario.
 @Injectable({ providedIn: 'root' })
@@ -14,7 +16,10 @@ export class PerfilService {
   actualizar(datos: DatosPerfil, imagen: File | null) {
     const formulario = new FormData();
     for (const [campo, valor] of Object.entries(datos)) formulario.append(campo, valor);
-    if (imagen) formulario.append('imagenPerfil', imagen);
-    return this.http.put<RespuestaPerfil>(this.ruta, formulario, { withCredentials: true });
+    return prepararFormularioImagen(formulario, 'imagenPerfil', imagen).pipe(
+      switchMap((cuerpo) =>
+        this.http.put<RespuestaPerfil>(this.ruta, cuerpo, { withCredentials: true }),
+      ),
+    );
   }
 }

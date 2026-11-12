@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom, tap, timeout } from 'rxjs';
+import { firstValueFrom, switchMap, tap, timeout } from 'rxjs';
 import { environment } from '../../environments/environment';
 import {
   DatosRegistro,
@@ -9,6 +9,7 @@ import {
 } from '../models/usuario.model';
 import { Router } from '@angular/router';
 import { RelojSesionService } from './reloj-sesion.service';
+import { prepararFormularioImagen } from '../shared/preparar-formulario-imagen';
 
 // Comunica registro y sesión con la API y conserva al usuario actual; el navegador administra la cookie.
 @Injectable({ providedIn: 'root' })
@@ -32,13 +33,15 @@ export class AutenticacionService {
     for (const [campo, valor] of Object.entries(datos)) {
       formulario.append(campo, valor);
     }
-    formulario.append('imagenPerfil', imagen);
-
     // El navegador agrega Content-Type y el boundary de FormData.
-    return this.http.post<RespuestaAutenticacion>(
-      `${environment.apiUrl}/autenticacion/registro`,
-      formulario,
-      { withCredentials: true },
+    return prepararFormularioImagen(formulario, 'imagenPerfil', imagen).pipe(
+      switchMap((cuerpo) =>
+        this.http.post<RespuestaAutenticacion>(
+          `${environment.apiUrl}/autenticacion/registro`,
+          cuerpo,
+          { withCredentials: true },
+        ),
+      ),
     );
   }
 
