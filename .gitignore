@@ -43,6 +43,3 @@ Desktop.ini
 **/playwright-report/
 **/test-results/
 **/__screenshots__/
-
-# Angular
-!**/tsconfig.spec.json
