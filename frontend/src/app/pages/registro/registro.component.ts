@@ -45,10 +45,20 @@ import { SelectorFechaComponent } from '../../shared/selector-fecha/selector-fec
       gap: 0.35rem;
       margin-right: 1rem;
     }
-    .perfil-registro input {
-      width: auto;
-      min-height: 0;
+    .perfil-registro input[type='radio'] {
+      width: 1rem;
+      height: 1rem;
+      flex: none;
       margin: 0;
+      padding: 0;
+    }
+    .perfil-registro input[type='radio']:focus {
+      outline: none;
+      background: transparent;
+    }
+    .perfil-registro input[type='radio']:focus-visible {
+      outline: 2px dashed var(--wine);
+      outline-offset: 3px;
     }
   `,
 })

@@ -18,6 +18,12 @@ export class ImagenesService {
     const apiSecret = process.env['CLOUDINARY_API_SECRET'];
 
     if (!cloudName || !apiKey || !apiSecret) {
+      const faltantes = [
+        !cloudName && 'CLOUDINARY_CLOUD_NAME',
+        !apiKey && 'CLOUDINARY_API_KEY',
+        !apiSecret && 'CLOUDINARY_API_SECRET',
+      ].filter(Boolean);
+      this.logger.error(`Subida de imagen sin configurar. Faltan: ${faltantes.join(', ')}.`);
       throw new ServiceUnavailableException(
         'La subida de fotos todavía no está configurada. Intentá más tarde.',
       );
@@ -57,8 +63,12 @@ export class ImagenesService {
         url: resultado.secure_url,
         publicId: resultado.public_id,
       };
-    } catch {
-      this.logger.error('Cloudinary no pudo guardar la imagen.');
+    } catch (error: unknown) {
+      // Registramos solo el estado HTTP; el error completo puede contener credenciales o la imagen.
+      const estado =
+        typeof error === 'object' && error !== null && 'http_code' in error &&
+        typeof error.http_code === 'number' ? error.http_code : 'desconocido';
+      this.logger.error(`Cloudinary no pudo guardar la imagen en ${carpeta}. Estado HTTP: ${estado}.`);
       throw new BadGatewayException(
         'No se pudo subir la foto. Intentá nuevamente en unos minutos.',
       );
