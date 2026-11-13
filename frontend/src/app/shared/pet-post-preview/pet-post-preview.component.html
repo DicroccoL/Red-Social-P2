@@ -23,7 +23,10 @@
       ></a>
     } @else {
       <div class="demo-social">
-        <strong>{{ liked ? 25 : 24 }}</strong> me gusta <span>Una aventura de Milo</span>
+        <span><strong>{{ liked ? 25 : 24 }}</strong> me gusta</span>
+        <span>
+          <strong>{{ comment ? 1 : 0 }}</strong> {{ comment ? 'comentario' : 'comentarios' }}
+        </span>
       </div>
       <div class="post-actions">
         <button

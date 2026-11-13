@@ -52,9 +52,10 @@
         <span
           ><strong>{{ publicacion.cantidadMeGusta }}</strong> me gusta</span
         >
-        @if (mostrarComentarios && publicacion.comentarios?.length) {
-          <span>Últimos comentarios abajo</span>
-        }
+        <span>
+          <strong>{{ cantidadComentarios }}</strong>
+          {{ cantidadComentarios === 1 ? 'comentario' : 'comentarios' }}
+        </span>
       </div>
       <div class="acciones">
         <button

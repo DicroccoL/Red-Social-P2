@@ -1,23 +1,66 @@
 dialog {
-  max-width: 540px;
+  max-width: 460px;
   width: calc(100% - 32px);
-  padding: 30px;
-  border: 1px solid var(--wine);
-  background: var(--pink);
+  padding: clamp(20px, 5vw, 32px);
+  border: 1px solid var(--pink);
+  border-radius: 20px;
+  background: var(--paper);
   color: var(--wine);
+  box-shadow: 0 20px 60px #25001066;
 }
 dialog::backdrop {
   background: #250010b8;
 }
 h2 {
-  font-size: 30px;
+  margin: 0 0 8px;
+  font-size: clamp(23px, 5vw, 30px);
+  line-height: 1.15;
 }
 p {
-  margin: 20px 0;
-  line-height: 1.6;
+  margin: 0;
+  line-height: 1.5;
+}
+.tiempo-restante {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 24px 0;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: var(--pink);
+  font-weight: 600;
+}
+.tiempo-restante strong {
+  font-family: var(--mono);
+  font-size: 28px;
+  line-height: 1;
+}
+[role='alert'] {
+  margin-bottom: 16px;
 }
 .botones {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+}
+.botones .button {
+  flex: 1 1 140px;
+  justify-content: center;
+  width: auto;
+  margin: 0;
+  border-radius: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+.botones .button:focus-visible {
+  outline-color: var(--wine);
+  outline-offset: 3px;
+}
+.button-outline {
+  color: var(--wine);
+}
+.button-outline:hover:not(:disabled) {
+  background: var(--pink);
 }

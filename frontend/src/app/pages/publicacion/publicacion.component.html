@@ -15,13 +15,18 @@
     <div class="detalle-contenido">
       <app-publicacion
         [publicacion]="actual"
+        [cantidadComentariosDetalle]="conversacion.total"
         [procesando]="procesando"
         [mostrarEnlace]="false"
         [mostrarComentarios]="false"
         (cambiarMeGusta)="cambiarMeGusta()"
         (eliminar)="confirmarEliminacion = true"
       />
-      <app-comentarios [publicacionId]="actual._id" />
+      <app-comentarios
+        #conversacion
+        [publicacionId]="actual._id"
+        [totalInicial]="actual.cantidadComentarios"
+      />
     </div>
   }
 </section>

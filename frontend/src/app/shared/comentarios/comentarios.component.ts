@@ -6,6 +6,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  SimpleChanges,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -24,13 +25,14 @@ import { ComentarioComponent } from '../comentario/comentario.component';
 })
 export class ComentariosComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) publicacionId!: string;
+  @Input({ required: true }) totalInicial!: number;
   comentarios: ComentarioPublico[] = [];
-  total = 0;
   hayMas = false;
   cargando = false;
   enviando = false;
   errorLectura = '';
   errorEnvio = '';
+  private totalConsultado: number | null = null;
   private offset = 0;
   private consulta?: Subscription;
   private envio?: Subscription;
@@ -54,12 +56,17 @@ export class ComentariosComponent implements OnChanges, OnDestroy {
     });
   }
 
-  ngOnChanges() {
+  get total(): number {
+    return this.totalConsultado ?? this.totalInicial;
+  }
+
+  ngOnChanges(cambios: SimpleChanges) {
+    if (!cambios['publicacionId']) return;
     this.consulta?.unsubscribe();
     this.envio?.unsubscribe();
     this.comentarios = [];
     this.offset = 0;
-    this.total = 0;
+    this.totalConsultado = null;
     this.cargando = false;
     this.enviando = false;
     this.formulario.reset();
@@ -78,7 +85,7 @@ export class ComentariosComponent implements OnChanges, OnDestroy {
           ...pagina.comentarios.filter((comentario) => !existentes.has(comentario._id)),
         ];
         this.offset += pagina.comentarios.length;
-        this.total = pagina.total;
+        this.totalConsultado = pagina.total;
         this.hayMas = pagina.hayMas;
         this.cargando = false;
         this.cambios.markForCheck();
@@ -101,7 +108,7 @@ export class ComentariosComponent implements OnChanges, OnDestroy {
       .subscribe({
         next: (comentario) => {
           this.comentarios = [comentario, ...this.comentarios];
-          this.total++;
+          this.totalConsultado = this.total + 1;
           this.offset++;
           this.formulario.reset();
           this.enviando = false;

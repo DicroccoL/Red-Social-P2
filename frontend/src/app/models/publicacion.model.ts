@@ -23,6 +23,7 @@ export interface PublicacionPublica {
   imagenUrl?: string;
   autor: AutorPublicacion;
   cantidadMeGusta: number;
+  cantidadComentarios: number;
   meGustaDelUsuario: boolean;
   puedeEliminar: boolean;
   comentarios?: ComentarioPublico[];

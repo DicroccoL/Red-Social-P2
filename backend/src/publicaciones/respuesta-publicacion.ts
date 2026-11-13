@@ -13,7 +13,11 @@ export interface PublicacionConAutor {
 }
 
 // Armamos los datos públicos: no exponemos el identificador de Cloudinary ni la lista de likes.
-export function publicacionPublica(publicacion: PublicacionConAutor, usuario: UsuarioAutenticado) {
+export function publicacionPublica(
+  publicacion: PublicacionConAutor,
+  usuario: UsuarioAutenticado,
+  cantidadComentarios: number,
+) {
   const autor = autorPublico(publicacion.usuario);
   return {
     _id: publicacion._id.toString(),
@@ -23,6 +27,7 @@ export function publicacionPublica(publicacion: PublicacionConAutor, usuario: Us
     imagenUrl: publicacion.imagenUrl,
     autor,
     cantidadMeGusta: publicacion.meGusta.length,
+    cantidadComentarios,
     meGustaDelUsuario: publicacion.meGusta.some((id) => id.toString() === usuario.id),
     puedeEliminar: autor._id === usuario.id || usuario.perfil === 'administrador',
   };

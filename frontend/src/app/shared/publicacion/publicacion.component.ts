@@ -12,12 +12,17 @@ import { PublicacionPublica } from '../../models/publicacion.model';
 })
 export class PublicacionComponent {
   @Input({ required: true }) publicacion!: PublicacionPublica;
+  @Input() cantidadComentariosDetalle: number | null = null;
   @Input() procesando = false;
   @Input() mostrarEnlace = true;
   @Input() mostrarComentarios = true;
   @Output() cambiarMeGusta = new EventEmitter<PublicacionPublica>();
   @Output() eliminar = new EventEmitter<PublicacionPublica>();
   fotoFallida = false;
+
+  get cantidadComentarios(): number {
+    return this.cantidadComentariosDetalle ?? this.publicacion.cantidadComentarios;
+  }
 
   enfocarComentario() {
     document.getElementById('nuevo-comentario')?.focus();

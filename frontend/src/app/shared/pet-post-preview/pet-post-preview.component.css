@@ -198,17 +198,14 @@
 .demo-social {
   display: flex;
   align-items: center;
-  gap: 4px;
+  flex-wrap: wrap;
+  gap: 12px;
   padding-bottom: 14px;
   font-size: 11px;
   color: #79354d;
 }
 .demo-social strong {
   color: var(--wine);
-}
-.demo-social > span {
-  margin-left: auto;
-  font-size: 10px;
 }
 .post-actions {
   align-items: center;
@@ -269,8 +266,5 @@
     gap: 6px;
     padding: 10px 8px;
     font-size: 11px;
-  }
-  .demo-social > span {
-    display: none;
   }
 }

@@ -38,22 +38,26 @@ export class ConsultasPublicacionesService {
       this.publicaciones.countDocuments(filtro).exec(),
     ]);
     const ids = identificadores.map((resultado) => resultado._id);
-    const documentos = await this.publicaciones
-      .find({ _id: { $in: ids }, activo: true })
-      .populate<{ usuario: AutorPoblado | null }>('usuario', CAMPOS_AUTOR)
-      .exec();
-    const comentarios =
-      consulta.incluirComentarios === 'true'
-        ? await this.comentarios.agruparPorPublicacion(ids)
-        : null;
+    const incluirComentarios = consulta.incluirComentarios === 'true';
+    const [documentos, comentarios, totalesComentarios] = await Promise.all([
+      this.publicaciones
+        .find({ _id: { $in: ids }, activo: true })
+        .populate<{ usuario: AutorPoblado | null }>('usuario', CAMPOS_AUTOR)
+        .exec(),
+      incluirComentarios ? this.comentarios.agruparPorPublicacion(ids) : null,
+      incluirComentarios ? null : this.comentarios.contarPorPublicacion(ids),
+    ]);
     // La segunda consulta no conserva el orden de la agregación: lo reconstruimos con sus IDs.
     const resultados = identificadores.flatMap(({ _id }) => {
       const documento = documentos.find((elemento) => elemento._id.equals(_id));
       if (!documento) return [];
+      const id = _id.toString();
+      const comentariosPublicacion = comentarios?.[id] ?? [];
+      const cantidadComentarios = totalesComentarios?.get(id) ?? comentariosPublicacion.length;
       return [
         {
-          ...publicacionPublica(documento, usuario),
-          ...(comentarios ? { comentarios: comentarios[_id.toString()] ?? [] } : {}),
+          ...publicacionPublica(documento, usuario, cantidadComentarios),
+          ...(comentarios ? { comentarios: comentariosPublicacion } : {}),
         },
       ];
     });
@@ -72,6 +76,8 @@ export class ConsultasPublicacionesService {
       .populate<{ usuario: AutorPoblado | null }>('usuario', CAMPOS_AUTOR)
       .exec();
     if (!publicacion) throw new NotFoundException('La publicación ya no está disponible.');
-    return publicacionPublica(publicacion, usuario);
+    const totales = await this.comentarios.contarPorPublicacion([publicacion._id]);
+    const cantidadComentarios = totales.get(publicacion._id.toString()) ?? 0;
+    return publicacionPublica(publicacion, usuario, cantidadComentarios);
   }
 }

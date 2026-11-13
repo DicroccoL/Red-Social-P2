@@ -16,6 +16,7 @@ import { UsuarioDocument } from '../usuarios/schemas/usuario.schema';
 import { usuarioPublico } from '../usuarios/usuario-publico';
 import { TokensService } from '../seguridad/tokens.service';
 import { ContenidoToken } from '../seguridad/contenido-token';
+import { DURACION_SESION_SEGUNDOS } from '../seguridad/configuracion-sesion';
 
 // Aplica las reglas de registro y login, y devuelve los datos públicos del usuario.
 @Injectable()
@@ -120,7 +121,11 @@ export class AutenticacionService {
   async refrescarSesion(contenido: ContenidoToken) {
     const datos = await this.recuperarSesion(contenido.sub, contenido.exp * 1000);
     const renovacion = await this.tokensService.generar(datos.usuario._id, datos.usuario.correo, datos.usuario.perfil);
-    return { ...datos, ...renovacion, mensaje: 'Extendiste tu sesión por 15 minutos.' };
+    return {
+      ...datos,
+      ...renovacion,
+      mensaje: `Extendiste tu sesión por ${DURACION_SESION_SEGUNDOS} segundos.`,
+    };
   }
 
   private async crearSesion(usuario: UsuarioDocument, mensaje: string) {

@@ -17,6 +17,17 @@ export interface ComentarioPublico {
 export class ComentariosService {
   constructor(@InjectModel(Comentario.name) private readonly comentarios: Model<Comentario>) {}
 
+  async contarPorPublicacion(identificadores: Types.ObjectId[]): Promise<Map<string, number>> {
+    if (!identificadores.length) return new Map();
+    const totales = await this.comentarios
+      .aggregate<{ _id: Types.ObjectId; total: number }>([
+        { $match: { publicacion: { $in: identificadores }, activo: true } },
+        { $group: { _id: '$publicacion', total: { $sum: 1 } } },
+      ])
+      .exec();
+    return new Map(totales.map(({ _id, total }) => [_id.toString(), total]));
+  }
+
   async agruparPorPublicacion(identificadores: Types.ObjectId[]) {
     const agrupados: Record<string, ComentarioPublico[]> = {};
     if (!identificadores.length) return agrupados;

@@ -1,6 +1,15 @@
-<dialog #dialogo (cancel)="posponer($event)" aria-labelledby="titulo-sesion">
+<dialog
+  #dialogo
+  (cancel)="posponer($event)"
+  aria-labelledby="titulo-sesion"
+  aria-describedby="descripcion-sesion"
+>
   <h2 id="titulo-sesion">Tu sesión está por terminar</h2>
-  <p>Quedan 5 minutos de sesión o menos. ¿Querés extenderla por otros 15 minutos?</p>
+  <p id="descripcion-sesion">¿Querés extender tu sesión?</p>
+  <div class="tiempo-restante">
+    <span id="etiqueta-tiempo">Tiempo restante</span>
+    <strong role="timer" aria-labelledby="etiqueta-tiempo">{{ tiempoRestante | async }}</strong>
+  </div>
   @if (error) {
     <p role="alert">{{ error }}</p>
   }
