@@ -75,8 +75,9 @@ export class PublicacionesComponent implements OnInit, OnDestroy {
       });
   }
 
-  cambiarOrden(evento: Event) {
-    this.orden = (evento.target as HTMLSelectElement).value === 'meGusta' ? 'meGusta' : 'fecha';
+  cambiarOrden(orden: 'fecha' | 'meGusta') {
+    if (this.orden === orden || this.accionPendiente) return;
+    this.orden = orden;
     this.cambiarPagina(0);
   }
 

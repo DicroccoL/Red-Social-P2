@@ -5,18 +5,45 @@
   </div>
   @if (autenticacion.usuarioActual) {
     <div class="barra-feed">
-      <label for="orden-publicaciones"
-        >Ordenar por
-        <select
-          id="orden-publicaciones"
-          [value]="orden"
-          (change)="cambiarOrden($event)"
-          [disabled]="cargando || !!accionPendiente"
-        >
-          <option value="fecha">Más recientes</option>
-          <option value="meGusta">Más me gusta</option>
-        </select>
-      </label>
+      <fieldset class="orden-feed" [disabled]="!!accionPendiente">
+        <legend class="visually-hidden">Ordenar publicaciones por</legend>
+        <span class="orden-etiqueta" aria-hidden="true">Ordenar por</span>
+        <div class="orden-segmentos">
+          <label class="orden-opcion">
+            <input
+              class="visually-hidden"
+              type="radio"
+              name="orden-feed"
+              value="fecha"
+              [checked]="orden === 'fecha'"
+              (change)="cambiarOrden('fecha')"
+            />
+            <span>
+              <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 2" />
+              </svg>
+              Más recientes
+            </span>
+          </label>
+          <label class="orden-opcion">
+            <input
+              class="visually-hidden"
+              type="radio"
+              name="orden-feed"
+              value="meGusta"
+              [checked]="orden === 'meGusta'"
+              (change)="cambiarOrden('meGusta')"
+            />
+            <span>
+              <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z" />
+              </svg>
+              Más me gusta
+            </span>
+          </label>
+        </div>
+      </fieldset>
       <button
         class="button button-outline"
         type="button"
