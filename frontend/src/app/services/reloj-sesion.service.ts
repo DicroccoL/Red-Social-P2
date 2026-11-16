@@ -22,6 +22,17 @@ export class RelojSesionService {
       },
       Math.max(0, restante - ANTICIPACION_AVISO_MS),
     );
+    this.reanudarVencimiento();
+  }
+
+  suspenderVencimiento() {
+    clearTimeout(this.vencimiento);
+    this.vencimiento = undefined;
+  }
+
+  reanudarVencimiento() {
+    if (!this.fechaVencimiento || this.vencimiento !== undefined) return;
+    const restante = Math.max(0, this.fechaVencimiento - Date.now());
     this.vencimiento = setTimeout(() => this.sesionVencida.next(), restante);
   }
 
@@ -35,7 +46,7 @@ export class RelojSesionService {
 
   detener() {
     clearTimeout(this.aviso);
-    clearTimeout(this.vencimiento);
+    this.suspenderVencimiento();
     this.fechaVencimiento = 0;
     this.ocultarAviso();
   }

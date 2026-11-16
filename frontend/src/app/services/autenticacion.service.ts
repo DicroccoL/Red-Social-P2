@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom, switchMap, tap, timeout } from 'rxjs';
+import { defer, finalize, firstValueFrom, switchMap, tap, timeout } from 'rxjs';
 import { environment } from '../../environments/environment';
 import {
   DatosRegistro,
@@ -75,13 +75,19 @@ export class AutenticacionService {
   }
 
   refrescarSesion() {
-    return this.http
-      .post<RespuestaAutenticacion>(
+    return defer(() => {
+      // Esperamos a la API: el vencimiento anterior no debe cancelar una renovación en curso.
+      this.reloj.suspenderVencimiento();
+      return this.http.post<RespuestaAutenticacion>(
         `${environment.apiUrl}/autenticacion/refrescar`,
         {},
         { withCredentials: true },
-      )
-      .pipe(tap((respuesta) => this.guardarSesion(respuesta)));
+      );
+    }).pipe(
+      timeout(15000),
+      tap((respuesta) => this.guardarSesion(respuesta)),
+      finalize(() => this.reloj.reanudarVencimiento()),
+    );
   }
 
   async recuperarSesion(): Promise<void> {
