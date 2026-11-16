@@ -62,13 +62,26 @@ export class EstadisticasService {
                 {
                   $group: {
                     _id: {
-                      $dateToString: {
-                        format: "%Y-%m-%d",
-                        date: "$fechaCreacion",
-                        timezone: "-03:00",
+                      dia: {
+                        $dateToString: {
+                          format: "%Y-%m-%d",
+                          date: "$fechaCreacion",
+                          timezone: "-03:00",
+                        },
+                      },
+                      hora: {
+                        $hour: { date: "$fechaCreacion", timezone: "-03:00" },
                       },
                     },
                     cantidad: { $sum: 1 },
+                  },
+                },
+                { $sort: { cantidad: -1, "_id.hora": 1 } },
+                {
+                  $group: {
+                    _id: "$_id.dia",
+                    cantidad: { $sum: "$cantidad" },
+                    horaPico: { $first: "$_id.hora" },
                   },
                 },
                 { $sort: { _id: 1 } },

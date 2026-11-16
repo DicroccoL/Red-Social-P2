@@ -13,8 +13,12 @@ export interface ConteoEstadistica {
 
 export interface Estadisticas {
   publicacionesPorUsuario: ConteoEstadistica[];
-  comentariosPorDia: ConteoEstadistica[];
+  comentariosPorDia: ComentariosDia[];
   comentariosPorPublicacion: ConteoEstadistica[];
+}
+
+export interface ComentariosDia extends ConteoEstadistica {
+  horaPico?: number;
 }
 
 @Injectable({ providedIn: 'root' })

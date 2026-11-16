@@ -1,0 +1,8 @@
+<dialog #dialogo (cancel)="cancelar($event)">
+  <h2>{{ titulo }}</h2>
+  <p>{{ mensaje }}</p>
+  <div>
+    <button type="button" (click)="cancelar()" autofocus>Cancelar</button>
+    <button type="button" (click)="confirmar()">{{ etiquetaConfirmar }}</button>
+  </div>
+</dialog>

@@ -1,0 +1,31 @@
+<nav aria-label="Páginas de publicaciones">
+  <p class="resumen" role="status">
+    Mostrando
+    <strong>{{ rangoResultados }}</strong>
+    de <strong>{{ total }}</strong> {{ total === 1 ? 'publicación' : 'publicaciones' }}
+  </p>
+  <div class="controles">
+    <button
+      type="button"
+      class="button button-outline"
+      [disabled]="cargando || offset === 0"
+      (click)="paginaCambiada.emit(offset - limit)"
+    >
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <use href="icons.svg#arrow-left" />
+      </svg>
+      Anterior
+    </button>
+    <button
+      type="button"
+      class="button button-outline"
+      [disabled]="cargando || offset + limit >= total"
+      (click)="paginaCambiada.emit(offset + limit)"
+    >
+      Siguiente
+      <svg class="ui-icon flecha-siguiente" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <use href="icons.svg#arrow-left" />
+      </svg>
+    </button>
+  </div>
+</nav>

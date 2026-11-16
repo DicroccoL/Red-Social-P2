@@ -1,9 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CantidadTextoPipe } from '../../pipes/cantidad-texto.pipe';
 import {
   AdministracionService,
+  ComentariosDia,
   ConteoEstadistica,
   Estadisticas,
 } from '../../services/administracion.service';
@@ -30,6 +32,10 @@ function fechaArgentina(fecha: Date): string {
   );
 }
 
+function posicionDia(fecha: number, inicio: number, fin: number): number {
+  return inicio === fin ? 300 : 10 + (580 * (fecha - inicio)) / (fin - inicio);
+}
+
 function puntosDeActividad(dias: ConteoEstadistica[], desde: string, hasta: string): string {
   const inicio = Date.parse(desde);
   const fin = Date.parse(hasta);
@@ -50,7 +56,7 @@ function puntosDeActividad(dias: ConteoEstadistica[], desde: string, hasta: stri
   return [...valores.entries()]
     .sort(([a], [b]) => a - b)
     .map(([fecha, cantidad]) => {
-      const x = inicio === fin ? 300 : 10 + (580 * (fecha - inicio)) / (fin - inicio);
+      const x = posicionDia(fecha, inicio, fin);
       const y = 150 - (140 * cantidad) / maximo;
       return x + ',' + y;
     })
@@ -60,6 +66,7 @@ function puntosDeActividad(dias: ConteoEstadistica[], desde: string, hasta: stri
 @Component({
   selector: 'app-dashboard-estadisticas',
   imports: [
+    DatePipe,
     NavegacionDashboardComponent,
     ReactiveFormsModule,
     CantidadTextoPipe,
@@ -88,6 +95,7 @@ export class DashboardEstadisticasComponent {
   protected readonly cargando = signal(false);
   protected readonly error = signal('');
   protected puntos = '';
+  protected picoComentarios: { dia: ComentariosDia; x: number; hora: string | null } | null = null;
   protected maximoPublicaciones = 1;
   protected totalComentarios = 0;
   protected segmentos: { nombre: string; cantidad: number; color: string }[] = [];
@@ -124,6 +132,17 @@ export class DashboardEstadisticasComponent {
             0,
           );
           this.puntos = puntosDeActividad(datos.comentariosPorDia, desde, hasta);
+          const pico = datos.comentariosPorDia.reduce<ComentariosDia | null>(
+            (maximo, dia) => (!maximo || dia.cantidad > maximo.cantidad ? dia : maximo),
+            null,
+          );
+          this.picoComentarios = pico && pico.cantidad > 0
+            ? {
+                dia: pico,
+                x: posicionDia(Date.parse(pico._id), Date.parse(desde), Date.parse(hasta)),
+                hora: pico.horaPico == null ? null : String(pico.horaPico).padStart(2, '0') + ':00',
+              }
+            : null;
           this.prepararAnillo(datos.comentariosPorPublicacion);
           this.aplicado.set({ desde, hasta });
           this.datos.set(datos);

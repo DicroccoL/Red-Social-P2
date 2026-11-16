@@ -1,10 +1,7 @@
 import {
   Body,
   Controller,
-  FileTypeValidator,
   HttpCode,
-  MaxFileSizeValidator,
-  ParseFilePipe,
   Post,
   Req,
   Res,
@@ -13,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { TAMANO_MAXIMO_IMAGEN, validarImagen } from '../imagenes/validacion-imagen';
 import { AutenticacionService } from './autenticacion.service';
 import { RegistroDto } from './dto/registro.dto';
 import { LoginDto } from './dto/login.dto';
@@ -21,8 +19,6 @@ import type { SolicitudAutenticada } from '../seguridad/usuario-autenticado';
 import { CookieSesionService } from '../seguridad/cookie-sesion.service';
 import { SesionGuard } from '../seguridad/sesion.guard';
 import { OrigenGuard } from '../seguridad/origen.guard';
-
-const TAMANO_MAXIMO_IMAGEN = 2 * 1024 * 1024;
 
 // Recibe registro, login y sesión; delega las validaciones y maneja la cookie de respuesta.
 @Controller('autenticacion')
@@ -84,19 +80,7 @@ export class AutenticacionController {
   async registrar(
     @Body() datos: RegistroDto,
     @Res({ passthrough: true }) respuesta: Response,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: TAMANO_MAXIMO_IMAGEN }),
-          new FileTypeValidator({
-            fileType: /^image\/(jpeg|png|webp)$/,
-            overrideMimeType: true,
-            errorMessage: 'La imagen debe ser un archivo JPG, PNG o WebP válido.',
-          }),
-        ],
-      }),
-    )
-    imagen: Express.Multer.File,
+    @UploadedFile(validarImagen(true)) imagen: Express.Multer.File,
   ) {
     const { token, ...datosPublicos } = await this.autenticacionService.registrar(
       datos,

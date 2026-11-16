@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+// Formatea la cantidad con el formato argentino y elige singular o plural.
 @Pipe({ name: 'cantidadTexto' })
 export class CantidadTextoPipe implements PipeTransform {
   private readonly numero = new Intl.NumberFormat('es-AR');

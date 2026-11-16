@@ -68,12 +68,23 @@
           <svg class="actividad" viewBox="0 0 600 160" aria-hidden="true">
             <path d="M10 10V150H590" fill="none" stroke="var(--admin-borde)" stroke-width="2" />
             <polyline [attr.points]="puntos" fill="none" stroke="currentColor" stroke-width="3" />
-            @if (
-              estadisticas.comentariosPorDia.length === 1 && aplicado().desde === aplicado().hasta
-            ) {
-              <circle cx="300" cy="10" r="5" fill="currentColor" />
+            @if (picoComentarios; as pico) {
+              <circle [attr.cx]="pico.x" cy="10" r="6" fill="currentColor" />
             }
           </svg>
+          @if (picoComentarios; as pico) {
+            <p class="pico-actividad">
+              <strong>Pico diario:</strong>
+              <time [attr.datetime]="pico.dia._id">{{ pico.dia._id | date: 'dd/MM/yyyy' : 'UTC' }}</time>
+              · {{ pico.dia.cantidad | cantidadTexto: 'comentario' : 'comentarios' }}
+              @if (pico.hora; as hora) {
+                <span>
+                  Hora de mayor actividad:
+                  <time [attr.datetime]="hora">{{ hora }}</time> (hora argentina)
+                </span>
+              }
+            </p>
+          }
           <details>
             <summary>Ver cantidades por día</summary>
             <ul>
